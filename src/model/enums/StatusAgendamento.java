@@ -1,13 +1,13 @@
 package model.enums;
 
-public enum Sexo {
-    MASCULINO("masculino"),
-    FEMININO("feminino");
-    //NID("Não identificado");
+public enum StatusAgendamento {
+    AGENDADO("agendado"),
+    CONCLUIDO("concluido"),
+    CANCELADO("cancelado");
 
     private String descricao;
 
-    Sexo(String descricao) {
+    StatusAgendamento(String descricao) {
         this.descricao = descricao;
     }
 

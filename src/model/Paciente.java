@@ -1,2 +1,75 @@
-package model;public class Paciente {
+package model;
+
+import model.enums.Sexo;
+
+import java.util.Arrays;
+import java.util.Date;
+
+public class Paciente extends Pessoa{
+    private final Integer codPaciente;
+    private String historico;
+    private String[] alergias;
+    private String[] medicamentosUtilizados;
+    private String anotacoes;
+
+    public Paciente(String cpf, String nome, String sobrenome, Sexo sexo, Date data_nascimento, String telefone, String celular, String email, Integer codPaciente, String historico, String[] alergias, String[] medicamentosUtilizados, String anotacoes) {
+        super(cpf, nome, sobrenome, sexo, data_nascimento, telefone, celular, email);
+        this.codPaciente = codPaciente;
+        this.historico = historico;
+        this.alergias = alergias;
+        this.medicamentosUtilizados = medicamentosUtilizados;
+        this.anotacoes = anotacoes;
+    }
+
+    public Paciente(String cpf, String nome, String sobrenome, Sexo sexo, Date data_nascimento, String celular, String email, Integer codPaciente, String historico, String[] alergias, String[] medicamentosUtilizados, String anotacoes) {
+        super(cpf, nome, sobrenome, sexo, data_nascimento, celular, email);
+        this.codPaciente = codPaciente;
+        this.historico = historico;
+        this.alergias = alergias;
+        this.medicamentosUtilizados = medicamentosUtilizados;
+        this.anotacoes = anotacoes;
+    }
+
+    public Integer getCodPaciente() { return codPaciente; }
+
+    public String getHistorico() {
+        return historico;
+    }
+
+    public void setHistorico(String historico) {
+        this.historico = historico;
+    }
+
+    public String[] getAlergias() {
+        return alergias;
+    }
+
+    public void setAlergias(String[] alergias) {
+        this.alergias = alergias;
+    }
+
+    public String[] getMedicamentosUtilizados() {
+        return medicamentosUtilizados;
+    }
+
+    public void setMedicamentosUtilizados(String[] medicamentosUtilizados) { this.medicamentosUtilizados = medicamentosUtilizados; }
+
+    public String getAnotacoes() {
+        return anotacoes;
+    }
+
+    public void setAnotacoes(String anotacoes) {
+        this.anotacoes = anotacoes;
+    }
+
+    @Override
+    public String toString() {
+        return "Paciente{" +
+                "codPaciente=" + codPaciente +
+                ", historico='" + historico + '\'' +
+                ", alergias=" + Arrays.toString(alergias) +
+                ", medicamentosUtilizados=" + Arrays.toString(medicamentosUtilizados) +
+                ", anotacoes='" + anotacoes + '\'' +
+                "} " + super.toString();
+    }
 }
