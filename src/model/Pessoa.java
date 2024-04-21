@@ -13,8 +13,9 @@ public abstract class Pessoa {
     protected String telefone;
     protected String celular;
     protected String email;
+    protected Endereco endereco;
 
-    public Pessoa(String cpf, String nome, String sobrenome, Sexo sexo, Date data_nascimento, String telefone, String celular, String email) {
+    public Pessoa(String cpf, String nome, String sobrenome, Sexo sexo, Date data_nascimento, String telefone, String celular, String email, Endereco endereco) {
         this.cpf = cpf;
         this.nome = nome;
         this.sobrenome = sobrenome;
@@ -23,9 +24,10 @@ public abstract class Pessoa {
         this.telefone = telefone;
         this.celular = celular;
         this.email = email;
+        this.endereco = endereco;
     }
 
-    public Pessoa(String cpf, String nome, String sobrenome, Sexo sexo, Date data_nascimento, String celular, String email) {
+    public Pessoa(String cpf, String nome, String sobrenome, Sexo sexo, Date data_nascimento, String celular, String email, Endereco endereco) {
         this.cpf = cpf;
         this.nome = nome;
         this.sobrenome = sobrenome;
@@ -33,6 +35,7 @@ public abstract class Pessoa {
         this.dataNascimento = data_nascimento;
         this.celular = celular;
         this.email = email;
+        this.endereco = endereco;
     }
 
     public String getCpf() {
@@ -60,14 +63,6 @@ public abstract class Pessoa {
         this.sexo = sexo;
     }
 
-    public Date getData_nascimento() {
-        return dataNascimento;
-    }
-
-    public void setData_nascimento(Date data_nascimento) {
-        this.dataNascimento = data_nascimento;
-    }
-
     public String getTelefone() {
         return telefone;
     }
@@ -92,6 +87,22 @@ public abstract class Pessoa {
         this.email = email;
     }
 
+    public Date getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(Date dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
     @Override
     public String toString() {
         return "Pessoa{" +
@@ -103,6 +114,7 @@ public abstract class Pessoa {
                 ", telefone='" + telefone + '\'' +
                 ", celular='" + celular + '\'' +
                 ", email='" + email + '\'' +
+                ", endereco=" + endereco +
                 '}';
     }
 }

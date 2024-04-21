@@ -3,23 +3,23 @@ package model.exames;
 import model.Exame;
 
 public class Eletrocardiograma extends Exame {
-    private String ritmo;
+    private String ritmoCardiaco;
     private Integer funcaoCardiaca;
     private String conclusoes;
 
-    public Eletrocardiograma(Integer codExame, String codDiagnostico, Double peso, Double altura, String nomeSolicitante, String convenio, String ritmo, Integer funcaoCardiaca, String conclusoes) {
+    public Eletrocardiograma(Integer codExame, String codDiagnostico, Double peso, Double altura, String nomeSolicitante, String convenio, String ritmoCardiaco, Integer funcaoCardiaca, String conclusoes) {
         super(codExame, codDiagnostico, peso, altura, nomeSolicitante, convenio);
-        this.ritmo = ritmo;
+        this.ritmoCardiaco = ritmoCardiaco;
         this.funcaoCardiaca = funcaoCardiaca;
         this.conclusoes=conclusoes;
     }
 
-    public String getRitmo() {
-        return ritmo;
+    public String getRitmoCardiaco() {
+        return ritmoCardiaco;
     }
 
-    public void setRitmo(String ritmo) {
-        this.ritmo = ritmo;
+    public void setRitmoCardiaco(String ritmoCardiaco) {
+        this.ritmoCardiaco = ritmoCardiaco;
     }
 
     public Integer getFuncaoCardiaca() {
@@ -41,7 +41,7 @@ public class Eletrocardiograma extends Exame {
     @Override
     public String toString() {
         return "Eletrocardiograma{" +
-                "ritmo='" + ritmo + '\'' +
+                "ritmoCardiaco='" + ritmoCardiaco + '\'' +
                 ", funcaoCardiaca=" + funcaoCardiaca +
                 ", conclusoes='" + conclusoes +
                 "} " + super.toString();

@@ -13,7 +13,9 @@ public class Ecocardiograma extends Exame {
     private Double fraccaoEncurtamento;
     private Double fraccaoEjecao;
 
-    public Ecocardiograma(Integer codExame, String codDiagnostico, Double peso, Double altura, String nomeSolicitante, String convenio, Integer raizAorta, Integer atrioEsquerdo, Integer ventriculoDir, Integer ventriculoEsqSis, Integer ventriculoEsqDias, Integer ventriculoEsqParede, Integer septoIntra, Double fraccaoEncurtamento, Double fraccaoEjecao) {
+    public Ecocardiograma(Integer codExame, String codDiagnostico, Double peso, Double altura, String nomeSolicitante, String convenio, Integer raizAorta,
+                          Integer atrioEsquerdo, Integer ventriculoDir, Integer ventriculoEsqSis, Integer ventriculoEsqDias, Integer ventriculoEsqParede,
+                          Integer septoIntra, Double fraccaoEncurtamento, Double fraccaoEjecao) {
         super(codExame, codDiagnostico, peso, altura, nomeSolicitante, convenio);
         this.raizAorta = raizAorta;
         this.atrioEsquerdo = atrioEsquerdo;
