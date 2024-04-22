@@ -15,6 +15,8 @@ public class EntregaExame {
         this.dataRetirada = LocalDateTime.now();
     }
 
+    public EntregaExame(){}
+
     public Integer getCodExame() {
         return codExame;
     }

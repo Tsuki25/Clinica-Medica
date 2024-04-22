@@ -25,6 +25,8 @@ public class Agendamento {
         this.dataCriacao = LocalDateTime.now();
     }
 
+    public Agendamento(){}
+
     public Integer getCodPaciente() {
         return codPaciente;
     }

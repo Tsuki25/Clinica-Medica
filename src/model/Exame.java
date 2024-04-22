@@ -13,7 +13,7 @@ public class Exame {
         mapDiagnostico.put("OUTROS", "texto padrão, outros");
     }
 
-    protected final Integer codExame;
+    protected Integer codExame;
     protected String diagnostico;
     protected Double peso;
     protected Double altura;
@@ -30,6 +30,8 @@ public class Exame {
         this.convenio = convenio;
     }
 
+    public Exame(){}
+
     public Integer getCodResponsavel() {
         return codResponsavel;
     }
@@ -40,6 +42,10 @@ public class Exame {
 
     public Integer getCodExame() {
         return codExame;
+    }
+
+    public void setCodExame(Integer codExame) {
+        this.codExame = codExame;
     }
 
     public String getDiagnostico() {

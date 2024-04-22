@@ -6,14 +6,14 @@ import java.util.Arrays;
 import java.util.Date;
 
 public class Paciente extends Pessoa{
-    private final Integer codPaciente;
+    private Integer codPaciente;
     private String historico;
     private String[] alergias;
     private String[] medicamentosUtilizados;
     private String anotacoes;
 
-    public Paciente(String cpf, String nome, String sobrenome, Sexo sexo, Date data_nascimento, String telefone, String celular, String email, Integer codPaciente, String historico, String[] alergias, String[] medicamentosUtilizados, String anotacoes) {
-        super(cpf, nome, sobrenome, sexo, data_nascimento, telefone, celular, email);
+    public Paciente(String cpf, String nome, String sobrenome, Sexo sexo, Date data_nascimento, String telefone, String celular, String email, Endereco endereco, Integer codPaciente, String historico, String[] alergias, String[] medicamentosUtilizados, String anotacoes) {
+        super(cpf, nome, sobrenome, sexo, data_nascimento, telefone, celular, email, endereco);
         this.codPaciente = codPaciente;
         this.historico = historico;
         this.alergias = alergias;
@@ -21,16 +21,22 @@ public class Paciente extends Pessoa{
         this.anotacoes = anotacoes;
     }
 
-    public Paciente(String cpf, String nome, String sobrenome, Sexo sexo, Date data_nascimento, String celular, String email, Integer codPaciente, String historico, String[] alergias, String[] medicamentosUtilizados, String anotacoes) {
-        super(cpf, nome, sobrenome, sexo, data_nascimento, celular, email);
+    public Paciente(String cpf, String nome, String sobrenome, Sexo sexo, Date data_nascimento, String celular, String email, Endereco endereco, Integer codPaciente, String historico, String[] alergias, String[] medicamentosUtilizados, String anotacoes) {
+        super(cpf, nome, sobrenome, sexo, data_nascimento, celular, email, endereco);
         this.codPaciente = codPaciente;
         this.historico = historico;
         this.alergias = alergias;
         this.medicamentosUtilizados = medicamentosUtilizados;
         this.anotacoes = anotacoes;
     }
+
+    public Paciente(){}
 
     public Integer getCodPaciente() { return codPaciente; }
+
+    public void setCodPaciente(Integer codPaciente) {
+        this.codPaciente = codPaciente;
+    }
 
     public String getHistorico() {
         return historico;
