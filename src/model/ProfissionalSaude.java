@@ -2,17 +2,18 @@ package model;
 
 import model.enums.Sexo;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class ProfissionalSaude extends Funcionario {
     protected String numeroCarteira;
 
-    public ProfissionalSaude(String cpf, String nome, String sobrenome, Sexo sexo, Date dataNascimento, String telefone, String celular, String email, Endereco endereco, Integer codFuncionario, String password, String numeroCarteira) {
+    public ProfissionalSaude(String cpf, String nome, String sobrenome, Sexo sexo, LocalDate dataNascimento, String telefone, String celular, String email, Endereco endereco, Integer codFuncionario, String password, String numeroCarteira) {
         super(cpf, nome, sobrenome, sexo, dataNascimento, telefone, celular, email, endereco, codFuncionario, password);
         this.numeroCarteira = numeroCarteira;
     }
 
-    public ProfissionalSaude(String cpf, String nome, String sobrenome, Sexo sexo, Date dataNascimento, String celular, String email, Endereco endereco, Integer codFuncionario, String password, String numeroCarteira) {
+    public ProfissionalSaude(String cpf, String nome, String sobrenome, Sexo sexo, LocalDate dataNascimento, String celular, String email, Endereco endereco, Integer codFuncionario, String password, String numeroCarteira) {
         super(cpf, nome, sobrenome, sexo, dataNascimento, celular, email, endereco, codFuncionario, password);
         this.numeroCarteira = numeroCarteira;
     }
@@ -27,8 +28,19 @@ public class ProfissionalSaude extends Funcionario {
 
     @Override
     public String toString() {
-        return "FuncionarioSaude{" +
+        return "ProfissionalSaude{" +
                 "numeroCarteira='" + numeroCarteira + '\'' +
-                "} " + super.toString();
+                ", codFuncionario=" + codFuncionario +
+                ", password='" + password + '\'' +
+                ", cpf='" + cpf + '\'' +
+                ", nome='" + nome + '\'' +
+                ", sobrenome='" + sobrenome + '\'' +
+                ", sexo=" + sexo +
+                ", dataNascimento=" + dataNascimento +
+                ", telefone='" + telefone + '\'' +
+                ", celular='" + celular + '\'' +
+                ", email='" + email + '\'' +
+                ", endereco=" + endereco +
+                '}';
     }
 }

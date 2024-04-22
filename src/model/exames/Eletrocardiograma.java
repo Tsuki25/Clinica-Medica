@@ -14,6 +14,8 @@ public class Eletrocardiograma extends Exame {
         this.conclusoes=conclusoes;
     }
 
+    public Eletrocardiograma(){}
+
     public String getRitmoCardiaco() {
         return ritmoCardiaco;
     }
@@ -43,7 +45,14 @@ public class Eletrocardiograma extends Exame {
         return "Eletrocardiograma{" +
                 "ritmoCardiaco='" + ritmoCardiaco + '\'' +
                 ", funcaoCardiaca=" + funcaoCardiaca +
-                ", conclusoes='" + conclusoes +
-                "} " + super.toString();
+                ", conclusoes='" + conclusoes + '\'' +
+                ", codExame=" + codExame +
+                ", diagnostico='" + diagnostico + '\'' +
+                ", peso=" + peso +
+                ", altura=" + altura +
+                ", nomeSolicitante='" + nomeSolicitante + '\'' +
+                ", convenio='" + convenio + '\'' +
+                ", codResponsavel=" + codResponsavel +
+                '}';
     }
 }

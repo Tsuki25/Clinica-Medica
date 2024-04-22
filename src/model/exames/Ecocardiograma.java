@@ -28,6 +28,8 @@ public class Ecocardiograma extends Exame {
         this.fraccaoEjecao = fraccaoEjecao;
     }
 
+    public Ecocardiograma(){}
+
     public Integer getRaizAorta() {
         return raizAorta;
     }
@@ -112,6 +114,13 @@ public class Ecocardiograma extends Exame {
                 ", septoIntra=" + septoIntra +
                 ", fraccaoEncurtamento=" + fraccaoEncurtamento +
                 ", fraccaoEjecao=" + fraccaoEjecao +
-                "} " + super.toString();
+                ", codExame=" + codExame +
+                ", diagnostico='" + diagnostico + '\'' +
+                ", peso=" + peso +
+                ", altura=" + altura +
+                ", nomeSolicitante='" + nomeSolicitante + '\'' +
+                ", convenio='" + convenio + '\'' +
+                ", codResponsavel=" + codResponsavel +
+                '}';
     }
 }

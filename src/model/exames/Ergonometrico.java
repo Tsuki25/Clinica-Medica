@@ -14,6 +14,8 @@ public class Ergonometrico extends Exame {
         this.observacoes = observacoes;
     }
 
+    public Ergonometrico(){}
+
     public boolean isMarcapasso() {
         return marcapasso;
     }
@@ -44,6 +46,13 @@ public class Ergonometrico extends Exame {
                 "marcapasso=" + marcapasso +
                 ", fumante=" + fumante +
                 ", observacoes='" + observacoes + '\'' +
-                "} " + super.toString();
+                ", codExame=" + codExame +
+                ", diagnostico='" + diagnostico + '\'' +
+                ", peso=" + peso +
+                ", altura=" + altura +
+                ", nomeSolicitante='" + nomeSolicitante + '\'' +
+                ", convenio='" + convenio + '\'' +
+                ", codResponsavel=" + codResponsavel +
+                '}';
     }
 }

@@ -1,15 +1,16 @@
 package model;
 
 public class Endereco {
-    private int cep;
+    private Integer codEnd;
+    private Integer cep;
     private String logradouro;
     private String bairro;
     private String cidade;
     private String estado;
-    private int numero;
+    private Integer numero;
     private String complemento;
 
-    public Endereco(int cep, String logradouro, String bairro, String cidade, String estado, int numero, String complemento) {
+    public Endereco(Integer codEnd, Integer cep, String logradouro, String bairro, String cidade, String estado, Integer numero, String complemento) {
         this.cep = cep;
         this.logradouro = logradouro;
         this.bairro = bairro;
@@ -21,17 +22,25 @@ public class Endereco {
 
     public Endereco(){}
 
-    public Endereco(int cep, int numero, String complemento) { // CASO SEJA POSSIVEL IMPLEMENTAR API DOS CORREIOS
+    public Endereco(Integer cep, Integer numero, String complemento) { // CASO SEJA POSSIVEL IMPLEMENTAR API DOS CORREIOS
         this.cep = cep;
         this.numero = numero;
         this.complemento = complemento;
     }
 
-    public int getCep() {
+    public Integer getCodEnd() {
+        return codEnd;
+    }
+
+    public void setCodEnd(Integer codEnd) {
+        this.codEnd = codEnd;
+    }
+
+    public Integer getCep() {
         return cep;
     }
 
-    public void setCep(int cep) {
+    public void setCep(Integer cep) {
         this.cep = cep;
     }
 
@@ -67,11 +76,11 @@ public class Endereco {
         this.estado = estado;
     }
 
-    public int getNumero() {
+    public Integer getNumero() {
         return numero;
     }
 
-    public void setNumero(int numero) {
+    public void setNumero(Integer numero) {
         this.numero = numero;
     }
 

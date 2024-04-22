@@ -27,6 +27,8 @@ public class Holter extends Exame {
         this.observacoes = observacoes;
     }
 
+    public Holter(){}
+
     public Integer getRitmoCardiaco() {
         return ritmoCardiaco;
     }
@@ -111,6 +113,13 @@ public class Holter extends Exame {
                 ", extrassistoles='" + extrassistoles + '\'' +
                 ", arritmias='" + arritmias + '\'' +
                 ", observacoes='" + observacoes + '\'' +
-                "} " + super.toString();
+                ", codExame=" + codExame +
+                ", diagnostico='" + diagnostico + '\'' +
+                ", peso=" + peso +
+                ", altura=" + altura +
+                ", nomeSolicitante='" + nomeSolicitante + '\'' +
+                ", convenio='" + convenio + '\'' +
+                ", codResponsavel=" + codResponsavel +
+                '}';
     }
 }

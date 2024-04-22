@@ -2,20 +2,20 @@ package model;
 
 import model.enums.Sexo;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public abstract class Pessoa {
     protected String cpf;
     protected String nome;
     protected String sobrenome;
     protected Sexo sexo;
-    protected Date dataNascimento;
+    protected LocalDate dataNascimento;
     protected String telefone;
     protected String celular;
     protected String email;
     protected Endereco endereco;
 
-    public Pessoa(String cpf, String nome, String sobrenome, Sexo sexo, Date data_nascimento, String telefone, String celular, String email, Endereco endereco) {
+    public Pessoa(String cpf, String nome, String sobrenome, Sexo sexo, LocalDate data_nascimento, String telefone, String celular, String email, Endereco endereco) {
         this.cpf = cpf;
         this.nome = nome;
         this.sobrenome = sobrenome;
@@ -27,7 +27,7 @@ public abstract class Pessoa {
         this.endereco = endereco;
     }
 
-    public Pessoa(String cpf, String nome, String sobrenome, Sexo sexo, Date data_nascimento, String celular, String email, Endereco endereco) {
+    public Pessoa(String cpf, String nome, String sobrenome, Sexo sexo, LocalDate data_nascimento, String celular, String email, Endereco endereco) {
         this.cpf = cpf;
         this.nome = nome;
         this.sobrenome = sobrenome;
@@ -94,11 +94,11 @@ public abstract class Pessoa {
         this.email = email;
     }
 
-    public Date getDataNascimento() {
+    public LocalDate getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(Date dataNascimento) {
+    public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
