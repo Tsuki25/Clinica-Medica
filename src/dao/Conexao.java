@@ -8,7 +8,8 @@ public class Conexao {
 
     public Conexao() {
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/clinica", "root", "ifsp");
+            //conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/clinica", "root", "ifsp");//FOR IFSP
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/clinica", "root", "");// FOR HOME
         } catch (SQLException e) {
             System.out.println("Erro na conexão com o banco!");
             e.printStackTrace();

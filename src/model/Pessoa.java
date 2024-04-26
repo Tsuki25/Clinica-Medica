@@ -51,8 +51,8 @@ public abstract class Pessoa {
         this.sobrenome = sobrenome;
     }
 
-    public Sexo getSexo() {
-        return sexo;
+    public String getSexo() {
+        return sexo.getDescricao();
     }
 
     public void setSexo(Sexo sexo) {

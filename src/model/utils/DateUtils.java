@@ -20,4 +20,14 @@ public class DateUtils {
 
         return LocalTime.parse(timeStr,formatter);
     }
+
+    public static String getStringFromDate(LocalDate date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return date.format(formatter);
+    }
+
+    public static String getStringFromTime(LocalTime horario) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        return horario.format(formatter);
+    }
 }
