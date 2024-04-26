@@ -8,11 +8,12 @@ import java.util.Arrays;
 public class Paciente extends Pessoa{
     private Integer codPaciente;
     private String historico;
-    private String[] alergias;
-    private String[] medicamentosUtilizados;
+    private String alergias;
+    private String medicamentosUtilizados;
     private String anotacoes;
 
-    public Paciente(String cpf, String nome, String sobrenome, Sexo sexo, LocalDate data_nascimento, String telefone, String celular, String email, Endereco endereco, Integer codPaciente, String historico, String[] alergias, String[] medicamentosUtilizados, String anotacoes) {
+    public Paciente(String cpf, String nome, String sobrenome, Sexo sexo, LocalDate data_nascimento, String telefone, String celular, String email, Endereco endereco, Integer codPaciente,
+                    String historico, String alergias, String medicamentosUtilizados, String anotacoes) {
         super(cpf, nome, sobrenome, sexo, data_nascimento, telefone, celular, email, endereco);
         this.codPaciente = codPaciente;
         this.historico = historico;
@@ -21,9 +22,9 @@ public class Paciente extends Pessoa{
         this.anotacoes = anotacoes;
     }
 
-    public Paciente(String cpf, String nome, String sobrenome, Sexo sexo, LocalDate data_nascimento, String celular, String email, Endereco endereco, Integer codPaciente, String historico, String[] alergias, String[] medicamentosUtilizados, String anotacoes) {
-        super(cpf, nome, sobrenome, sexo, data_nascimento, celular, email, endereco);
-        this.codPaciente = codPaciente;
+    public Paciente(String cpf, String nome, String sobrenome, Sexo sexo, LocalDate data_nascimento, String telefone, String celular,  String email, Endereco endereco,
+                    String historico, String alergias, String medicamentosUtilizados, String anotacoes) {
+        super(cpf, nome, sobrenome, sexo, data_nascimento, telefone, celular, email, endereco);
         this.historico = historico;
         this.alergias = alergias;
         this.medicamentosUtilizados = medicamentosUtilizados;
@@ -46,19 +47,19 @@ public class Paciente extends Pessoa{
         this.historico = historico;
     }
 
-    public String[] getAlergias() {
+    public String getAlergias() {
         return alergias;
     }
 
-    public void setAlergias(String[] alergias) {
+    public void setAlergias(String alergias) {
         this.alergias = alergias;
     }
 
-    public String[] getMedicamentosUtilizados() {
+    public String getMedicamentosUtilizados() {
         return medicamentosUtilizados;
     }
 
-    public void setMedicamentosUtilizados(String[] medicamentosUtilizados) { this.medicamentosUtilizados = medicamentosUtilizados; }
+    public void setMedicamentosUtilizados(String medicamentosUtilizados) { this.medicamentosUtilizados = medicamentosUtilizados; }
 
     public String getAnotacoes() {
         return anotacoes;
@@ -72,10 +73,6 @@ public class Paciente extends Pessoa{
     public String toString() {
         return "Paciente{" +
                 "codPaciente=" + codPaciente +
-                ", historico='" + historico + '\'' +
-                ", alergias=" + Arrays.toString(alergias) +
-                ", medicamentosUtilizados=" + Arrays.toString(medicamentosUtilizados) +
-                ", anotacoes='" + anotacoes + '\'' +
                 ", cpf='" + cpf + '\'' +
                 ", nome='" + nome + '\'' +
                 ", sobrenome='" + sobrenome + '\'' +
@@ -85,6 +82,11 @@ public class Paciente extends Pessoa{
                 ", celular='" + celular + '\'' +
                 ", email='" + email + '\'' +
                 ", endereco=" + endereco +
+                ", historico='" + historico + '\'' +
+                ", alergias=" + alergias +
+                ", medicamentosUtilizados=" + medicamentosUtilizados +
+                ", anotacoes='" + anotacoes + '\'' +
+
                 '}';
     }
 }

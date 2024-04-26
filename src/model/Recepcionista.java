@@ -13,8 +13,8 @@ public class Recepcionista extends Funcionario{
         this.ramal = ramal;
     }
 
-    public Recepcionista(String cpf, String nome, String sobrenome, Sexo sexo, LocalDate dataNascimento, String celular, String email, Endereco endereco, Integer codFuncionario, String password, int ramal) {
-        super(cpf, nome, sobrenome, sexo, dataNascimento, celular, email, endereco, codFuncionario, password);
+    public Recepcionista(String cpf, String nome, String sobrenome, Sexo sexo, LocalDate dataNascimento, String telefone, String celular, String email, Endereco endereco, String password, int ramal) {
+        super(cpf, nome, sobrenome, sexo, dataNascimento, telefone, celular, email, endereco, password);
         this.ramal = ramal;
     }
 

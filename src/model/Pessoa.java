@@ -27,17 +27,6 @@ public abstract class Pessoa {
         this.endereco = endereco;
     }
 
-    public Pessoa(String cpf, String nome, String sobrenome, Sexo sexo, LocalDate data_nascimento, String celular, String email, Endereco endereco) {
-        this.cpf = cpf;
-        this.nome = nome;
-        this.sobrenome = sobrenome;
-        this.sexo = sexo;
-        this.dataNascimento = data_nascimento;
-        this.celular = celular;
-        this.email = email;
-        this.endereco = endereco;
-    }
-
     public Pessoa(){}
 
     public String getCpf() {

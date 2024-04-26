@@ -16,10 +16,8 @@ public class Funcionario extends Pessoa{
 
     }
 
-    public Funcionario(String cpf, String nome, String sobrenome, Sexo sexo, LocalDate dataNascimento, String celular, String email, Endereco endereco, Integer codFuncionario, String password) {
-        super(cpf, nome, sobrenome, sexo, dataNascimento, celular, email, endereco);
-        this.codFuncionario = codFuncionario;
-        this.password = password; // VOLTAR AQUI PARA CRIPTOGRAFAR
+    public Funcionario(String cpf, String nome, String sobrenome, Sexo sexo, LocalDate dataNascimento, String telefone, String celular, String email, Endereco endereco, String password) {
+        super(cpf, nome, sobrenome, sexo, dataNascimento, telefone,celular, email, endereco);
     }
 
     public Funcionario(){}
