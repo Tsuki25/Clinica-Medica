@@ -19,7 +19,6 @@ public class Endereco {
         this.numero = numero;
         this.complemento = complemento;
     }
-
     public Endereco(){}
 
     public Endereco(Integer cep, Integer numero, String complemento) { // CASO SEJA POSSIVEL IMPLEMENTAR API DOS CORREIOS
