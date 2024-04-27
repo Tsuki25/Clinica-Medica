@@ -8,7 +8,7 @@ public class Main {
 
     private void iniciarTela(){
         CadastroPacientePanel cadPacientePanel = new CadastroPacientePanel();
-        cadPacientePanel.setSize(500,800);
+        cadPacientePanel.setSize(500,850);
         cadPacientePanel.setVisible(true);
     }
 }

@@ -1,5 +1,11 @@
 package view;
 
+import control.EnderecoController;
+import control.PacienteController;
+import model.Endereco;
+import model.Paciente;
+import model.enums.Sexo;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 
@@ -29,13 +35,23 @@ public class CadastroPacientePanel extends JFrame {
     private JTextField tfCidade;
     private JTextField tfNumero;
     private JTextField tfComplemento;
+    private JTextField tfAlergia;
+    private JTextField tfMedicamentosUtilizados;
+    private JTextField tfAnotacoes;
+    private JTextField tfHistorico;
+
+    JFormattedTextField ftfDtNasc;
+
+    private JComboBox<Sexo> cbSexo;
+    private JComboBox<String> cbEstado;
+
+    JButton btnSalvar;
+    JButton btnLimpar;
 
     String[] siglas = {
             "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR",
             "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"
     };
-    private JTextField tfAlergia;
-    private JTextField tfMedicamentosUtilizados;
 
     /**
      * Create the panel.
@@ -89,20 +105,17 @@ public class CadastroPacientePanel extends JFrame {
         lbSexo.setBounds(20, 130, 33, 14);
         getContentPane().add(lbSexo);
 
-        JComboBox cbSexo = new JComboBox();
+        JComboBox<Sexo> cbSexo = new JComboBox<>(Sexo.values());
         lbSexo.setLabelFor(cbSexo);
         cbSexo.setBounds(63, 125, 117, 22);
         getContentPane().add(cbSexo);
-
-        cbSexo.addItem("MASCULINO");
-        cbSexo.addItem("FEMININO");
 
         JLabel lbDataNascimento = new JLabel("Data de Nascimento: ");
         lbDataNascimento.setFont(new Font("Bahnschrift", Font.BOLD, 12));
         lbDataNascimento.setBounds(215, 129, 117, 14);
         getContentPane().add(lbDataNascimento);
 
-        JFormattedTextField ftfDtNasc = new JFormattedTextField();
+        ftfDtNasc = new JFormattedTextField();
         lbDataNascimento.setLabelFor(ftfDtNasc);
         MaskFormatter maskFormatter;
         try {
@@ -239,7 +252,7 @@ public class CadastroPacientePanel extends JFrame {
         lbCidade.setBounds(20, 397, 54, 14);
         getContentPane().add(lbCidade);
 
-        JComboBox<String> cbEstado = new JComboBox<>(siglas);
+        cbEstado = new JComboBox<>(siglas);
         lbEstado.setLabelFor(cbEstado);
         cbEstado.setBounds(336, 336, 47, 22);
         getContentPane().add(cbEstado);
@@ -315,19 +328,211 @@ public class CadastroPacientePanel extends JFrame {
         lbAnotacoes.setBounds(20, 671, 141, 14);
         getContentPane().add(lbAnotacoes);
 
-        JTextPane txaHistorico = new JTextPane();
-        lbHistrico.setLabelFor(txaHistorico);
-        txaHistorico.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
-        txaHistorico.setBounds(20, 605, 450, 50);
-        txaHistorico.setBorder(border);
-        getContentPane().add(txaHistorico);
+        tfHistorico = new JTextField();
+        lbHistrico.setLabelFor(tfHistorico);
+        tfHistorico.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
+        tfHistorico.setBounds(20, 605, 450, 50);
+        tfHistorico.setBorder(border);
+        getContentPane().add(tfHistorico);
 
-        JTextPane txaAnotacoes = new JTextPane();
-        txaAnotacoes.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
-        txaAnotacoes.setBounds(20, 684, 450, 50);
-        txaAnotacoes.setBorder(border);
-        getContentPane().add(txaAnotacoes);
+        tfAnotacoes = new JTextField();
+        tfAnotacoes.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
+        tfAnotacoes.setBounds(20, 684, 450, 50);
+        tfAnotacoes.setBorder(border);
+        getContentPane().add(tfAnotacoes);
 
+        btnSalvar = new JButton("Salvar");
+        btnSalvar.setBackground(SystemColor.windowBorder);
+        btnSalvar.setForeground(SystemColor.desktop);
+        btnSalvar.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
+        btnSalvar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Endereco endereco;
+                EnderecoController enderecoController = new EnderecoController();
+                endereco = enderecoController.controlSalvar(CadastroPacientePanel.this);
+                PacienteController pacienteController = new PacienteController();
+                pacienteController.controlSalvar(CadastroPacientePanel.this, endereco);
+            }
+        });
 
+        btnSalvar.setBounds(372, 741, 98, 27);
+        getContentPane().add(btnSalvar);
+
+        btnLimpar = new JButton("Limpar");
+        btnLimpar.setForeground(SystemColor.desktop);
+        btnLimpar.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
+        btnLimpar.setBackground(SystemColor.windowBorder);
+        btnLimpar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                limparCampos();
+            }
+        });
+        btnLimpar.setBounds(258, 742, 98, 27);
+        getContentPane().add(btnLimpar);
     }
+
+    private void limparCampos() {
+        tfCpf.setText("");
+        tfNome.setText("");
+        tfSobrenome.setText("");
+        tfTelefone.setText("");
+        tfCelular.setText("");
+        tfEmail.setText("");
+        tfLogradouro.setText("");
+        tfCep.setText("");
+        tfBairro.setText("");
+        tfCidade.setText("");
+        tfNumero.setText("");
+        tfComplemento.setText("");
+        tfAlergia.setText("");
+        tfMedicamentosUtilizados.setText("");
+        tfAnotacoes.setText("");
+        tfHistorico.setText("");
+        ftfDtNasc.setText("");
+    }
+
+    public JTextField getTfCpf() {
+        return tfCpf;
+    }
+
+    public void setTfCpf(JTextField tfCpf) {
+        this.tfCpf = tfCpf;
+    }
+
+    public JTextField getTfNome() {
+        return tfNome;
+    }
+
+    public void setTfNome(JTextField tfNome) {
+        this.tfNome = tfNome;
+    }
+
+    public JTextField getTfSobrenome() {
+        return tfSobrenome;
+    }
+
+    public void setTfSobrenome(JTextField tfSobrenome) {
+        this.tfSobrenome = tfSobrenome;
+    }
+
+    public JTextField getTfTelefone() {
+        return tfTelefone;
+    }
+
+    public void setTfTelefone(JTextField tfTelefone) {
+        this.tfTelefone = tfTelefone;
+    }
+
+    public JTextField getTfCelular() {
+        return tfCelular;
+    }
+
+    public void setTfCelular(JTextField tfCelular) {
+        this.tfCelular = tfCelular;
+    }
+
+    public JTextField getTfEmail() {
+        return tfEmail;
+    }
+
+    public void setTfEmail(JTextField tfEmail) {
+        this.tfEmail = tfEmail;
+    }
+
+    public JTextField getTfLogradouro() {
+        return tfLogradouro;
+    }
+
+    public void setTfLogradouro(JTextField tfLogradouro) {
+        this.tfLogradouro = tfLogradouro;
+    }
+
+    public JTextField getTfCep() {
+        return tfCep;
+    }
+
+    public void setTfCep(JTextField tfCep) {
+        this.tfCep = tfCep;
+    }
+
+    public JTextField getTfBairro() {
+        return tfBairro;
+    }
+
+    public void setTfBairro(JTextField tfBairro) {
+        this.tfBairro = tfBairro;
+    }
+
+    public JTextField getTfCidade() {
+        return tfCidade;
+    }
+
+    public void setTfCidade(JTextField tfCidade) {
+        this.tfCidade = tfCidade;
+    }
+
+    public JTextField getTfNumero() {
+        return tfNumero;
+    }
+
+    public void setTfNumero(JTextField tfNumero) {
+        this.tfNumero = tfNumero;
+    }
+
+    public JTextField getTfComplemento() {
+        return tfComplemento;
+    }
+
+    public void setTfComplemento(JTextField tfComplemento) {
+        this.tfComplemento = tfComplemento;
+    }
+
+    public JTextField getTfAlergia() {
+        return tfAlergia;
+    }
+
+    public void setTfAlergia(JTextField tfAlergia) {
+        this.tfAlergia = tfAlergia;
+    }
+
+    public JTextField getTfMedicamentosUtilizados() {
+        return tfMedicamentosUtilizados;
+    }
+
+    public void setTfMedicamentosUtilizados(JTextField tfMedicamentosUtilizados) {
+        this.tfMedicamentosUtilizados = tfMedicamentosUtilizados;
+    }
+
+    public JTextField getTfAnotacoes() {
+        return tfAnotacoes;
+    }
+
+    public void setTfAnotacoes(JTextField tfAnotacoes) {
+        this.tfAnotacoes = tfAnotacoes;
+    }
+
+    public JTextField getTfHistorico() {
+        return tfHistorico;
+    }
+
+    public void setTfHistorico(JTextField tfHistorico) {
+        this.tfHistorico = tfHistorico;
+    }
+
+    public Sexo getCbSexo() {
+        return (Sexo) cbSexo.getSelectedItem();
+    }
+
+    public void setCbSexo(Sexo sexo) {
+        cbSexo.setSelectedItem(sexo);
+    }
+
+    public JComboBox<String> getCbEstado() {
+        return cbEstado;
+    }
+
+    public void setCbEstado(JComboBox<String> cbEstado) {
+        this.cbEstado = cbEstado;
+    }
+
 }

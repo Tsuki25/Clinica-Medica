@@ -1,26 +1,28 @@
 package control;
 
+import dao.EnderecoDao;
+import dao.PacienteDao;
 import model.Endereco;
 import model.Paciente;
 import model.enums.Sexo;
+import view.CadastroPacientePanel;
 
 import java.util.Date;
 import java.util.HashMap;
 
 public class EnderecoController {
-    HashMap listaEnderecos = new HashMap<>();// REPRESENTAÇÃO TEMPORARIA DO BANCO DE DADOS - APENAS PARA TESTE
-    public Object cadastrarEndereco(Integer cep, String logradouro, String bairro, String cidade, String estado, Integer numero, String complemento){
-        try{
-            if(cep == null || logradouro == null || bairro == null || cidade == null || estado == null || numero == null){
-                throw new NullPointerException("Um ou mais parâmetros são nulos.");
-            }
+    public Endereco controlSalvar(CadastroPacientePanel cadastroPanel) {
+        Endereco endereco = new Endereco();
+        endereco.setCep(Integer.parseInt(cadastroPanel.getTfCep().getText()));
+        endereco.setLogradouro(cadastroPanel.getTfLogradouro().getText());
+        endereco.setBairro(cadastroPanel.getTfBairro().getText());
+        endereco.setCidade(cadastroPanel.getTfCidade().getText());
+        endereco.setEstado((String) cadastroPanel.getCbEstado().getSelectedItem());
+        endereco.setNumero(Integer.parseInt(cadastroPanel.getTfNumero().getText()));
+        endereco.setComplemento(cadastroPanel.getTfComplemento().getText());
 
-            Endereco e = new Endereco(listaEnderecos.size()+1, cep, logradouro, bairro, cidade, estado, numero, complemento);
-            this.listaEnderecos.put(listaEnderecos.size()+1, e);
-            return e;
-
-        }catch(NullPointerException ne){
-            return ne.getMessage();
-        }
+        EnderecoDao enderecoDao = new EnderecoDao();
+        endereco = enderecoDao.salvar(endereco);
+        return endereco;
     }
 }
