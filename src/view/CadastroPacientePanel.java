@@ -105,7 +105,7 @@ public class CadastroPacientePanel extends JFrame {
         lbSexo.setBounds(20, 130, 33, 14);
         getContentPane().add(lbSexo);
 
-        JComboBox<Sexo> cbSexo = new JComboBox<>(Sexo.values());
+        cbSexo = new JComboBox<>(Sexo.values());
         lbSexo.setLabelFor(cbSexo);
         cbSexo.setBounds(63, 125, 117, 22);
         getContentPane().add(cbSexo);
@@ -535,4 +535,11 @@ public class CadastroPacientePanel extends JFrame {
         this.cbEstado = cbEstado;
     }
 
+    public JFormattedTextField getFtfDtNasc() {
+        return ftfDtNasc;
+    }
+
+    public void setFtfDtNasc(JFormattedTextField ftfDtNasc) {
+        this.ftfDtNasc = ftfDtNasc;
+    }
 }
