@@ -1,5 +1,7 @@
+import view.CadastroFrame;
 import view.CadastroPacientePanel;
-import view.CadastroPacienteView;
+
+import java.awt.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -7,8 +9,16 @@ public class Main {
     }
 
     private void iniciarTela(){
-        CadastroPacientePanel cadPacientePanel = new CadastroPacientePanel();
-        cadPacientePanel.setSize(500,850);
-        cadPacientePanel.setVisible(true);
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    CadastroFrame cadastroFrame = new CadastroFrame();
+                    cadastroFrame.setSize(1000,1000);
+                    cadastroFrame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }

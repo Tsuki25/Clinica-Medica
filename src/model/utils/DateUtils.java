@@ -10,8 +10,9 @@ public class DateUtils {
 
     public static LocalDate getDateFromString(String dataStr){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate data = LocalDate.parse(dataStr);
 
-        return LocalDate.parse(dataStr, formatter);
+        return LocalDate.parse(data.format(formatter), formatter);
     }
 
     public static LocalTime getTimeFromString(String timeStr){
@@ -30,4 +31,5 @@ public class DateUtils {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         return horario.format(formatter);
     }
+
 }

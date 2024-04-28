@@ -1,8 +1,8 @@
 package model.enums;
 
 public enum Sexo {
-    MASCULINO("masculino"),
-    FEMININO("feminino");
+    MASCULINO("Masculino"),
+    FEMININO("Feminino");
     //NID("Não identificado");
 
     private String descricao;

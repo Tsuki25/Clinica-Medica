@@ -1,10 +1,15 @@
 package dao;
 
 import model.Endereco;
+import model.Paciente;
+import model.enums.Sexo;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+
+import static model.utils.DateUtils.getDateFromString;
 
 public class EnderecoDao {
     public Endereco salvar(Endereco endereco) {
@@ -29,6 +34,50 @@ public class EnderecoDao {
             }
             stmt.close();
             return endereco;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void excluirEndereco(Integer codEnd){
+        Conexao conexao = new Conexao();
+        String sql = "DELETE FROM endereco WHERE codEnd = ?";
+        try {
+            PreparedStatement stmt = conexao.getConn().prepareStatement(sql);
+            stmt.setString(1, codEnd.toString());
+
+            stmt.execute();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ArrayList<Endereco> listarEndereco() {
+        Conexao conexao = new Conexao();
+        PreparedStatement stmt;
+        ArrayList<Endereco> enderecos;
+
+        try {
+            stmt = conexao.getConn().prepareStatement("select * from endereco");
+
+            ResultSet rs = stmt.executeQuery();
+            enderecos = new ArrayList<Endereco>();
+            while (rs.next()) {
+                Endereco endereco = new Endereco();
+                endereco.setCep(rs.getInt("cep"));
+                endereco.setLogradouro(rs.getString("logradouro"));
+                endereco.setBairro(rs.getString("bairro"));
+                endereco.setEstado(rs.getString("estado"));
+                endereco.setNumero(rs.getInt("numero"));
+                endereco.setComplemento(rs.getString("complemento"));
+            }
+
+            rs.close();
+            stmt.close();
+            return enderecos;
+
         } catch (SQLException e) {
             e.printStackTrace();
             return null;

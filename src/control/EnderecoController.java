@@ -25,4 +25,9 @@ public class EnderecoController {
         endereco = enderecoDao.salvar(endereco);
         return endereco;
     }
+
+    public void controlExcluirEnd(Endereco endereco){
+        EnderecoDao enderecoDao = new EnderecoDao();
+        enderecoDao.excluirEndereco(endereco.getCodEnd());
+    }
 }

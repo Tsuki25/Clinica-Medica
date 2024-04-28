@@ -55,6 +55,10 @@ public abstract class Pessoa {
         return sexo.getDescricao();
     }
 
+    public Sexo getSexoObj() {
+        return sexo;
+    }
+
     public void setSexo(Sexo sexo) {
         this.sexo = sexo;
     }

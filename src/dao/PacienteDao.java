@@ -1,9 +1,13 @@
 package dao;
 
+import control.EnderecoController;
 import model.Paciente;
+import model.enums.Sexo;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import static model.utils.DateUtils.*;
 
@@ -32,7 +36,53 @@ public class PacienteDao {
             stmt.execute();
             stmt.close();
         } catch (SQLException e) {
+            EnderecoController end = new EnderecoController();
+            end.controlExcluirEnd(paciente.getEndereco());
             e.printStackTrace();
+        } catch (Exception ex) {
+            EnderecoController end = new EnderecoController();
+            end.controlExcluirEnd(paciente.getEndereco());
+            ex.printStackTrace();
         }
+    }
+
+    public ArrayList<Paciente> listarPacientes() {
+        Conexao conexao = new Conexao();
+        PreparedStatement stmt;
+        ArrayList<Paciente> pacientes;
+
+        try {
+            stmt = conexao.getConn().prepareStatement("select * from paciente");
+
+            ResultSet rs = stmt.executeQuery();
+            pacientes = new ArrayList<Paciente>();
+            while (rs.next()) {
+                Paciente paciente = new Paciente();
+                paciente.setCodPaciente(rs.getInt("codPaciente"));
+                paciente.setCpf(rs.getString("cpf"));
+                paciente.setNome(rs.getString("nome"));
+                paciente.setSobrenome(rs.getString("sobrenome"));
+                paciente.setDataNascimento(getDateFromString(rs.getString("dataNascimento")));
+                paciente.setTelefone(rs.getString("telefone"));
+                paciente.setCelular(rs.getString("celular"));
+                paciente.setEmail(rs.getString("email"));
+                paciente.setSexo(Sexo.valueOf(rs.getString("sexo").toUpperCase()));
+                paciente.setHistorico(rs.getString("historico"));
+                paciente.setAlergias(rs.getString("alergias"));
+                paciente.setMedicamentosUtilizados(rs.getString("medicamentosUtilizados"));
+                paciente.setAnotacoes(rs.getString("anotacoes"));
+                pacientes.add(paciente);
+            }
+
+            rs.close();
+            stmt.close();
+            return pacientes;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+
     }
 }
