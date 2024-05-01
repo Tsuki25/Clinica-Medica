@@ -12,13 +12,20 @@ public class ListaPacientesPanel extends JPanel {
     private JTable table;
 
     public ListaPacientesPanel() {
+        setLayout(null);
         JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setPreferredSize(new Dimension(1600, 1600));
+        scrollPane.setBounds(0, 0, 790, 820);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         add(scrollPane);
 
         DefaultTableModel tableModel = createTableModel();
         table = new JTable(tableModel);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setFillsViewportHeight(true);
+        table.setCellSelectionEnabled(true);
         scrollPane.setViewportView(table);
+
 
         // Atualiza a tabela com os dados dos pacientes
         updateTableData();
@@ -88,8 +95,4 @@ public class ListaPacientesPanel extends JPanel {
         }
     }
 
-    public void addNewRow(Object[] valores) {
-        DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
-        tableModel.addRow(valores);
-    }
 }

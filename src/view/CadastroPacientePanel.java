@@ -57,8 +57,6 @@ public class CadastroPacientePanel extends JPanel {
      * Create the panel.
      */
     public CadastroPacientePanel() {
-        Border border = BorderFactory.createLineBorder(Color.GRAY);
-
         setBackground(SystemColor.activeCaptionBorder);
         setLayout(null);
 
@@ -71,7 +69,6 @@ public class CadastroPacientePanel extends JPanel {
         lbCpf.setLabelFor(tfCpf);
         tfCpf.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
         tfCpf.setBounds(63, 22, 117, 20);
-        tfCpf.setBorder(border);
         add(tfCpf);
         tfCpf.setColumns(10);
 
@@ -84,7 +81,6 @@ public class CadastroPacientePanel extends JPanel {
         tfNome = new JTextField();
         tfNome.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
         tfNome.setColumns(10);
-        tfNome.setBorder(border);
         tfNome.setBounds(63, 97, 117, 20);
         add(tfNome);
 
@@ -96,7 +92,6 @@ public class CadastroPacientePanel extends JPanel {
         tfSobrenome = new JTextField();
         tfSobrenome.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
         tfSobrenome.setColumns(10);
-        tfSobrenome.setBorder(border);
         tfSobrenome.setBounds(290, 97, 180, 20);
         add(tfSobrenome);
 
@@ -126,12 +121,10 @@ public class CadastroPacientePanel extends JPanel {
         }
         ftfDtNasc.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
         ftfDtNasc.setBounds(336, 126, 134, 20);
-        ftfDtNasc.setBorder(border);
         add(ftfDtNasc);
 
         tfTelefone = new JTextField();
         tfTelefone.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
-        tfTelefone.setBorder(border);
         tfTelefone.setColumns(10);
         tfTelefone.setBounds(272, 198, 198, 20);
         add(tfTelefone);
@@ -149,7 +142,6 @@ public class CadastroPacientePanel extends JPanel {
 
         tfCelular = new JTextField();
         tfCelular.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
-        tfCelular.setBorder(border);
         tfCelular.setColumns(10);
         tfCelular.setBounds(69, 198, 111, 20);
         add(tfCelular);
@@ -175,7 +167,6 @@ public class CadastroPacientePanel extends JPanel {
 
         tfEmail = new JTextField();
         tfEmail.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
-        tfEmail.setBorder(border);
         tfEmail.setColumns(10);
         tfEmail.setBounds(258, 229, 212, 20);
         add(tfEmail);
@@ -198,7 +189,6 @@ public class CadastroPacientePanel extends JPanel {
 
         tfLogradouro = new JTextField();
         tfLogradouro.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
-        tfLogradouro.setBorder(border);
         tfLogradouro.setColumns(10);
         tfLogradouro.setBounds(95, 338, 174, 20);
         add(tfLogradouro);
@@ -216,14 +206,12 @@ public class CadastroPacientePanel extends JPanel {
         tfCep = new JTextField();
         lbCep.setLabelFor(tfCep);
         tfCep.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
-        tfCep.setBorder(border);
         tfCep.setColumns(10);
         tfCep.setBounds(51, 300, 72, 20);
         add(tfCep);
 
         tfBairro = new JTextField();
         tfBairro.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
-        tfBairro.setBorder(border);
         tfBairro.setColumns(10);
         tfBairro.setBounds(63, 366, 206, 20);
         add(tfBairro);
@@ -241,7 +229,6 @@ public class CadastroPacientePanel extends JPanel {
 
         tfCidade = new JTextField();
         tfCidade.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
-        tfCidade.setBorder(border);
         tfCidade.setColumns(10);
         tfCidade.setBounds(63, 394, 206, 20);
         add(tfCidade);
@@ -264,14 +251,12 @@ public class CadastroPacientePanel extends JPanel {
 
         tfNumero = new JTextField();
         tfNumero.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
-        tfNumero.setBorder(border);
         tfNumero.setColumns(10);
         tfNumero.setBounds(346, 365, 37, 20);
         add(tfNumero);
 
         tfComplemento = new JTextField();
         tfComplemento.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
-        tfComplemento.setBorder(border);
         tfComplemento.setColumns(10);
         tfComplemento.setBounds(105, 422, 164, 20);
         add(tfComplemento);
@@ -300,7 +285,6 @@ public class CadastroPacientePanel extends JPanel {
         tfAlergia = new JTextField();
         lbAlergias.setLabelFor(tfAlergia);
         tfAlergia.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
-        tfAlergia.setBorder(border);
         tfAlergia.setColumns(10);
         tfAlergia.setBounds(74, 507, 396, 22);
         add(tfAlergia);
@@ -313,7 +297,6 @@ public class CadastroPacientePanel extends JPanel {
         tfMedicamentosUtilizados = new JTextField();
         lbMedicamentoUtilizados.setLabelFor(tfMedicamentosUtilizados);
         tfMedicamentosUtilizados.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
-        tfAlergia.setBorder(border);
         tfMedicamentosUtilizados.setColumns(10);
         tfMedicamentosUtilizados.setBounds(160, 540, 310, 40);
         add(tfMedicamentosUtilizados);
@@ -332,16 +315,15 @@ public class CadastroPacientePanel extends JPanel {
         lbHistrico.setLabelFor(tfHistorico);
         tfHistorico.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
         tfHistorico.setBounds(20, 605, 450, 50);
-        tfHistorico.setBorder(border);
         add(tfHistorico);
 
         tfAnotacoes = new JTextField();
         tfAnotacoes.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
         tfAnotacoes.setBounds(20, 684, 450, 50);
-        tfAnotacoes.setBorder(border);
         add(tfAnotacoes);
 
-        btnSalvar = new JButton("Salvar");
+        btnSalvar = new JButton();
+        btnSalvar.setIcon(new ImageIcon(getClass().getResource("/view/icons/salvar-arquivo.png")));
         btnSalvar.setBackground(SystemColor.windowBorder);
         btnSalvar.setForeground(SystemColor.desktop);
         btnSalvar.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
@@ -354,11 +336,11 @@ public class CadastroPacientePanel extends JPanel {
                 pacienteController.controlSalvar(CadastroPacientePanel.this, endereco);
             }
         });
-
-        btnSalvar.setBounds(372, 741, 98, 27);
+        btnSalvar.setBounds(372, 741, 38, 38);
         add(btnSalvar);
 
-        btnLimpar = new JButton("Limpar");
+        btnLimpar = new JButton();
+        btnLimpar.setIcon(new ImageIcon(getClass().getResource("/view/icons/limpar.png")));
         btnLimpar.setForeground(SystemColor.desktop);
         btnLimpar.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
         btnLimpar.setBackground(SystemColor.windowBorder);
@@ -367,8 +349,16 @@ public class CadastroPacientePanel extends JPanel {
                 limparCampos();
             }
         });
-        btnLimpar.setBounds(258, 742, 98, 27);
+        btnLimpar.setBounds(324, 742, 38, 38);
         add(btnLimpar);
+
+        JButton btnBusca = new JButton();
+        btnBusca.setIcon(new ImageIcon(getClass().getResource("/view/icons/lupa.png")));
+        btnBusca.setForeground(SystemColor.desktop);
+        btnBusca.setFont(new Font("Bahnschrift", Font.PLAIN, 5));
+        btnBusca.setBackground(SystemColor.windowBorder);
+        btnBusca.setBounds(276, 742, 38, 38);
+        add(btnBusca);
     }
 
     private void limparCampos() {
