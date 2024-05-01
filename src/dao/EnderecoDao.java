@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-import static model.utils.DateUtils.getDateFromString;
+import static model.utils.DateUtils.getDateFromString2;
 
 public class EnderecoDao {
     public Endereco salvar(Endereco endereco) {
@@ -69,9 +69,11 @@ public class EnderecoDao {
                 endereco.setCep(rs.getInt("cep"));
                 endereco.setLogradouro(rs.getString("logradouro"));
                 endereco.setBairro(rs.getString("bairro"));
+                endereco.setCidade(rs.getString("cidade"));
                 endereco.setEstado(rs.getString("estado"));
                 endereco.setNumero(rs.getInt("numero"));
                 endereco.setComplemento(rs.getString("complemento"));
+                enderecos.add(endereco);
             }
 
             rs.close();

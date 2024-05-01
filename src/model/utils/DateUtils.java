@@ -8,7 +8,13 @@ import java.util.Date;
 public class DateUtils {
 
 
-    public static LocalDate getDateFromString(String dataStr){
+    public static LocalDate getDateFromString1(String dataStr){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        return LocalDate.parse(dataStr, formatter);
+    }
+
+    public static LocalDate getDateFromString2(String dataStr){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate data = LocalDate.parse(dataStr);
 

@@ -13,18 +13,19 @@ public class ListaPacientesPanel extends JPanel {
 
     public ListaPacientesPanel() {
         JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setPreferredSize(new Dimension(950, 950));
+        scrollPane.setPreferredSize(new Dimension(1600, 1600));
         add(scrollPane);
 
-        table = new JTable();
-        table.setModel(getDataColumns());
+        DefaultTableModel tableModel = createTableModel();
+        table = new JTable(tableModel);
         scrollPane.setViewportView(table);
 
+        // Atualiza a tabela com os dados dos pacientes
+        updateTableData();
     }
-    private DefaultTableModel getDataColumns() {
-        DefaultTableModel tableModel = new DefaultTableModel();
 
-        // Adicionando as colunas à tabela
+    private DefaultTableModel createTableModel() {
+        DefaultTableModel tableModel = new DefaultTableModel();
         tableModel.addColumn("Cod. Paciente");
         tableModel.addColumn("CPF");
         tableModel.addColumn("Nome");
@@ -45,42 +46,50 @@ public class ListaPacientesPanel extends JPanel {
         tableModel.addColumn("Alergias");
         tableModel.addColumn("Medicamentos");
         tableModel.addColumn("Anotações");
-
-        // Populando a tabela com os dados dos pacientes e endereços
-        PacienteController pc = new PacienteController();
-        ArrayList<Object[]> resposta = pc.controlListarPacientes();
-
-        for (Object[] dados : resposta) {
-            Paciente paciente = (Paciente) dados[0];
-            Endereco endereco = (Endereco) dados[1];
-
-            tableModel.addRow(new Object[] {
-                    paciente.getCodPaciente(),
-                    paciente.getCpf(),
-                    paciente.getNome(),
-                    paciente.getSobrenome(),
-                    paciente.getSexo(),
-                    paciente.getDataNascimento(),
-                    paciente.getTelefone(),
-                    paciente.getCelular(),
-                    paciente.getEmail(),
-                    endereco.getCep(),
-                    endereco.getLogradouro(),
-                    endereco.getBairro(),
-                    endereco.getCidade(),
-                    endereco.getEstado(),
-                    endereco.getNumero(),
-                    endereco.getComplemento(),
-                    paciente.getHistorico(),
-                    paciente.getAlergias(),
-                    paciente.getMedicamentosUtilizados(),
-                    paciente.getAnotacoes()
-            });
-        }
         return tableModel;
     }
 
+    private void updateTableData() {
+        // Popula a tabela com os dados dos pacientes e endereços
+        try {
+            DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+            PacienteController pc = new PacienteController();
+            ArrayList<Object[]> resposta = pc.controlListarPacientes();
+
+            for (Object[] dados : resposta) {
+                Paciente paciente = (Paciente) dados[0];
+                Endereco endereco = (Endereco) dados[1];
+
+                tableModel.addRow(new String[]{
+                        paciente.getCodPaciente().toString(),
+                        paciente.getCpf(),
+                        paciente.getNome(),
+                        paciente.getSobrenome(),
+                        paciente.getSexo(),
+                        paciente.getDataNascimento().toString(),
+                        paciente.getTelefone(),
+                        paciente.getCelular(),
+                        paciente.getEmail(),
+                        endereco.getCep().toString(),
+                        endereco.getLogradouro(),
+                        endereco.getBairro(),
+                        endereco.getCidade(),
+                        endereco.getEstado(),
+                        endereco.getNumero().toString(),
+                        endereco.getComplemento(),
+                        paciente.getHistorico(),
+                        paciente.getAlergias(),
+                        paciente.getMedicamentosUtilizados(),
+                        paciente.getAnotacoes()
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Trate as exceções apropriadamente
+        }
+    }
+
     public void addNewRow(Object[] valores) {
-        ((DefaultTableModel) table.getModel()).addRow(valores);
+        DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+        tableModel.addRow(valores);
     }
 }

@@ -62,7 +62,7 @@ public class PacienteDao {
                 paciente.setCpf(rs.getString("cpf"));
                 paciente.setNome(rs.getString("nome"));
                 paciente.setSobrenome(rs.getString("sobrenome"));
-                paciente.setDataNascimento(getDateFromString(rs.getString("dataNascimento")));
+                paciente.setDataNascimento(getDateFromString2(rs.getString("dataNascimento")));
                 paciente.setTelefone(rs.getString("telefone"));
                 paciente.setCelular(rs.getString("celular"));
                 paciente.setEmail(rs.getString("email"));

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.MissingFormatArgumentException;
 
-import static model.utils.DateUtils.getDateFromString;
+import static model.utils.DateUtils.getDateFromString1;
 
 public class PacienteController {
     public void controlSalvar(CadastroPacientePanel cadastroPanel, Endereco endereco) {
@@ -20,7 +20,7 @@ public class PacienteController {
             paciente.setCpf(cadastroPanel.getTfCpf().getText());
             paciente.setNome(cadastroPanel.getTfNome().getText());
             paciente.setSobrenome(cadastroPanel.getTfSobrenome().getText());
-            paciente.setDataNascimento(getDateFromString(cadastroPanel.getFtfDtNasc().getText()));
+            paciente.setDataNascimento(getDateFromString1(cadastroPanel.getFtfDtNasc().getText()));
             paciente.setTelefone(cadastroPanel.getTfTelefone().getText());
             paciente.setCelular(cadastroPanel.getTfCelular().getText());
             paciente.setEmail(cadastroPanel.getTfEmail().getText());
@@ -57,10 +57,10 @@ public class PacienteController {
         ArrayList<Endereco> enderecos = enderecoDao.listarEndereco();
         ArrayList<Object[]> resposta = new ArrayList<>();
 
-        for (int i = 1; i < pacientes.size(); i++) {
+        for (int i = 0; i < pacientes.size(); i++) {
             Paciente paciente = pacientes.get(i);
             Endereco endereco = enderecos.get(i);
-            Object[] dados = new Object[] { paciente, endereco  };
+            Object[] dados = new Object[] { paciente, endereco };
             resposta.add(dados);
         }
 
