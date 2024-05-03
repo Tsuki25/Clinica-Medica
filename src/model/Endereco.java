@@ -27,6 +27,10 @@ public class Endereco {
         this.complemento = complemento;
     }
 
+    public Endereco(Integer codEndereco){//usado para facilitar a busca por endereços no banco de dados
+        this.codEnd = codEndereco;
+    }
+
     public Integer getCodEnd() {
         return codEnd;
     }

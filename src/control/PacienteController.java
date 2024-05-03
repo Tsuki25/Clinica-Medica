@@ -66,4 +66,14 @@ public class PacienteController {
 
         return resposta;
     }
+
+    public Paciente controlBuscarPacienteForId(Integer codPaciente){
+        PacienteDao pd = new PacienteDao();
+        EnderecoDao ed = new EnderecoDao();
+        Paciente paciente = pd.getPacienteForId(codPaciente);
+        Endereco endereco = ed.getEnderecoForId(paciente.getEndereco().getCodEnd());
+        paciente.setEndereco(endereco);
+
+        return paciente;
+    }
 }

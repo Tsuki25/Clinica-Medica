@@ -1,6 +1,7 @@
 package dao;
 
 import control.EnderecoController;
+import model.Endereco;
 import model.Paciente;
 import model.enums.Sexo;
 
@@ -23,7 +24,7 @@ public class PacienteDao {
             stmt.setString(2, paciente.getNome());
             stmt.setString(3, paciente.getSobrenome());
             stmt.setString(4, paciente.getSexo());
-            stmt.setString(5, getStringFromDate(paciente.getDataNascimento()));
+            stmt.setString(5, getStringFromDate1(paciente.getDataNascimento()));
             stmt.setString(6, paciente.getTelefone());
             stmt.setString(7, paciente.getCelular());
             stmt.setString(8, paciente.getEmail());
@@ -82,7 +83,42 @@ public class PacienteDao {
             e.printStackTrace();
             return null;
         }
+    }
 
+    public Paciente getPacienteForId(Integer codPaciente){
+        Conexao conexao = new Conexao();
+        PreparedStatement stmt;
+
+        try {
+            stmt = conexao.getConn().prepareStatement("select * from paciente where codPaciente = ?");
+            stmt.setString(1, codPaciente.toString());
+            ResultSet rs = stmt.executeQuery();
+
+            rs.next();
+            Paciente paciente = new Paciente();
+            paciente.setCodPaciente(rs.getInt("codPaciente"));
+            paciente.setCpf(rs.getString("cpf"));
+            paciente.setNome(rs.getString("nome"));
+            paciente.setSobrenome(rs.getString("sobrenome"));
+            paciente.setDataNascimento(getDateFromString2(rs.getString("dataNascimento")));
+            paciente.setTelefone(rs.getString("telefone"));
+            paciente.setCelular(rs.getString("celular"));
+            paciente.setEmail(rs.getString("email"));
+            paciente.setSexo(Sexo.valueOf(rs.getString("sexo").toUpperCase()));
+            paciente.setHistorico(rs.getString("historico"));
+            paciente.setAlergias(rs.getString("alergias"));
+            paciente.setMedicamentosUtilizados(rs.getString("medicamentosUtilizados"));
+            paciente.setAnotacoes(rs.getString("anotacoes"));
+            paciente.setEndereco(new Endereco(rs.getInt("codEnd")));
+
+            rs.close();
+            stmt.close();
+            return paciente;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
 
     }
 }

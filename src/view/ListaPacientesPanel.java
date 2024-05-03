@@ -14,7 +14,7 @@ public class ListaPacientesPanel extends JPanel {
     public ListaPacientesPanel() {
         setLayout(null);
         JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setBounds(0, 0, 790, 820);
+        scrollPane.setBounds(0, 0, 490, 800);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         add(scrollPane);

@@ -24,10 +24,9 @@ public class CadastroFrame extends JFrame {
 
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
         ListaPacientesPanel pacientesPanel = new ListaPacientesPanel();
-        tabbedPane.addTab("Cadastro de Pacientes",
-                new CadastroPacientePanel());
+        tabbedPane.addTab("Cadastro de Pacientes", new CadastroPacientePanel());
         tabbedPane.addTab("Lista de Pacientes", pacientesPanel);
-
+        tabbedPane.addTab("Editar Paciente", new EditarPacientePanel(1));//APENAS PARA TESTE =============== REMOVER
         contentPane.add(tabbedPane, BorderLayout.CENTER);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -85,4 +85,35 @@ public class EnderecoDao {
             return null;
         }
     }
+
+    public Endereco getEnderecoForId(Integer codEndereco){
+        Conexao conexao = new Conexao();
+        PreparedStatement stmt;
+
+        try {
+            stmt = conexao.getConn().prepareStatement("select * from endereco where codEnd= ?");
+            stmt.setString(1, codEndereco.toString());
+            ResultSet rs = stmt.executeQuery();
+
+            rs.next();
+            Endereco endereco = new Endereco();
+            endereco.setCodEnd(codEndereco);
+            endereco.setCep(rs.getInt("cep"));
+            endereco.setLogradouro(rs.getString("logradouro"));
+            endereco.setBairro(rs.getString("bairro"));
+            endereco.setCidade(rs.getString("cidade"));
+            endereco.setEstado(rs.getString("estado"));
+            endereco.setNumero(rs.getInt("numero"));
+            endereco.setComplemento(rs.getString("complemento"));
+
+            rs.close();
+            stmt.close();
+            return endereco;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
 }

@@ -13,7 +13,7 @@ public class Main {
             public void run() {
                 try {
                     CadastroFrame cadastroFrame = new CadastroFrame();
-                    cadastroFrame.setSize(800,900);
+                    cadastroFrame.setSize(530,870);
                     cadastroFrame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();

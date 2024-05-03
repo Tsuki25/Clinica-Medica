@@ -28,8 +28,13 @@ public class DateUtils {
         return LocalTime.parse(timeStr,formatter);
     }
 
-    public static String getStringFromDate(LocalDate date) {
+    public static String getStringFromDate1(LocalDate date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return date.format(formatter);
+    }
+
+    public static String getStringFromDate2(LocalDate date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         return date.format(formatter);
     }
 
