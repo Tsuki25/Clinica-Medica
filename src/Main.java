@@ -1,3 +1,4 @@
+import view.ListaPacientesFrame;
 import view.PacienteFrame;
 
 import java.awt.*;

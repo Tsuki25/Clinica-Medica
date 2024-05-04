@@ -61,7 +61,7 @@ public class FormularioPacientePanel extends JPanel {
     /**
      * Create the panel.
      */
-    public FormularioPacientePanel() {
+    public FormularioPacientePanel(JFrame pacienteFrame) {
         setBackground(SystemColor.activeCaptionBorder);
         setLayout(null);
 
@@ -365,12 +365,21 @@ public class FormularioPacientePanel extends JPanel {
         btnBusca.setForeground(SystemColor.desktop);
         btnBusca.setFont(new Font("Bahnschrift", Font.PLAIN, 5));
         btnBusca.setBackground(SystemColor.windowBorder);
+        btnBusca.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ListaPacientesFrame listaPacienteFrame = new ListaPacientesFrame();
+                listaPacienteFrame.setSize(1600,900);
+                listaPacienteFrame.setVisible(true);
+                pacienteFrame.setVisible(false);
+            }
+        });
+
         btnBusca.setBounds(336, 742, 38, 38);
         add(btnBusca);
     }
 
-    public FormularioPacientePanel(Integer codPaciente){
-        this();//chama o construtor padrão com o formulário de cadastro do paciente
+    public FormularioPacientePanel(JFrame pacienteFrame, Integer codPaciente){
+        this(pacienteFrame);//chama o construtor padrão com o formulário de cadastro do paciente
         Paciente paciente = getDadosPaciente(codPaciente);
 
         btnLimpar.setVisible(false);

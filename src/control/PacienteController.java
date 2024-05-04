@@ -66,6 +66,30 @@ public class PacienteController {
         return resposta;
     }
 
+    public ArrayList<Object[]> controlListarPacientesBusca(String textoBusca){
+        PacienteDao pacienteDao = new PacienteDao();
+        EnderecoDao enderecoDao = new EnderecoDao();
+
+        ArrayList<Paciente> pacientes = pacienteDao.listarPacientesBusca(textoBusca);
+        ArrayList<Endereco> enderecos = new ArrayList<>();
+
+        for (Paciente paciente : pacientes) { //PREENCHE O VETOR DE ENDERECOS RELATIVOS AOS PACIENTES BUSCADOS NA ORDEM
+            Endereco endereco = enderecoDao.getEnderecoForId(paciente.getEndereco().getCodEnd());
+            enderecos.add(endereco);
+        }
+
+        ArrayList<Object[]> resposta = new ArrayList<>();
+
+        for (int i = 0; i < pacientes.size(); i++) {
+            Paciente paciente = pacientes.get(i);
+            Endereco endereco = enderecos.get(i);
+            Object[] dados = new Object[] { paciente, endereco };
+            resposta.add(dados);
+        }
+
+        return resposta;
+    }
+
     public Paciente controlAtualizarPaciente(FormularioPacientePanel updatePanel){
         try{
             PacienteDao pacienteDao = new PacienteDao();

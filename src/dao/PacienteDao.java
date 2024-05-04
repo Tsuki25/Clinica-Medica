@@ -85,6 +85,49 @@ public class PacienteDao {
         }
     }
 
+    public ArrayList<Paciente> listarPacientesBusca(String textoBusca) {
+        Conexao conexao = new Conexao();
+        PreparedStatement stmt;
+        ArrayList<Paciente> pacientes;
+
+        try {
+            stmt = conexao.getConn().prepareStatement("SELECT * FROM paciente WHERE codPaciente = ? OR cpf LIKE ? OR nome LIKE ? OR sobrenome LIKE ?");
+            stmt.setString(1, textoBusca);
+            stmt.setString(2, "%" + textoBusca + "%");
+            stmt.setString(3, "%" + textoBusca + "%");
+            stmt.setString(4, "%" + textoBusca + "%");
+
+            ResultSet rs = stmt.executeQuery();
+            pacientes = new ArrayList<Paciente>();
+            while (rs.next()) {
+                Paciente paciente = new Paciente();
+                paciente.setCodPaciente(rs.getInt("codPaciente"));
+                paciente.setCpf(rs.getString("cpf"));
+                paciente.setNome(rs.getString("nome"));
+                paciente.setSobrenome(rs.getString("sobrenome"));
+                paciente.setDataNascimento(getDateFromString2(rs.getString("dataNascimento")));
+                paciente.setTelefone(rs.getString("telefone"));
+                paciente.setCelular(rs.getString("celular"));
+                paciente.setEmail(rs.getString("email"));
+                paciente.setSexo(Sexo.valueOf(rs.getString("sexo").toUpperCase()));
+                paciente.setHistorico(rs.getString("historico"));
+                paciente.setAlergias(rs.getString("alergias"));
+                paciente.setMedicamentosUtilizados(rs.getString("medicamentosUtilizados"));
+                paciente.setAnotacoes(rs.getString("anotacoes"));
+                paciente.setEndereco(new Endereco(rs.getInt("codEnd")));
+                pacientes.add(paciente);
+            }
+
+            rs.close();
+            stmt.close();
+            return pacientes;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public void atualizarPaciente(Paciente paciente){
         Conexao conexao = new Conexao();
         String sql = "UPDATE paciente " +
