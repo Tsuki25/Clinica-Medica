@@ -7,7 +7,6 @@ import model.Paciente;
 import model.enums.Sexo;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -17,12 +16,10 @@ import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 import static model.utils.DateUtils.getStringFromDate2;
 
-public class CadastroPacientePanel extends JPanel {
+public class FormularioPacientePanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
     private JTextField tfCpf;
@@ -64,7 +61,7 @@ public class CadastroPacientePanel extends JPanel {
     /**
      * Create the panel.
      */
-    public CadastroPacientePanel() {
+    public FormularioPacientePanel() {
         setBackground(SystemColor.activeCaptionBorder);
         setLayout(null);
 
@@ -339,9 +336,9 @@ public class CadastroPacientePanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 Endereco endereco;
                 EnderecoController enderecoController = new EnderecoController();
-                endereco = enderecoController.controlSalvar(CadastroPacientePanel.this);
+                endereco = enderecoController.controlSalvar(FormularioPacientePanel.this);
                 PacienteController pacienteController = new PacienteController();
-                pacienteController.controlSalvar(CadastroPacientePanel.this, endereco);
+                pacienteController.controlSalvar(FormularioPacientePanel.this, endereco);
 
                 JOptionPane.showMessageDialog(null, "Paciente cadastrado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
                 limparCampos();
@@ -372,7 +369,7 @@ public class CadastroPacientePanel extends JPanel {
         add(btnBusca);
     }
 
-    public CadastroPacientePanel(Integer codPaciente){
+    public FormularioPacientePanel(Integer codPaciente){
         this();//chama o construtor padrão com o formulário de cadastro do paciente
         Paciente paciente = getDadosPaciente(codPaciente);
 
@@ -422,13 +419,18 @@ public class CadastroPacientePanel extends JPanel {
         add(btnExcluir);
 
         btnSalvarEdicao = new JButton(); // APARECE NO LUGAR DO btnEditar
-        btnSalvarEdicao .setIcon(new ImageIcon(getClass().getResource("/view/icons/confirmar.png")));
-        btnSalvarEdicao .setBackground(SystemColor.windowBorder);
-        btnSalvarEdicao .setForeground(SystemColor.desktop);
-        btnSalvarEdicao .setFont(new Font("Bahnschrift", Font.PLAIN, 14));
-        btnSalvarEdicao .setBounds(432, 742, 38, 38);
+        btnSalvarEdicao.setIcon(new ImageIcon(getClass().getResource("/view/icons/confirmar.png")));
+        btnSalvarEdicao.setBackground(SystemColor.windowBorder);
+        btnSalvarEdicao.setForeground(SystemColor.desktop);
+        btnSalvarEdicao.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
+        btnSalvarEdicao.setBounds(432, 742, 38, 38);
         btnSalvarEdicao.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                PacienteController pc = new PacienteController();
+                Paciente pacienteAtualizado =  pc.controlAtualizarPaciente(FormularioPacientePanel.this);
+                preencherCampos(pacienteAtualizado);
+                JOptionPane.showMessageDialog(null, "Paciente atualizado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+
                 setStatusEdicaoCampos(false);
                 btnEditar.setVisible(true);
                 btnExcluir.setVisible(true);

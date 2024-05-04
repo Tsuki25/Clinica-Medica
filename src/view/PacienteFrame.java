@@ -1,18 +1,17 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTabbedPane;
 
-public class CadastroFrame extends JFrame {
+public class PacienteFrame extends JFrame {
 
     private JPanel contentPane;
 
-    public CadastroFrame() {
+    public PacienteFrame() {
         setTitle("Pacientes");
         setResizable(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -24,8 +23,7 @@ public class CadastroFrame extends JFrame {
 
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
         ListaPacientesPanel pacientesPanel = new ListaPacientesPanel();
-        tabbedPane.addTab("Cadastro de Pacientes", new CadastroPacientePanel(1));
-        tabbedPane.addTab("Lista de Pacientes", pacientesPanel);
+        tabbedPane.addTab("Cadastro de Pacientes", new FormularioPacientePanel(1));
         //tabbedPane.addTab("Editar Paciente", new EditarPacientePanel(1));//APENAS PARA TESTE =============== REMOVER
         contentPane.add(tabbedPane, BorderLayout.CENTER);
 

@@ -40,6 +40,30 @@ public class EnderecoDao {
         }
     }
 
+    public void atualizarEndereco(Endereco endereco){
+        Conexao conexao = new Conexao();
+        String sql = "UPDATE endereco " +
+                "SET cep = ?, " + "logradouro = ?, " + "bairro = ?, " + "cidade = ?, " +
+                "estado = ?, " + "numero = ?, " + "complemento = ? " +
+                "WHERE codEnd = ?";
+        try {
+            PreparedStatement stmt = conexao.getConn().prepareStatement(sql);
+            stmt.setString(1, endereco.getCep().toString());
+            stmt.setString(2, endereco.getLogradouro());
+            stmt.setString(3, endereco.getBairro());
+            stmt.setString(4, endereco.getCidade());
+            stmt.setString(5, endereco.getEstado());
+            stmt.setString(6, endereco.getNumero().toString());
+            stmt.setString(7, endereco.getComplemento());
+            stmt.setString(8, endereco.getCodEnd().toString());
+
+            stmt.execute();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void excluirEndereco(Integer codEnd){
         Conexao conexao = new Conexao();
         String sql = "DELETE FROM endereco WHERE codEnd = ?";

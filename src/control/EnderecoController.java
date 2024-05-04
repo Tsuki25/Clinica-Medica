@@ -1,17 +1,11 @@
 package control;
 
 import dao.EnderecoDao;
-import dao.PacienteDao;
 import model.Endereco;
-import model.Paciente;
-import model.enums.Sexo;
-import view.CadastroPacientePanel;
-
-import java.util.Date;
-import java.util.HashMap;
+import view.FormularioPacientePanel;
 
 public class EnderecoController {
-    public Endereco controlSalvar(CadastroPacientePanel cadastroPanel) {
+    public Endereco controlSalvar(FormularioPacientePanel cadastroPanel) {
         Endereco endereco = new Endereco();
         endereco.setCep(Integer.parseInt(cadastroPanel.getTfCep().getText()));
         endereco.setLogradouro(cadastroPanel.getTfLogradouro().getText());

@@ -1,5 +1,4 @@
-import view.CadastroFrame;
-import view.CadastroPacientePanel;
+import view.PacienteFrame;
 
 import java.awt.*;
 
@@ -12,9 +11,9 @@ public class Main {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    CadastroFrame cadastroFrame = new CadastroFrame();
-                    cadastroFrame.setSize(530,870);
-                    cadastroFrame.setVisible(true);
+                    PacienteFrame pacienteFrame = new PacienteFrame();
+                    pacienteFrame.setSize(530,870);
+                    pacienteFrame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
