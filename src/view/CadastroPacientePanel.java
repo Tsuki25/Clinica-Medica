@@ -20,6 +20,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static model.utils.DateUtils.getStringFromDate2;
+
 public class CadastroPacientePanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
@@ -45,8 +47,14 @@ public class CadastroPacientePanel extends JPanel {
     private JComboBox<Sexo> cbSexo;
     private JComboBox<String> cbEstado;
 
+    // BOTOES
     JButton btnSalvar;
     JButton btnLimpar;
+    JButton btnBusca;
+    JButton btnEditar;
+    JButton btnExcluir;
+    JButton btnSalvarEdicao;
+    JButton btnCancelarEdicao;
 
     String[] siglas = {
             "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR",
@@ -334,6 +342,9 @@ public class CadastroPacientePanel extends JPanel {
                 endereco = enderecoController.controlSalvar(CadastroPacientePanel.this);
                 PacienteController pacienteController = new PacienteController();
                 pacienteController.controlSalvar(CadastroPacientePanel.this, endereco);
+
+                JOptionPane.showMessageDialog(null, "Paciente cadastrado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                limparCampos();
             }
         });
         btnSalvar.setBounds(432, 742, 38, 38);
@@ -352,13 +363,153 @@ public class CadastroPacientePanel extends JPanel {
         btnLimpar.setBounds(384, 742, 38, 38);
         add(btnLimpar);
 
-        JButton btnBusca = new JButton();
+        btnBusca = new JButton();
         btnBusca.setIcon(new ImageIcon(getClass().getResource("/view/icons/lupa.png")));
         btnBusca.setForeground(SystemColor.desktop);
         btnBusca.setFont(new Font("Bahnschrift", Font.PLAIN, 5));
         btnBusca.setBackground(SystemColor.windowBorder);
         btnBusca.setBounds(336, 742, 38, 38);
         add(btnBusca);
+    }
+
+    public CadastroPacientePanel(Integer codPaciente){
+        this();//chama o construtor padrão com o formulário de cadastro do paciente
+        Paciente paciente = getDadosPaciente(codPaciente);
+
+        btnLimpar.setVisible(false);
+        btnSalvar.setVisible(false);
+
+        preencherCampos(paciente);
+
+        tfCpf.setEditable(false);//NÃO É POSSIVEL EDITAR O CPF
+        setStatusEdicaoCampos(false); //Deixa todos os campos editaveis(true) ou não editaveis(false)
+
+        btnEditar = new JButton();
+        btnEditar .setIcon(new ImageIcon(getClass().getResource("/view/icons/editar.png")));
+        btnEditar .setBackground(SystemColor.windowBorder);
+        btnEditar .setForeground(SystemColor.desktop);
+        btnEditar .setFont(new Font("Bahnschrift", Font.PLAIN, 14));
+        btnEditar .setBounds(432, 742, 38, 38);
+        btnEditar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                setStatusEdicaoCampos(true);
+                btnEditar.setVisible(false);
+                btnExcluir.setVisible(false);
+                btnCancelarEdicao.setVisible(true);
+                btnSalvarEdicao.setVisible(true);
+            }
+        });
+        add(btnEditar);
+
+
+        btnExcluir = new JButton();
+        btnExcluir.setIcon(new ImageIcon(getClass().getResource("/view/icons/lata-de-lixo.png")));
+        btnExcluir.setForeground(SystemColor.desktop);
+        btnExcluir.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
+        btnExcluir.setBackground(SystemColor.windowBorder);
+        btnExcluir.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int confirmacao = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir o registro?", "Confirmação", JOptionPane.YES_NO_OPTION);
+                if (confirmacao == JOptionPane.YES_OPTION) {
+                    PacienteController pc = new PacienteController();
+                    pc.controlExcluirPaciente(paciente);
+                    JOptionPane.showMessageDialog(null, "Paciente excluido com sucesso");
+                    limparCampos();
+                }
+            }
+        });
+        btnExcluir.setBounds(384, 742, 38, 38);
+        add(btnExcluir);
+
+        btnSalvarEdicao = new JButton(); // APARECE NO LUGAR DO btnEditar
+        btnSalvarEdicao .setIcon(new ImageIcon(getClass().getResource("/view/icons/confirmar.png")));
+        btnSalvarEdicao .setBackground(SystemColor.windowBorder);
+        btnSalvarEdicao .setForeground(SystemColor.desktop);
+        btnSalvarEdicao .setFont(new Font("Bahnschrift", Font.PLAIN, 14));
+        btnSalvarEdicao .setBounds(432, 742, 38, 38);
+        btnSalvarEdicao.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                setStatusEdicaoCampos(false);
+                btnEditar.setVisible(true);
+                btnExcluir.setVisible(true);
+                btnCancelarEdicao.setVisible(false);
+                btnSalvarEdicao.setVisible(false);
+            }
+        });
+        add(btnSalvarEdicao);
+
+        btnCancelarEdicao = new JButton(); // APARECE NO LUGAR DO btnExcluir
+        btnCancelarEdicao.setIcon(new ImageIcon(getClass().getResource("/view/icons/cancelar.png")));
+        btnCancelarEdicao.setForeground(SystemColor.desktop);
+        btnCancelarEdicao.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
+        btnCancelarEdicao.setBackground(SystemColor.windowBorder);
+        btnCancelarEdicao.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                setStatusEdicaoCampos(false);
+                btnEditar.setVisible(true);
+                btnExcluir.setVisible(true);
+                preencherCampos(paciente);
+                btnCancelarEdicao.setVisible(false);
+                btnSalvarEdicao.setVisible(false);
+            }
+        });
+        btnCancelarEdicao.setBounds(384, 742, 38, 38);
+        add(btnCancelarEdicao);
+    }
+
+    private void preencherCampos(Paciente paciente){
+        // SETA OS VALORES DOS CAMPOS DE ACORDO COM O RECUPERADO DO BANCO DE DADOS
+        Endereco endereco = paciente.getEndereco();
+
+        tfCpf.setText(paciente.getCpf());
+        tfNome.setText(paciente.getNome());
+        tfSobrenome.setText(paciente.getSobrenome());
+        cbSexo.setSelectedItem(paciente.getSexoObj().getDescricao());
+        ftfDtNasc.setText(getStringFromDate2(paciente.getDataNascimento()));
+        tfTelefone.setText(paciente.getTelefone());
+        tfCelular.setText(paciente.getCelular());
+        tfEmail.setText(paciente.getEmail());
+        tfLogradouro.setText(endereco.getLogradouro());
+        tfCep.setText(endereco.getCep().toString());
+        tfBairro.setText(endereco.getBairro());
+        tfCidade.setText(endereco.getCidade());
+        tfNumero.setText(endereco.getNumero().toString());
+        tfComplemento.setText(endereco.getComplemento());
+        cbEstado.setSelectedItem(endereco.getEstado());
+        tfAlergia.setText(paciente.getAlergias());
+        tfMedicamentosUtilizados.setText(paciente.getMedicamentosUtilizados());
+        tfHistorico.setText(paciente.getHistorico());
+        tfAnotacoes.setText(paciente.getAnotacoes());
+    }
+
+    private void setStatusEdicaoCampos(Boolean status){
+        Color borderEditavel = new Color(66, 64, 64);
+        Color borderIneditavel = new Color(96, 8, 166);
+        Color bgEditavel = new Color(238, 240, 242);
+        Color bgIneditavel = new Color(226, 207, 241);
+
+        if(status) alterCoresCampos(borderEditavel, bgEditavel);
+        else alterCoresCampos(borderIneditavel, bgIneditavel);
+
+
+        tfNome.setEditable(status);
+        tfSobrenome.setEditable(status);
+        cbSexo.setEnabled(status);
+        ftfDtNasc.setEditable(status);
+        tfTelefone.setEditable(status);
+        tfCelular.setEditable(status);
+        tfEmail.setEditable(status);
+        tfLogradouro.setEditable(status);
+        tfCep.setEditable(status);
+        tfBairro.setEditable(status);
+        tfCidade.setEditable(status);
+        tfNumero.setEditable(status);
+        tfComplemento.setEditable(status);
+        cbEstado.setEnabled(status);
+        tfAlergia.setEditable(status);
+        tfMedicamentosUtilizados.setEditable(status);
+        tfHistorico.setEditable(status);
+        tfAnotacoes.setEditable(status);
     }
 
     private void limparCampos() {
@@ -379,6 +530,73 @@ public class CadastroPacientePanel extends JPanel {
         tfAnotacoes.setText("");
         tfHistorico.setText("");
         ftfDtNasc.setText("");
+        cbEstado.setSelectedIndex(0);
+        cbSexo.setSelectedIndex(0);
+    }
+
+    private Paciente getDadosPaciente(Integer codPaciente) {
+        PacienteController pc = new PacienteController();
+        return pc.controlBuscarPacienteForId(codPaciente);
+    }
+
+    private void alterCoresCampos(Color corBorda, Color corFundo){
+        tfNome.setBorder(BorderFactory.createLineBorder(corBorda));
+        tfNome.setBackground(corFundo);
+
+        tfSobrenome.setBorder(BorderFactory.createLineBorder(corBorda));
+        tfSobrenome.setBackground(corFundo);
+
+        cbSexo.setBackground(corFundo);
+        ((JLabel) cbSexo.getRenderer()).setOpaque(true); // Torna o fundo do item selecionado visível
+        cbSexo.setBorder(BorderFactory.createLineBorder(corBorda));
+        cbSexo.setForeground(Color.BLACK);
+
+        ftfDtNasc.setBorder(BorderFactory.createLineBorder(corBorda));
+        ftfDtNasc.setBackground(corFundo);
+
+        tfTelefone.setBorder(BorderFactory.createLineBorder(corBorda));
+        tfTelefone.setBackground(corFundo);
+
+        tfCelular.setBorder(BorderFactory.createLineBorder(corBorda));
+        tfCelular.setBackground(corFundo);
+
+        tfEmail.setBorder(BorderFactory.createLineBorder(corBorda));
+        tfEmail.setBackground(corFundo);
+
+        tfLogradouro.setBorder(BorderFactory.createLineBorder(corBorda));
+        tfLogradouro.setBackground(corFundo);
+
+        tfCep.setBorder(BorderFactory.createLineBorder(corBorda));
+        tfCep.setBackground(corFundo);
+
+        tfBairro.setBorder(BorderFactory.createLineBorder(corBorda));
+        tfBairro.setBackground(corFundo);
+
+        tfCidade.setBorder(BorderFactory.createLineBorder(corBorda));
+        tfCidade.setBackground(corFundo);
+
+        tfNumero.setBorder(BorderFactory.createLineBorder(corBorda));
+        tfNumero.setBackground(corFundo);
+
+        tfComplemento.setBorder(BorderFactory.createLineBorder(corBorda));
+        tfComplemento.setBackground(corFundo);
+
+        cbEstado.setBackground(corFundo);
+        ((JLabel) cbEstado.getRenderer()).setOpaque(true); // Torna o fundo do item selecionado visível
+        cbEstado.setBorder(BorderFactory.createLineBorder(corBorda));
+        cbEstado.setForeground(Color.BLACK);
+
+        tfAlergia.setBorder(BorderFactory.createLineBorder(corBorda));
+        tfAlergia.setBackground(corFundo);
+
+        tfMedicamentosUtilizados.setBorder(BorderFactory.createLineBorder(corBorda));
+        tfMedicamentosUtilizados.setBackground(corFundo);
+
+        tfHistorico.setBorder(BorderFactory.createLineBorder(corBorda));
+        tfHistorico.setBackground(corFundo);
+
+        tfAnotacoes.setBorder(BorderFactory.createLineBorder(corBorda));
+        tfAnotacoes.setBackground(corFundo);
     }
 
     public JTextField getTfCpf() {

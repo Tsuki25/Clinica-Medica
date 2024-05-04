@@ -379,11 +379,17 @@ public class EditarPacientePanel extends JPanel {
         btnExcluir.setForeground(SystemColor.desktop);
         btnExcluir.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
         btnExcluir.setBackground(SystemColor.windowBorder);
-       /* btnExcluir.addActionListener(new ActionListener() {
+        btnExcluir.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                int confirmacao = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir o registro?", "Confirmação", JOptionPane.YES_NO_OPTION);
+                if (confirmacao == JOptionPane.YES_OPTION) {
+                    PacienteController pc = new PacienteController();
+                    pc.controlExcluirPaciente(paciente);
+                    JOptionPane.showMessageDialog(null, "Paciente excluido com sucesso");
+                    limparCampos();
+                }
             }
-        });*/
+        });
         btnExcluir.setBounds(384, 742, 38, 38);
         add(btnExcluir);
 
@@ -414,6 +420,8 @@ public class EditarPacientePanel extends JPanel {
         tfAnotacoes.setText("");
         tfHistorico.setText("");
         ftfDtNasc.setText("");
+        cbEstado.setSelectedIndex(0);
+        cbSexo.setSelectedIndex(0);
     }
 
     private Paciente getDadosPaciente(Integer codPaciente) {

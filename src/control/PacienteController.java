@@ -76,4 +76,11 @@ public class PacienteController {
 
         return paciente;
     }
+
+    public void controlExcluirPaciente(Paciente paciente){
+        PacienteDao pacienteDao = new PacienteDao();
+        EnderecoDao ec = new EnderecoDao();
+        pacienteDao.excluirPaciente(paciente.getCpf());
+        ec.excluirEndereco(paciente.getEndereco().getCodEnd());
+    }
 }

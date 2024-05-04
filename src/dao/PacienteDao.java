@@ -119,6 +119,19 @@ public class PacienteDao {
             e.printStackTrace();
             return null;
         }
+    }
 
+    public void excluirPaciente(String cpf){
+        Conexao conexao = new Conexao();
+        String sql = "DELETE FROM paciente WHERE cpf = ?";
+        try {
+            PreparedStatement stmt = conexao.getConn().prepareStatement(sql);
+            stmt.setString(1, cpf);
+
+            stmt.execute();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
