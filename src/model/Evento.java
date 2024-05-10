@@ -5,12 +5,12 @@ import java.time.LocalTime;
 
 public class Evento {
     private Integer codEvento;
-    private ProfissionalSaude reservante;
+    private Funcionario reservante;
     private String motivo;
     private LocalDate data;
     private LocalTime horario;
 
-    public Evento(Integer codEvento, ProfissionalSaude reservante, String motivo, LocalDate data, LocalTime horario) {
+    public Evento(Integer codEvento,  Funcionario reservante, String motivo, LocalDate data, LocalTime horario) {
         this.codEvento = codEvento;
         this.reservante = reservante;
         this.motivo = motivo;
@@ -28,11 +28,11 @@ public class Evento {
         this.codEvento = codEvento;
     }
 
-    public ProfissionalSaude getReservante() {
+   public Funcionario getReservante() {
         return reservante;
     }
 
-    public void setReservante(ProfissionalSaude reservante) {
+    public void setReservante(Funcionario reservante) {
         this.reservante = reservante;
     }
 

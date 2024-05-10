@@ -1,20 +1,28 @@
 package view;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
+import control.EnfermeiroController;
+import control.MedicoController;
 import control.PacienteController;
+import control.RecepcionistaController;
 import model.Endereco;
 import model.Paciente;
 
-public class ListaPacientesFrame extends JFrame {
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+
+public class ListaFuncionariosFrame extends JFrame{
+    /*
     private JTable table;
     private JTextField searchField;
 
-    public ListaPacientesFrame() {
-        setTitle("Lista de Pacientes");
+    public ListaFuncionariosFrame() {
+        setTitle("Lista de Funcionarios");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -47,7 +55,7 @@ public class ListaPacientesFrame extends JFrame {
         table.setCellSelectionEnabled(true);
         scrollPane.setViewportView(table);
 
-        // Adiciona ouvinte de evento de clique duplo à tabela
+        // Adiciona o evento de dois clicks à tabela
         table.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 1) {
@@ -57,7 +65,7 @@ public class ListaPacientesFrame extends JFrame {
                         PacienteFrame pacienteFrame = new PacienteFrame(codPaciente); //ABRE O FRAME DE EDICAO DE DADOS DO USUARIOS
                         pacienteFrame.setSize(530,870);
                         pacienteFrame.setVisible(true);
-                        ListaPacientesFrame.this.setVisible(false);
+                        ListaFuncionariosFrame.this.setVisible(false);
                     }
                 }
             }
@@ -69,10 +77,12 @@ public class ListaPacientesFrame extends JFrame {
 
     private DefaultTableModel createTableModel() {
         DefaultTableModel tableModel = new DefaultTableModel();
-        tableModel.addColumn("Cod. Paciente");
+        tableModel.addColumn("Cod. Funcionario");
         tableModel.addColumn("CPF");
         tableModel.addColumn("Nome");
         tableModel.addColumn("Sobrenome");
+        tableModel.addColumn("CRM");
+        tableModel.addColumn("CIP");
         tableModel.addColumn("Sexo");
         tableModel.addColumn("Data de Nascimento");
         tableModel.addColumn("Telefone");
@@ -85,10 +95,6 @@ public class ListaPacientesFrame extends JFrame {
         tableModel.addColumn("Estado");
         tableModel.addColumn("Numero");
         tableModel.addColumn("Complemento");
-        tableModel.addColumn("Historico");
-        tableModel.addColumn("Alergias");
-        tableModel.addColumn("Medicamentos");
-        tableModel.addColumn("Anotações");
         return tableModel;
     }
 
@@ -98,11 +104,17 @@ public class ListaPacientesFrame extends JFrame {
             DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
             tableModel.setRowCount(0); // Limpa a tabela antes de preenchê-la novamente
 
-            PacienteController pc = new PacienteController();
-            ArrayList<Paciente> resposta = pc.controlListarPacientes();
+            RecepcionistaController rc = new RecepcionistaController();
+            EnfermeiroController ec = new EnfermeiroController();
+            MedicoController mc = new MedicoController();
+            ArrayList<Object[]> recepcionistas = rc.controlListarRecepcionista();
+            ArrayList<Object[]> enfermeiros = rc.controlListarEnfermeiros();
+            ArrayList<Object[]> medicos = rc.controlListarMedicos();
 
-            for (Paciente paciente : resposta ) {
-                Endereco endereco = paciente.getEndereco();
+            for (Object[] dados : resposta) {
+                Paciente paciente = (Paciente) dados[0];
+                Endereco endereco = (Endereco) dados[1];
+
                 tableModel.addRow(new String[]{
                         paciente.getCodPaciente().toString(),
                         paciente.getCpf(),
@@ -141,10 +153,12 @@ public class ListaPacientesFrame extends JFrame {
                 tableModel.setRowCount(0); // Limpa a tabela antes de preenchê-la novamente
 
                 PacienteController pc = new PacienteController();
-                ArrayList<Paciente> resposta = pc.controlListarPacientesBusca(textoBusca);
+                ArrayList<Object[]> resposta = pc.controlListarPacientesBusca(textoBusca);
 
-                for (Paciente paciente : resposta) {
-                    Endereco endereco = paciente.getEndereco();
+                for (Object[] dados : resposta) {
+                    Paciente paciente = (Paciente) dados[0];
+                    Endereco endereco = (Endereco) dados[1];
+
                     tableModel.addRow(new String[]{
                             paciente.getCodPaciente().toString(),
                             paciente.getCpf(),
@@ -161,11 +175,7 @@ public class ListaPacientesFrame extends JFrame {
                             endereco.getCidade(),
                             endereco.getEstado(),
                             endereco.getNumero().toString(),
-                            endereco.getComplemento(),
-                            paciente.getHistorico(),
-                            paciente.getAlergias(),
-                            paciente.getMedicamentosUtilizados(),
-                            paciente.getAnotacoes()
+                            endereco.getComplemento()
                     });
                 }
             } catch (Exception e) {
@@ -177,5 +187,5 @@ public class ListaPacientesFrame extends JFrame {
             updateTableData();
         }
     }
-
+    */
 }

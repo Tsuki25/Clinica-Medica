@@ -6,12 +6,12 @@ import java.time.LocalTime;
 public class Agenda {
     private LocalDate data;
     private LocalTime horario;
-    private ProfissionalSaude proprietario;
+    private Funcionario proprietario;
     private Object evento; // Pode ser um agendamento ou um evento externo de ausencia do funcionario
 
     public Agenda(){}
 
-    public Agenda(LocalDate data, LocalTime horario, ProfissionalSaude proprietario, Object evento) {
+    public Agenda(LocalDate data, LocalTime horario, Funcionario proprietario, Object evento) {
         this.data = data;
         this.horario = horario;
         this.proprietario = proprietario;
@@ -34,11 +34,11 @@ public class Agenda {
         this.horario = horario;
     }
 
-    public ProfissionalSaude getProprietario() {
+    public Funcionario getProprietario() {
         return proprietario;
     }
 
-    public void setProprietario(ProfissionalSaude proprietario) {
+    public void setProprietario(Funcionario proprietario) {
         this.proprietario = proprietario;
     }
 

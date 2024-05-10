@@ -5,23 +5,34 @@ import model.enums.Sexo;
 import java.time.LocalDate;
 import java.util.Date;
 
-public class Recepcionista extends Funcionario{
+public class Medico extends Funcionario{
+    private String crm;
 
-    public Recepcionista(String cpf, String nome, String sobrenome, Sexo sexo, LocalDate dataNascimento, String telefone, String celular, String email, Endereco endereco, Integer codFuncionario, String password) {
+    public Medico(String cpf, String nome, String sobrenome, Sexo sexo, LocalDate dataNascimento, String telefone, String celular, String email, Endereco endereco, Integer codFuncionario, String password, String crm) {
         super(cpf, nome, sobrenome, sexo, dataNascimento, telefone, celular, email, endereco, codFuncionario, password);
+        this.crm = crm;
     }
 
-    public Recepcionista(String cpf, String nome, String sobrenome, Sexo sexo, LocalDate dataNascimento, String telefone, String celular, String email, Endereco endereco, String password) {
+    public Medico(String cpf, String nome, String sobrenome, Sexo sexo, LocalDate dataNascimento, String telefone, String celular, String email, Endereco endereco, String password, String crm) {
         super(cpf, nome, sobrenome, sexo, dataNascimento, telefone, celular, email, endereco, password);
+        this.crm = crm;
     }
 
-    public Recepcionista(){}
+    public Medico(){}
 
+    public String getCrm() {
+        return crm;
+    }
+
+    public void setCrm(String crm) {
+        this.crm = crm;
+    }
 
     @Override
     public String toString() {
-        return "Recepcionista{" +
-                "codFuncionario=" + codFuncionario +
+        return "Medico{" +
+                "CRM=" + crm +
+                ", codFuncionario=" + codFuncionario +
                 ", password='" + senha + '\'' +
                 ", cpf='" + cpf + '\'' +
                 ", nome='" + nome + '\'' +
@@ -35,3 +46,4 @@ public class Recepcionista extends Funcionario{
                 '}';
     }
 }
+

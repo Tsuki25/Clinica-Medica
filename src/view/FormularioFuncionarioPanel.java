@@ -1,12 +1,13 @@
 package view;
 
-import control.EnderecoController;
-import control.PacienteController;
+import control.*;
 import model.Endereco;
 import model.Paciente;
+import model.Recepcionista;
 import model.enums.Sexo;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -16,10 +17,12 @@ import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static model.utils.DateUtils.getStringFromDate2;
 
-public class FormularioPacientePanel extends JPanel {
+public class FormularioFuncionarioPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
     private JTextField tfCpf;
@@ -34,17 +37,16 @@ public class FormularioPacientePanel extends JPanel {
     private JTextField tfCidade;
     private JTextField tfNumero;
     private JTextField tfComplemento;
-    private JTextField tfAlergia;
-    private JTextField tfMedicamentosUtilizados;
-    private JTextField tfAnotacoes;
-    private JTextField tfHistorico;
 
     JFormattedTextField ftfDtNasc;
+
+    private JTextField tfCrm;
+    private JTextField tfCip;
+    private JPasswordField tfSenha;
 
     private JComboBox<Sexo> cbSexo;
     private JComboBox<String> cbEstado;
 
-    // BOTOES
     JButton btnSalvar;
     JButton btnLimpar;
     JButton btnBusca;
@@ -59,61 +61,119 @@ public class FormularioPacientePanel extends JPanel {
             "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"
     };
 
+
     /**
      * Create the panel.
      */
-    public FormularioPacientePanel(JFrame pacienteFrame) {
+    public FormularioFuncionarioPanel() {}
+        /*
         setBackground(SystemColor.activeCaptionBorder);
         setLayout(null);
 
+        JLabel lbTitle = new JLabel("Funcionários");
+        lbTitle.setFont(new Font("Bahnschrift", Font.BOLD, 18));
+        lbTitle.setBounds(186, 22, 127, 25);
+        add(lbTitle);
+
+        JRadioButton rdbtnRecepcionista = new JRadioButton("Recepcionista");
+        rdbtnRecepcionista.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
+        rdbtnRecepcionista.setBackground(SystemColor.activeCaptionBorder);
+        rdbtnRecepcionista.setBounds(95, 54, 109, 23);
+        add(rdbtnRecepcionista);
+
+        JRadioButton rdbtnEnfermeiro = new JRadioButton("Enfermeiro");
+        rdbtnEnfermeiro.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
+        rdbtnEnfermeiro.setBackground(SystemColor.activeCaptionBorder);
+        rdbtnEnfermeiro.setBounds(206, 54, 91, 23);
+        add(rdbtnEnfermeiro);
+
+        JRadioButton rdbtnMedico = new JRadioButton("Médico");
+        rdbtnMedico.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
+        rdbtnMedico.setBackground(SystemColor.activeCaptionBorder);
+        rdbtnMedico.setBounds(304, 54, 72, 23);
+        add(rdbtnMedico);
+
+        ButtonGroup group = new ButtonGroup();
+        group.add(rdbtnRecepcionista);
+        group.add(rdbtnEnfermeiro);
+        group.add(rdbtnMedico);
+
+        rdbtnRecepcionista.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tfCrm.setVisible(false);
+                tfCip.setVisible(false);
+            }
+        });
+
+        rdbtnEnfermeiro.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tfCrm.setVisible(false);
+                tfCip.setVisible(true);
+            }
+        });
+
+        rdbtnMedico.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tfCrm.setVisible(true);
+                tfCip.setVisible(false);
+            }
+        });
+
+        JSeparator separator_2 = new JSeparator();
+        separator_2.setBounds(10, 87, 480, 2);
+        add(separator_2);
+
         JLabel lbCpf = new JLabel("CPF:");
         lbCpf.setFont(new Font("Bahnschrift", Font.BOLD, 14));
-        lbCpf.setBounds(20, 25, 33, 14);
+        lbCpf.setBounds(20, 112, 33, 14);
         add(lbCpf);
 
         tfCpf = new JTextField();
         lbCpf.setLabelFor(tfCpf);
         tfCpf.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
-        tfCpf.setBounds(63, 22, 117, 20);
+        tfCpf.setBounds(63, 109, 117, 20);
         add(tfCpf);
         tfCpf.setColumns(10);
 
         JLabel lbNome = new JLabel("Nome: ");
         lbNome.setLabelFor(lbNome);
         lbNome.setFont(new Font("Bahnschrift", Font.BOLD, 12));
-        lbNome.setBounds(20, 100, 39, 14);
+        lbNome.setBounds(20, 187, 39, 14);
         add(lbNome);
 
         tfNome = new JTextField();
         tfNome.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
         tfNome.setColumns(10);
-        tfNome.setBounds(63, 97, 117, 20);
+        tfNome.setBounds(63, 184, 117, 20);
         add(tfNome);
 
         JLabel lbSobrenome = new JLabel("Sobrenome: ");
         lbSobrenome.setFont(new Font("Bahnschrift", Font.BOLD, 12));
-        lbSobrenome.setBounds(215, 100, 72, 14);
+        lbSobrenome.setBounds(215, 187, 72, 14);
         add(lbSobrenome);
 
         tfSobrenome = new JTextField();
         tfSobrenome.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
         tfSobrenome.setColumns(10);
-        tfSobrenome.setBounds(290, 97, 180, 20);
+        tfSobrenome.setBounds(290, 184, 180, 20);
         add(tfSobrenome);
 
         JLabel lbSexo = new JLabel("Sexo:");
         lbSexo.setFont(new Font("Bahnschrift", Font.BOLD, 12));
-        lbSexo.setBounds(20, 130, 33, 14);
+        lbSexo.setBounds(20, 217, 33, 14);
         add(lbSexo);
 
         cbSexo = new JComboBox<>(Sexo.values());
         lbSexo.setLabelFor(cbSexo);
-        cbSexo.setBounds(63, 125, 117, 22);
+        cbSexo.setBounds(63, 212, 117, 22);
         add(cbSexo);
 
         JLabel lbDataNascimento = new JLabel("Data de Nascimento: ");
         lbDataNascimento.setFont(new Font("Bahnschrift", Font.BOLD, 12));
-        lbDataNascimento.setBounds(215, 129, 117, 14);
+        lbDataNascimento.setBounds(215, 216, 117, 14);
         add(lbDataNascimento);
 
         ftfDtNasc = new JFormattedTextField();
@@ -126,207 +186,199 @@ public class FormularioPacientePanel extends JPanel {
             e.printStackTrace();
         }
         ftfDtNasc.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
-        ftfDtNasc.setBounds(336, 126, 134, 20);
+        ftfDtNasc.setBounds(336, 213, 134, 20);
         add(ftfDtNasc);
 
         tfTelefone = new JTextField();
         tfTelefone.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
         tfTelefone.setColumns(10);
-        tfTelefone.setBounds(272, 198, 198, 20);
+        tfTelefone.setBounds(272, 285, 198, 20);
         add(tfTelefone);
 
         JLabel lbTelefone = new JLabel("Telefone: ");
         lbTelefone.setLabelFor(tfTelefone);
         lbTelefone.setFont(new Font("Bahnschrift", Font.BOLD, 12));
-        lbTelefone.setBounds(215, 201, 54, 14);
+        lbTelefone.setBounds(215, 288, 54, 14);
         add(lbTelefone);
 
         JLabel lbCelular = new JLabel("Celular: ");
         lbCelular.setFont(new Font("Bahnschrift", Font.BOLD, 12));
-        lbCelular.setBounds(20, 201, 54, 14);
+        lbCelular.setBounds(20, 288, 54, 14);
         add(lbCelular);
 
         tfCelular = new JTextField();
         tfCelular.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
         tfCelular.setColumns(10);
-        tfCelular.setBounds(69, 198, 111, 20);
+        tfCelular.setBounds(69, 285, 111, 20);
         add(tfCelular);
 
         JLabel lblNewLabel = new JLabel("Informações Básicas");
         lblNewLabel.setFont(new Font("Bahnschrift", Font.BOLD, 14));
-        lblNewLabel.setBounds(20, 67, 267, 14);
+        lblNewLabel.setBounds(20, 154, 267, 14);
         add(lblNewLabel);
 
         JSeparator separator = new JSeparator();
-        separator.setBounds(10, 84, 480, 2);
+        separator.setBounds(10, 171, 480, 2);
         add(separator);
 
         JLabel lblContato = new JLabel("Contato");
         lblContato.setBackground(SystemColor.textHighlight);
         lblContato.setFont(new Font("Bahnschrift", Font.BOLD, 14));
-        lblContato.setBounds(20, 168, 267, 14);
+        lblContato.setBounds(20, 255, 267, 14);
         add(lblContato);
 
         JSeparator separator_1 = new JSeparator();
-        separator_1.setBounds(10, 185, 480, 2);
+        separator_1.setBounds(10, 272, 480, 2);
         add(separator_1);
 
         tfEmail = new JTextField();
         tfEmail.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
         tfEmail.setColumns(10);
-        tfEmail.setBounds(258, 229, 212, 20);
+        tfEmail.setBounds(258, 316, 212, 20);
         add(tfEmail);
 
         JLabel lbEmail = new JLabel("Email: ");
         lbEmail.setLabelFor(tfEmail);
         lbEmail.setFont(new Font("Bahnschrift", Font.BOLD, 12));
-        lbEmail.setBounds(215, 232, 54, 14);
+        lbEmail.setBounds(215, 319, 54, 14);
         add(lbEmail);
 
         JLabel lblEndereo = new JLabel("Endereço");
         lblEndereo.setFont(new Font("Bahnschrift", Font.BOLD, 14));
         lblEndereo.setBackground(SystemColor.textHighlight);
-        lblEndereo.setBounds(20, 270, 267, 14);
+        lblEndereo.setBounds(20, 357, 267, 14);
         add(lblEndereo);
 
         JSeparator separator_1_1 = new JSeparator();
-        separator_1_1.setBounds(10, 287, 480, 2);
+        separator_1_1.setBounds(10, 374, 480, 2);
         add(separator_1_1);
 
         tfLogradouro = new JTextField();
         tfLogradouro.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
         tfLogradouro.setColumns(10);
-        tfLogradouro.setBounds(95, 338, 174, 20);
+        tfLogradouro.setBounds(95, 425, 174, 20);
         add(tfLogradouro);
 
         JLabel lbBairro = new JLabel("Bairro: ");
         lbBairro.setFont(new Font("Bahnschrift", Font.BOLD, 12));
-        lbBairro.setBounds(20, 369, 54, 14);
+        lbBairro.setBounds(20, 456, 54, 14);
         add(lbBairro);
 
         JLabel lbCep = new JLabel("CEP: ");
         lbCep.setFont(new Font("Bahnschrift", Font.BOLD, 12));
-        lbCep.setBounds(20, 303, 54, 14);
+        lbCep.setBounds(20, 390, 54, 14);
         add(lbCep);
 
         tfCep = new JTextField();
         lbCep.setLabelFor(tfCep);
         tfCep.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
         tfCep.setColumns(10);
-        tfCep.setBounds(51, 300, 72, 20);
+        tfCep.setBounds(51, 387, 72, 20);
         add(tfCep);
 
         tfBairro = new JTextField();
         tfBairro.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
         tfBairro.setColumns(10);
-        tfBairro.setBounds(63, 366, 206, 20);
+        tfBairro.setBounds(63, 453, 206, 20);
         add(tfBairro);
 
         JLabel lbEstado = new JLabel("Estado:");
         lbEstado.setFont(new Font("Bahnschrift", Font.BOLD, 12));
-        lbEstado.setBounds(290, 341, 54, 14);
+        lbEstado.setBounds(290, 428, 54, 14);
         add(lbEstado);
 
         JLabel lbLogradouro = new JLabel("Logradouro: ");
         lbLogradouro.setLabelFor(tfLogradouro);
         lbLogradouro.setFont(new Font("Bahnschrift", Font.BOLD, 12));
-        lbLogradouro.setBounds(20, 341, 87, 14);
+        lbLogradouro.setBounds(20, 428, 87, 14);
         add(lbLogradouro);
 
         tfCidade = new JTextField();
         tfCidade.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
         tfCidade.setColumns(10);
-        tfCidade.setBounds(63, 394, 206, 20);
+        tfCidade.setBounds(63, 481, 206, 20);
         add(tfCidade);
 
         JLabel lbCidade = new JLabel("Cidade: ");
         lbCidade.setLabelFor(tfCidade);
         lbCidade.setFont(new Font("Bahnschrift", Font.BOLD, 12));
-        lbCidade.setBounds(20, 397, 54, 14);
+        lbCidade.setBounds(20, 484, 54, 14);
         add(lbCidade);
 
         cbEstado = new JComboBox<>(siglas);
         lbEstado.setLabelFor(cbEstado);
-        cbEstado.setBounds(336, 336, 47, 22);
+        cbEstado.setBounds(336, 423, 47, 22);
         add(cbEstado);
 
         JLabel lbNumero = new JLabel("Número:");
         lbNumero.setFont(new Font("Bahnschrift", Font.BOLD, 12));
-        lbNumero.setBounds(290, 368, 54, 14);
+        lbNumero.setBounds(290, 455, 54, 14);
         add(lbNumero);
 
         tfNumero = new JTextField();
         tfNumero.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
         tfNumero.setColumns(10);
-        tfNumero.setBounds(346, 365, 37, 20);
+        tfNumero.setBounds(346, 452, 37, 20);
         add(tfNumero);
 
         tfComplemento = new JTextField();
         tfComplemento.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
         tfComplemento.setColumns(10);
-        tfComplemento.setBounds(105, 422, 164, 20);
+        tfComplemento.setBounds(105, 509, 164, 20);
         add(tfComplemento);
 
         JLabel lbComplemento = new JLabel("Complemento:");
         lbComplemento.setLabelFor(tfComplemento);
         lbComplemento.setFont(new Font("Bahnschrift", Font.BOLD, 12));
-        lbComplemento.setBounds(20, 425, 87, 14);
+        lbComplemento.setBounds(20, 512, 87, 14);
         add(lbComplemento);
 
-        JLabel lblInformaesMedicas = new JLabel("Informações Médicas");
-        lblInformaesMedicas.setFont(new Font("Bahnschrift", Font.BOLD, 14));
-        lblInformaesMedicas.setBackground(SystemColor.textHighlight);
-        lblInformaesMedicas.setBounds(20, 471, 267, 14);
-        add(lblInformaesMedicas);
+        JLabel lbInfoEspecificaFunc = new JLabel("Informações Especificas");
+        lbInfoEspecificaFunc.setFont(new Font("Bahnschrift", Font.BOLD, 14));
+        lbInfoEspecificaFunc.setBackground(SystemColor.textHighlight);
+        lbInfoEspecificaFunc.setBounds(20, 558, 267, 14);
+        add(lbInfoEspecificaFunc);
 
         JSeparator separator_1_1_1 = new JSeparator();
-        separator_1_1_1.setBounds(10, 488, 480, 2);
+        separator_1_1_1.setBounds(10, 575, 480, 2);
         add(separator_1_1_1);
 
-        JLabel lbAlergias = new JLabel("Alergias:");
-        lbAlergias.setFont(new Font("Bahnschrift", Font.BOLD, 12));
-        lbAlergias.setBounds(20, 510, 54, 14);
-        add(lbAlergias);
+        tfCrm = new JTextField();
+        tfCrm.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
+        tfCrm.setColumns(10);
+        tfCrm.setBounds(56, 588, 174, 20);
+        tfCip.setVisible(false);
+        add(tfCrm);
 
-        tfAlergia = new JTextField();
-        lbAlergias.setLabelFor(tfAlergia);
-        tfAlergia.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
-        tfAlergia.setColumns(10);
-        tfAlergia.setBounds(74, 507, 396, 22);
-        add(tfAlergia);
+        JLabel lbCrm = new JLabel("CRM: ");
+        lbCrm.setLabelFor(tfCrm);
+        lbCrm.setFont(new Font("Bahnschrift", Font.BOLD, 12));
+        lbCrm.setBounds(20, 591, 87, 14);
+        add(lbCrm);
 
-        JLabel lbMedicamentoUtilizados = new JLabel("Medicamento utilizados:");
-        lbMedicamentoUtilizados.setFont(new Font("Bahnschrift", Font.BOLD, 12));
-        lbMedicamentoUtilizados.setBounds(20, 541, 141, 14);
-        add(lbMedicamentoUtilizados);
+        tfCip = new JTextField();
+        tfCip.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
+        tfCip.setColumns(10);
+        tfCip.setBounds(56, 588, 174, 20);
+        tfCip.setVisible(false);
+        add(tfCip);
 
-        tfMedicamentosUtilizados = new JTextField();
-        lbMedicamentoUtilizados.setLabelFor(tfMedicamentosUtilizados);
-        tfMedicamentosUtilizados.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
-        tfMedicamentosUtilizados.setColumns(10);
-        tfMedicamentosUtilizados.setBounds(160, 540, 310, 40);
-        add(tfMedicamentosUtilizados);
+        JLabel lbCip = new JLabel("CIP: ");
+        lbCrm.setLabelFor(tfCip);
+        lbCrm.setFont(new Font("Bahnschrift", Font.BOLD, 12));
+        lbCrm.setBounds(20, 591, 87, 14);
+        add(lbCip);
 
-        JLabel lbHistrico = new JLabel("Histórico:");
-        lbHistrico.setFont(new Font("Bahnschrift", Font.BOLD, 12));
-        lbHistrico.setBounds(20, 592, 141, 14);
-        add(lbHistrico);
+        JLabel lbSenha = new JLabel("Senha: ");
+        lbCrm.setLabelFor(tfSenha);
+        lbSenha.setFont(new Font("Bahnschrift", Font.BOLD, 12));
+        lbSenha.setBounds(20, 627, 54, 14);
+        add(lbSenha);
 
-        JLabel lbAnotacoes = new JLabel("Anotações:");
-        lbAnotacoes.setFont(new Font("Bahnschrift", Font.BOLD, 12));
-        lbAnotacoes.setBounds(20, 671, 141, 14);
-        add(lbAnotacoes);
-
-        tfHistorico = new JTextField();
-        lbHistrico.setLabelFor(tfHistorico);
-        tfHistorico.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
-        tfHistorico.setBounds(20, 605, 450, 50);
-        add(tfHistorico);
-
-        tfAnotacoes = new JTextField();
-        tfAnotacoes.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
-        tfAnotacoes.setBounds(20, 684, 450, 50);
-        add(tfAnotacoes);
+        tfSenha = new JPasswordField();
+        tfSenha.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
+        tfSenha.setBounds(63, 623, 167, 20);
+        add(tfSenha);
 
         btnSalvar = new JButton();
         btnSalvar.setIcon(new ImageIcon(getClass().getResource("/view/icons/salvar-arquivo.png")));
@@ -337,11 +389,22 @@ public class FormularioPacientePanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 Endereco endereco;
                 EnderecoController enderecoController = new EnderecoController();
-                endereco = enderecoController.controlSalvar(FormularioPacientePanel.this);
-                PacienteController pacienteController = new PacienteController();
-                pacienteController.controlSalvar(FormularioPacientePanel.this, endereco);
+                endereco = enderecoController.controlSalvar(FormularioFuncionarioPanel.this);
 
-                JOptionPane.showMessageDialog(null, "Paciente cadastrado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                if (rdbtnRecepcionista.isSelected()) {
+                    RecepcionistaController recepcionistaController = new RecepcionistaController();
+                    recepcionistaController.controlSalvar(FormularioFuncionarioPanel.this, endereco);
+
+                }else if(rdbtnEnfermeiro.isSelected()){
+                    EnfermeiroController enfermeiroController = new EnfermeiroController();
+                    enfermeiroController.controlSalvar(FormularioFuncionarioPanel.this, endereco);
+
+                }else{
+                    MedicoController medicoController = new MedicoController();
+                    medicoController.controlSalvar(FormularioFuncionarioPanel.this, endereco);
+                }
+
+                JOptionPane.showMessageDialog(null, "Funcionario cadastrado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
                 limparCampos();
             }
         });
@@ -376,11 +439,12 @@ public class FormularioPacientePanel extends JPanel {
         });
         btnBusca.setBounds(336, 742, 38, 38);
         add(btnBusca);
-    }
 
-    public FormularioPacientePanel(JFrame pacienteFrame, Integer codPaciente){
+
+    }
+    public FormularioFuncionarioPanel(JFrame pacienteFrame, Integer codFuncionario){
         this(pacienteFrame);//chama o construtor padrão com o formulário de cadastro do paciente
-        Paciente paciente = getDadosPaciente(codPaciente);
+        Paciente paciente = getDadosFuncionario(codFuncionario);
 
         btnLimpar.setVisible(false);//Deixa os botões do outro formilario ocultos
         btnSalvar.setVisible(false);
@@ -485,18 +549,19 @@ public class FormularioPacientePanel extends JPanel {
 
     }
 
-    private void preencherCampos(Paciente paciente){
-        // SETA OS VALORES DOS CAMPOS DE ACORDO COM O RECUPERADO DO BANCO DE DADOS
-        Endereco endereco = paciente.getEndereco();
 
-        tfCpf.setText(paciente.getCpf());
-        tfNome.setText(paciente.getNome());
-        tfSobrenome.setText(paciente.getSobrenome());
-        cbSexo.setSelectedItem(paciente.getSexoObj().getDescricao());
-        ftfDtNasc.setText(getStringFromDate2(paciente.getDataNascimento()));
-        tfTelefone.setText(paciente.getTelefone());
-        tfCelular.setText(paciente.getCelular());
-        tfEmail.setText(paciente.getEmail());
+    private void preencherCampos(Object funcionario){
+        // SETA OS VALORES DOS CAMPOS DE ACORDO COM O RECUPERADO DO BANCO DE DADOS
+        Endereco endereco = funcionario.getEndereco();
+
+        tfCpf.setText(funcionario.getCpf());
+        tfNome.setText(funcionario.getNome());
+        tfSobrenome.setText(funcionario.getSobrenome());
+        cbSexo.setSelectedItem(funcionario.getSexoObj().getDescricao());
+        ftfDtNasc.setText(getStringFromDate2(funcionario.getDataNascimento()));
+        tfTelefone.setText(funcionario.getTelefone());
+        tfCelular.setText(funcionario.getCelular());
+        tfEmail.setText(funcionario.getEmail());
         tfLogradouro.setText(endereco.getLogradouro());
         tfCep.setText(endereco.getCep().toString());
         tfBairro.setText(endereco.getBairro());
@@ -504,10 +569,10 @@ public class FormularioPacientePanel extends JPanel {
         tfNumero.setText(endereco.getNumero().toString());
         tfComplemento.setText(endereco.getComplemento());
         cbEstado.setSelectedItem(endereco.getEstado());
-        tfAlergia.setText(paciente.getAlergias());
-        tfMedicamentosUtilizados.setText(paciente.getMedicamentosUtilizados());
-        tfHistorico.setText(paciente.getHistorico());
-        tfAnotacoes.setText(paciente.getAnotacoes());
+        tfAlergia.setText(funcionario.getAlergias());
+        tfMedicamentosUtilizados.setText(funcionario.getMedicamentosUtilizados());
+        tfHistorico.setText(funcionario.getHistorico());
+        tfAnotacoes.setText(funcionario.getAnotacoes());
     }
 
     private void setStatusEdicaoCampos(Boolean status){
@@ -534,16 +599,15 @@ public class FormularioPacientePanel extends JPanel {
         tfNumero.setEditable(status);
         tfComplemento.setEditable(status);
         cbEstado.setEnabled(status);
-        tfAlergia.setEditable(status);
-        tfMedicamentosUtilizados.setEditable(status);
-        tfHistorico.setEditable(status);
-        tfAnotacoes.setEditable(status);
+        tfCrm.setEditable(status);
+        tfCip.setEditable(status);
+        tfSenha.setEditable(status);
     }
-
     private void limparCampos() {
         tfCpf.setText("");
         tfNome.setText("");
         tfSobrenome.setText("");
+        ftfDtNasc.setText("");
         tfTelefone.setText("");
         tfCelular.setText("");
         tfEmail.setText("");
@@ -553,18 +617,13 @@ public class FormularioPacientePanel extends JPanel {
         tfCidade.setText("");
         tfNumero.setText("");
         tfComplemento.setText("");
-        tfAlergia.setText("");
-        tfMedicamentosUtilizados.setText("");
-        tfAnotacoes.setText("");
-        tfHistorico.setText("");
-        ftfDtNasc.setText("");
-        cbEstado.setSelectedIndex(0);
-        cbSexo.setSelectedIndex(0);
+        tfCrm.setText("");
+        tfCip.setText("");
+        tfSenha.setText("");
     }
 
-    private Paciente getDadosPaciente(Integer codPaciente) {
-        PacienteController pc = new PacienteController();
-        return pc.controlBuscarPacienteForId(codPaciente);
+    private Object getDadosFuncionario(Integer codFuncionario) {
+        return null; // Aguardando desenvolvimento
     }
 
     private void alterCoresCampos(Color corBorda, Color corFundo){
@@ -614,18 +673,17 @@ public class FormularioPacientePanel extends JPanel {
         cbEstado.setBorder(BorderFactory.createLineBorder(corBorda));
         cbEstado.setForeground(Color.BLACK);
 
-        tfAlergia.setBorder(BorderFactory.createLineBorder(corBorda));
-        tfAlergia.setBackground(corFundo);
+        tfCrm.setBorder(BorderFactory.createLineBorder(corBorda));
+        tfCrm.setBackground(corFundo);
 
-        tfMedicamentosUtilizados.setBorder(BorderFactory.createLineBorder(corBorda));
-        tfMedicamentosUtilizados.setBackground(corFundo);
+        tfCip.setBorder(BorderFactory.createLineBorder(corBorda));
+        tfCip.setBackground(corFundo);
 
-        tfHistorico.setBorder(BorderFactory.createLineBorder(corBorda));
-        tfHistorico.setBackground(corFundo);
-
-        tfAnotacoes.setBorder(BorderFactory.createLineBorder(corBorda));
-        tfAnotacoes.setBackground(corFundo);
+        tfSenha.setBorder(BorderFactory.createLineBorder(corBorda));
+        tfSenha.setBackground(corFundo);
     }
+
+*/
 
     public JTextField getTfCpf() {
         return tfCpf;
@@ -723,38 +781,6 @@ public class FormularioPacientePanel extends JPanel {
         this.tfComplemento = tfComplemento;
     }
 
-    public JTextField getTfAlergia() {
-        return tfAlergia;
-    }
-
-    public void setTfAlergia(JTextField tfAlergia) {
-        this.tfAlergia = tfAlergia;
-    }
-
-    public JTextField getTfMedicamentosUtilizados() {
-        return tfMedicamentosUtilizados;
-    }
-
-    public void setTfMedicamentosUtilizados(JTextField tfMedicamentosUtilizados) {
-        this.tfMedicamentosUtilizados = tfMedicamentosUtilizados;
-    }
-
-    public JTextField getTfAnotacoes() {
-        return tfAnotacoes;
-    }
-
-    public void setTfAnotacoes(JTextField tfAnotacoes) {
-        this.tfAnotacoes = tfAnotacoes;
-    }
-
-    public JTextField getTfHistorico() {
-        return tfHistorico;
-    }
-
-    public void setTfHistorico(JTextField tfHistorico) {
-        this.tfHistorico = tfHistorico;
-    }
-
     public Sexo getCbSexo() {
         return (Sexo) cbSexo.getSelectedItem();
     }
@@ -778,4 +804,29 @@ public class FormularioPacientePanel extends JPanel {
     public void setFtfDtNasc(JFormattedTextField ftfDtNasc) {
         this.ftfDtNasc = ftfDtNasc;
     }
+
+    public JTextField getTfCrm() {
+        return tfCrm;
+    }
+
+    public void setTfCrm(JTextField tfCrm) {
+        this.tfCrm = tfCrm;
+    }
+
+    public JTextField getTfCip() {
+        return tfCip;
+    }
+
+    public void setTfCip(JTextField tfCip) {
+        this.tfCip = tfCip;
+    }
+
+    public JPasswordField getTfSenha() {
+        return tfSenha;
+    }
+
+    public void setTfSenha(JPasswordField tfSenha) {
+        this.tfSenha = tfSenha;
+    }
+
 }

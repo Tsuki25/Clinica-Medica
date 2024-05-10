@@ -72,6 +72,7 @@ public class PacienteDao {
                 paciente.setAlergias(rs.getString("alergias"));
                 paciente.setMedicamentosUtilizados(rs.getString("medicamentosUtilizados"));
                 paciente.setAnotacoes(rs.getString("anotacoes"));
+                paciente.setEndereco(new Endereco(rs.getInt("codEnd")));
                 pacientes.add(paciente);
             }
 

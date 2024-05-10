@@ -6,6 +6,7 @@ import model.Endereco;
 import model.Paciente;
 import view.FormularioPacientePanel;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.MissingFormatArgumentException;
@@ -48,46 +49,32 @@ public class PacienteController {
 
     }
 
-    public ArrayList<Object[]> controlListarPacientes(){
+    public ArrayList<Paciente> controlListarPacientes(){
         PacienteDao pacienteDao = new PacienteDao();
         EnderecoDao enderecoDao = new EnderecoDao();
 
         ArrayList<Paciente> pacientes = pacienteDao.listarPacientes();
-        ArrayList<Endereco> enderecos = enderecoDao.listarEndereco();
-        ArrayList<Object[]> resposta = new ArrayList<>();
 
-        for (int i = 0; i < pacientes.size(); i++) {
-            Paciente paciente = pacientes.get(i);
-            Endereco endereco = enderecos.get(i);
-            Object[] dados = new Object[] { paciente, endereco };
-            resposta.add(dados);
+        for (Paciente paciente : pacientes) { //PREENCHE O VETOR DE ENDERECOS RELATIVOS AOS PACIENTES BUSCADOS NA ORDEM
+            Endereco endereco = enderecoDao.getEnderecoForId(paciente.getEndereco().getCodEnd());
+            paciente.setEndereco(endereco);
         }
 
-        return resposta;
+        return pacientes;
     }
 
-    public ArrayList<Object[]> controlListarPacientesBusca(String textoBusca){
+    public ArrayList<Paciente> controlListarPacientesBusca(String textoBusca){
         PacienteDao pacienteDao = new PacienteDao();
         EnderecoDao enderecoDao = new EnderecoDao();
 
         ArrayList<Paciente> pacientes = pacienteDao.listarPacientesBusca(textoBusca);
-        ArrayList<Endereco> enderecos = new ArrayList<>();
 
         for (Paciente paciente : pacientes) { //PREENCHE O VETOR DE ENDERECOS RELATIVOS AOS PACIENTES BUSCADOS NA ORDEM
             Endereco endereco = enderecoDao.getEnderecoForId(paciente.getEndereco().getCodEnd());
-            enderecos.add(endereco);
+            paciente.setEndereco(endereco);
         }
 
-        ArrayList<Object[]> resposta = new ArrayList<>();
-
-        for (int i = 0; i < pacientes.size(); i++) {
-            Paciente paciente = pacientes.get(i);
-            Endereco endereco = enderecos.get(i);
-            Object[] dados = new Object[] { paciente, endereco };
-            resposta.add(dados);
-        }
-
-        return resposta;
+        return pacientes;
     }
 
     public Paciente controlAtualizarPaciente(FormularioPacientePanel updatePanel){
