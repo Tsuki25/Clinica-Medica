@@ -3,8 +3,8 @@ CREATE DATABASE clinica;
 USE clinica;
 
 CREATE TABLE IF NOT EXISTS ENDERECO(
-    codEndereco BIGINT PRIMARY KEY AUTO_INCREMENT,
-    cep VARCHAR(9) NOT NULL,
+    codEnd BIGINT PRIMARY KEY AUTO_INCREMENT,
+    cep int NOT NULL,
     logradouro VARCHAR(60) NOT NULL,
     bairro VARCHAR(60) NOT NULL,
     cidade VARCHAR(60) NOT NULL,
@@ -27,8 +27,8 @@ CREATE TABLE IF NOT EXISTS PACIENTE(
     alergias TEXT,
     medicamentosUtilizados TEXT,
     anotacoes TEXT,
-    codEndereco BIGINT NOT NULL,
-    FOREIGN KEY (codEndereco) REFERENCES ENDERECO(codEndereco)
+    codEnd BIGINT NOT NULL,
+    FOREIGN KEY (codEnd) REFERENCES ENDERECO(codEnd)
 );
 
 CREATE TABLE IF NOT EXISTS RECEPCIONISTA( #NECESSARIO TRATIVA INTERNA DO SISTEMA PARA UMA CONTAGEM UNICA DE IDS PARA TODO O SISTEMA
@@ -42,8 +42,8 @@ CREATE TABLE IF NOT EXISTS RECEPCIONISTA( #NECESSARIO TRATIVA INTERNA DO SISTEMA
     celular VARCHAR(20) NOT NULL,
     email VARCHAR(80) NOT NULL,
     senha VARCHAR(20) NOT NULL,
-    codEndereco BIGINT NOT NULL,
-    FOREIGN KEY (codEndereco) REFERENCES ENDERECO(codEndereco)
+    codEnd BIGINT NOT NULL,
+    FOREIGN KEY (codEnd) REFERENCES ENDERECO(codEnd)
 );
 
 CREATE TABLE IF NOT EXISTS ENFERMEIRO( #NECESSARIO TRATIVA INTERNA DO SISTEMA PARA UMA CONTAGEM UNICA DE IDS PARA TODO O SISTEMA
@@ -58,8 +58,8 @@ CREATE TABLE IF NOT EXISTS ENFERMEIRO( #NECESSARIO TRATIVA INTERNA DO SISTEMA PA
     email VARCHAR(80) NOT NULL,
     senha VARCHAR(20) NOT NULL,
     cip VARCHAR(10) NOT NULL UNIQUE,
-    codEndereco BIGINT NOT NULL,
-    FOREIGN KEY (codEndereco) REFERENCES ENDERECO(codEndereco)
+    codEnd BIGINT NOT NULL,
+    FOREIGN KEY (codEnd) REFERENCES ENDERECO(codEnd)
 );
 
 CREATE TABLE IF NOT EXISTS MEDICO( #NECESSARIO TRATIVA INTERNA DO SISTEMA PARA UMA CONTAGEM UNICA DE IDS PARA TODO O SISTEMA
@@ -74,8 +74,8 @@ CREATE TABLE IF NOT EXISTS MEDICO( #NECESSARIO TRATIVA INTERNA DO SISTEMA PARA U
     email VARCHAR(80) NOT NULL,
     senha VARCHAR(20) NOT NULL,
     crm VARCHAR(10) NOT NULL UNIQUE,
-    codEndereco BIGINT NOT NULL,
-    FOREIGN KEY (codEndereco) REFERENCES ENDERECO(codEndereco)
+    codEnd BIGINT NOT NULL,
+    FOREIGN KEY (codEnd) REFERENCES ENDERECO(codEnd)
 );
 
 CREATE TABLE IF NOT EXISTS AGENDA(
@@ -184,22 +184,22 @@ INSERT INTO ENDERECO (cep, logradouro, bairro, cidade, estado, numero, complemen
 ('54321-876', 'Avenida Principal', 'Bairro Novo', 'Cidade Nova', 'NV', 456, 'Complemento Novo');
 
 -- Inserts para a tabela PACIENTE
-INSERT INTO PACIENTE (cpf, nome, sobrenome, sexo, dataNascimento, celular, email, codEndereco) VALUES
+INSERT INTO PACIENTE (cpf, nome, sobrenome, sexo, dataNascimento, celular, email, codEnd) VALUES
 ('12345678901', 'João', 'Silva', 'Masculino', '1990-05-10', '(99) 99999-9999', 'joao@email.com', 1),
 ('98765432109', 'Maria', 'Santos', 'Feminino', '1985-08-15', '(88) 88888-8888', 'maria@email.com', 2);
 
 -- Inserts para a tabela RECEPCIONISTA
-INSERT INTO RECEPCIONISTA (codFuncionario, cpf, nome, sobrenome, sexo, dataNascimento, celular, email, senha, codEndereco) VALUES
+INSERT INTO RECEPCIONISTA (codFuncionario, cpf, nome, sobrenome, sexo, dataNascimento, celular, email, senha, codEnd) VALUES
 (1, '11122233344', 'Ana', 'Souza', 'Feminino', '1980-01-20', '(77) 77777-7777', 'ana@email.com', 'senha123', 1),
 (2, '22233344455', 'Pedro', 'Oliveira', 'Masculino', '1975-11-05', '(66) 66666-6666', 'pedro@email.com', 'senha456', 2);
 
 -- Inserts para a tabela ENFERMEIRO
-INSERT INTO ENFERMEIRO (codFuncionario, cpf, nome, sobrenome, sexo, dataNascimento, celular, email, senha, cip, codEndereco) VALUES
+INSERT INTO ENFERMEIRO (codFuncionario, cpf, nome, sobrenome, sexo, dataNascimento, celular, email, senha, cip, codEnd) VALUES
 (3, '33344455566', 'Mariana', 'Costa', 'Feminino', '1983-04-15', '(55) 55555-5555', 'mariana@email.com', 'senha789', 'CIP123', 1),
 (4, '44455566677', 'Lucas', 'Ferreira', 'Masculino', '1978-07-25', '(44) 44444-4444', 'lucas@email.com', 'senha012', 'CIP456', 2);
 
 -- Inserts para a tabela MEDICO
-INSERT INTO MEDICO (codFuncionario, cpf, nome, sobrenome, sexo, dataNascimento, celular, email, senha, crm, codEndereco) VALUES
+INSERT INTO MEDICO (codFuncionario, cpf, nome, sobrenome, sexo, dataNascimento, celular, email, senha, crm, codEnd) VALUES
 (5, '55566677788', 'Juliana', 'Martins', 'Feminino', '1970-03-30', '(33) 33333-3333', 'juliana@email.com', 'senha345', 'CRM123', 1),
 (6, '66677788899', 'Carlos', 'Lima', 'Masculino', '1965-09-10', '(22) 22222-2222', 'carlos@email.com', 'senha678', 'CRM456', 2);
 
@@ -236,3 +236,5 @@ INSERT INTO ENTREGA (dataRetirada, horarioRetirada, retiradoPor, codRecepcionist
 INSERT INTO AGENDAMENTO (dataAgendamento, horarioAgendamento, statusAgendamento, codMedico, codEnfermeiro, codPaciente) VALUES
 ('2024-05-12', '08:00:00', 'Agendado', 5, null, 1),
 ('2024-05-13', '10:00:00', 'Agendado', null, 4, 2);
+
+select * from paciente;
