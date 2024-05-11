@@ -1,9 +1,7 @@
 package view;
 
 import control.*;
-import model.Endereco;
-import model.Paciente;
-import model.Recepcionista;
+import model.*;
 import model.enums.Sexo;
 
 import javax.swing.*;
@@ -58,6 +56,10 @@ public class FormularioFuncionarioPanel extends JPanel {
     JButton btnCancelarEdicao;
     JButton btnNovoCadastro;
 
+    JRadioButton rdbtnRecepcionista;
+    JRadioButton rdbtnEnfermeiro;
+    JRadioButton rdbtnMedico;
+
     String[] siglas = {
             "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR",
             "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"
@@ -73,19 +75,19 @@ public class FormularioFuncionarioPanel extends JPanel {
         lbTitle.setBounds(186, 22, 127, 25);
         add(lbTitle);
 
-        JRadioButton rdbtnRecepcionista = new JRadioButton("Recepcionista");
+        rdbtnRecepcionista = new JRadioButton("Recepcionista");
         rdbtnRecepcionista.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
         rdbtnRecepcionista.setBackground(SystemColor.activeCaptionBorder);
         rdbtnRecepcionista.setBounds(95, 54, 109, 23);
         add(rdbtnRecepcionista);
 
-        JRadioButton rdbtnEnfermeiro = new JRadioButton("Enfermeiro");
+        rdbtnEnfermeiro = new JRadioButton("Enfermeiro");
         rdbtnEnfermeiro.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
         rdbtnEnfermeiro.setBackground(SystemColor.activeCaptionBorder);
         rdbtnEnfermeiro.setBounds(206, 54, 91, 23);
         add(rdbtnEnfermeiro);
 
-        JRadioButton rdbtnMedico = new JRadioButton("Médico");
+        rdbtnMedico = new JRadioButton("Médico");
         rdbtnMedico.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
         rdbtnMedico.setBackground(SystemColor.activeCaptionBorder);
         rdbtnMedico.setBounds(304, 54, 72, 23);
@@ -451,15 +453,28 @@ public class FormularioFuncionarioPanel extends JPanel {
 
 
     }
-    /*
-    public FormularioFuncionarioPanel(JFrame pacienteFrame, Integer codFuncionario){
+
+    public FormularioFuncionarioPanel(JFrame pacienteFrame, Integer codFuncionario, String crm, String cip){
         this(pacienteFrame);//chama o construtor padrão com o formulário de cadastro do paciente
-        Paciente paciente = getDadosFuncionario(codFuncionario);
+        Object funcionario = getDadosFuncionario(codFuncionario, crm, cip);
+
+        // VERIFICA O TIPO DE FUNCIONARIO QUE SERA EDITADO
+        if(funcionario instanceof Medico){
+            Medico funcionarioAux = (Medico) funcionario;
+            preencherCampos(funcionarioAux);// preenche o formulario com os dados do medico
+        }else if(funcionario instanceof Enfermeiro){
+            Enfermeiro funcionarioAux = (Enfermeiro) funcionario;
+            preencherCampos(funcionarioAux);// preenche o formulario com os dados do enfermeiro
+        }else{
+            Recepcionista funcionarioAux = (Recepcionista) funcionario;
+            preencherCampos(funcionarioAux);// preenche o formulario com os dados do recepcionista
+        }
 
         btnLimpar.setVisible(false);//Deixa os botões do outro formilario ocultos
         btnSalvar.setVisible(false);
-
-        preencherCampos(paciente);// preenche o formulario com os dados do paciente
+        rdbtnEnfermeiro.setVisible(false);
+        rdbtnMedico.setVisible(false);
+        rdbtnRecepcionista.setVisible(false);
 
         tfCpf.setEditable(false);//NÃO É POSSIVEL EDITAR O CPF
         setStatusEdicaoCampos(false); //Deixa todos os campos editaveis(true) ou não editaveis(false)
@@ -491,9 +506,24 @@ public class FormularioFuncionarioPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 int confirmacao = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir o registro?", "Confirmação", JOptionPane.YES_NO_OPTION);
                 if (confirmacao == JOptionPane.YES_OPTION) {
-                    PacienteController pc = new PacienteController();
-                    pc.controlExcluirPaciente(paciente);
-                    JOptionPane.showMessageDialog(null, "Paciente excluido com sucesso");
+
+                    if(funcionario instanceof Medico){
+                        Medico funcionarioAux = (Medico) funcionario;
+                        MedicoController mc = new MedicoController();
+                        mc.controlExcluirMedico(funcionarioAux);
+
+                    }else if(funcionario instanceof Enfermeiro){
+                        Enfermeiro funcionarioAux = (Enfermeiro) funcionario;
+                        EnfermeiroController ec = new EnfermeiroController();
+                        ec.controlExcluirEnfermeiro(funcionarioAux);
+
+                    }else{
+                        Recepcionista funcionarioAux = (Recepcionista) funcionario;
+                        RecepcionistaController rc = new RecepcionistaController();
+                        rc.controlExcluirRecepcionista(funcionarioAux);
+                    }
+
+                    JOptionPane.showMessageDialog(null, "Funcionario excluido com sucesso");
                     limparCampos();
                 }
             }
@@ -509,10 +539,23 @@ public class FormularioFuncionarioPanel extends JPanel {
         btnSalvarEdicao.setBounds(432, 742, 38, 38);
         btnSalvarEdicao.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                PacienteController pc = new PacienteController();
-                Paciente pacienteAtualizado =  pc.controlAtualizarPaciente(FormularioPacientePanel.this);
-                preencherCampos(pacienteAtualizado);
-                JOptionPane.showMessageDialog(null, "Paciente atualizado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                if(funcionario instanceof Medico){
+                    MedicoController mc = new MedicoController();
+                    Medico funcionarioAtualizado =  mc.controlAtualizarMedico(FormularioFuncionarioPanel.this);
+                    preencherCampos(funcionarioAtualizado);// preenche o formulario com os dados do medico atualizado
+
+                }else if(funcionario instanceof Enfermeiro){
+                    EnfermeiroController ec = new EnfermeiroController();
+                    Enfermeiro funcionarioAtualizado =  ec.controlAtualizarEnfermeiro(FormularioFuncionarioPanel.this);
+                    preencherCampos(funcionarioAtualizado);// preenche o formulario com os dados do medico atualizado
+
+                }else{
+                    RecepcionistaController rc = new RecepcionistaController();
+                    Recepcionista funcionarioAtualizado =  rc.controlAtualizarRecepcionista(FormularioFuncionarioPanel.this);
+                    preencherCampos(funcionarioAtualizado);// preenche o formulario com os dados do medico atualizado
+                }
+
+                JOptionPane.showMessageDialog(null, "Funcionario atualizado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
 
                 setStatusEdicaoCampos(false);
                 btnEditar.setVisible(true);
@@ -533,7 +576,16 @@ public class FormularioFuncionarioPanel extends JPanel {
                 setStatusEdicaoCampos(false);
                 btnEditar.setVisible(true);
                 btnExcluir.setVisible(true);
-                preencherCampos(paciente);
+                if(funcionario instanceof Medico){
+                    Medico funcionarioAux = (Medico) funcionario;
+                    preencherCampos(funcionarioAux);// preenche o formulario com os dados do medico
+                }else if(funcionario instanceof Enfermeiro){
+                    Enfermeiro funcionarioAux = (Enfermeiro) funcionario;
+                    preencherCampos(funcionarioAux);// preenche o formulario com os dados do enfermeiro
+                }else{
+                    Recepcionista funcionarioAux = (Recepcionista) funcionario;
+                    preencherCampos(funcionarioAux);// preenche o formulario com os dados do recepcionista
+                }
                 btnCancelarEdicao.setVisible(false);
                 btnSalvarEdicao.setVisible(false);
             }
@@ -560,9 +612,14 @@ public class FormularioFuncionarioPanel extends JPanel {
     }
 
 
-    private void preencherCampos(Object funcionario){
+    private void preencherCampos(Medico funcionario){
         // SETA OS VALORES DOS CAMPOS DE ACORDO COM O RECUPERADO DO BANCO DE DADOS
         Endereco endereco = funcionario.getEndereco();
+
+        lbCrm.setVisible(true);
+        tfCrm.setVisible(true);
+        lbCip.setVisible(false);
+        tfCip.setVisible(false);
 
         tfCpf.setText(funcionario.getCpf());
         tfNome.setText(funcionario.getNome());
@@ -579,10 +636,63 @@ public class FormularioFuncionarioPanel extends JPanel {
         tfNumero.setText(endereco.getNumero().toString());
         tfComplemento.setText(endereco.getComplemento());
         cbEstado.setSelectedItem(endereco.getEstado());
-        tfAlergia.setText(funcionario.getAlergias());
-        tfMedicamentosUtilizados.setText(funcionario.getMedicamentosUtilizados());
-        tfHistorico.setText(funcionario.getHistorico());
-        tfAnotacoes.setText(funcionario.getAnotacoes());
+        tfSenha.setText(funcionario.getSenha());
+        tfCrm.setText(funcionario.getCrm());
+    }
+
+    private void preencherCampos(Enfermeiro funcionario){
+        // SETA OS VALORES DOS CAMPOS DE ACORDO COM O RECUPERADO DO BANCO DE DADOS
+        Endereco endereco = funcionario.getEndereco();
+
+        lbCrm.setVisible(false);
+        tfCrm.setVisible(false);
+        lbCip.setVisible(true);
+        tfCip.setVisible(true);
+
+        tfCpf.setText(funcionario.getCpf());
+        tfNome.setText(funcionario.getNome());
+        tfSobrenome.setText(funcionario.getSobrenome());
+        cbSexo.setSelectedItem(funcionario.getSexoObj().getDescricao());
+        ftfDtNasc.setText(getStringFromDate2(funcionario.getDataNascimento()));
+        tfTelefone.setText(funcionario.getTelefone());
+        tfCelular.setText(funcionario.getCelular());
+        tfEmail.setText(funcionario.getEmail());
+        tfLogradouro.setText(endereco.getLogradouro());
+        tfCep.setText(endereco.getCep().toString());
+        tfBairro.setText(endereco.getBairro());
+        tfCidade.setText(endereco.getCidade());
+        tfNumero.setText(endereco.getNumero().toString());
+        tfComplemento.setText(endereco.getComplemento());
+        cbEstado.setSelectedItem(endereco.getEstado());
+        tfSenha.setText(funcionario.getSenha());
+        tfCip.setText(funcionario.getCip());
+    }
+
+    private void preencherCampos(Recepcionista funcionario){
+        // SETA OS VALORES DOS CAMPOS DE ACORDO COM O RECUPERADO DO BANCO DE DADOS
+        Endereco endereco = funcionario.getEndereco();
+
+        lbCrm.setVisible(false);
+        tfCrm.setVisible(false);
+        lbCip.setVisible(false);
+        tfCip.setVisible(false);
+
+        tfCpf.setText(funcionario.getCpf());
+        tfNome.setText(funcionario.getNome());
+        tfSobrenome.setText(funcionario.getSobrenome());
+        cbSexo.setSelectedItem(funcionario.getSexoObj().getDescricao());
+        ftfDtNasc.setText(getStringFromDate2(funcionario.getDataNascimento()));
+        tfTelefone.setText(funcionario.getTelefone());
+        tfCelular.setText(funcionario.getCelular());
+        tfEmail.setText(funcionario.getEmail());
+        tfLogradouro.setText(endereco.getLogradouro());
+        tfCep.setText(endereco.getCep().toString());
+        tfBairro.setText(endereco.getBairro());
+        tfCidade.setText(endereco.getCidade());
+        tfNumero.setText(endereco.getNumero().toString());
+        tfComplemento.setText(endereco.getComplemento());
+        cbEstado.setSelectedItem(endereco.getEstado());
+        tfSenha.setText(funcionario.getSenha());
     }
 
     private void setStatusEdicaoCampos(Boolean status){
@@ -613,7 +723,6 @@ public class FormularioFuncionarioPanel extends JPanel {
         tfCip.setEditable(status);
         tfSenha.setEditable(status);
     }
-    */
 
     private void limparCampos() {
         tfCpf.setText("");
@@ -632,6 +741,22 @@ public class FormularioFuncionarioPanel extends JPanel {
         tfCrm.setText("");
         tfCip.setText("");
         tfSenha.setText("");
+    }
+
+    private Object getDadosFuncionario(Integer codFuncionario, String crm, String cip) {
+        if(!crm.isEmpty()){// CRM PREENCHIDO
+            MedicoController mc = new MedicoController();
+            return mc.controlBuscarMedicoForId(codFuncionario);
+
+        }else if(!cip.isEmpty()){//CRI PREENCHIDO
+            EnfermeiroController ec = new EnfermeiroController();
+            return ec.controlBuscarEnfermeiroForId(codFuncionario);
+
+        }else{
+            RecepcionistaController rc = new RecepcionistaController();
+            return rc.controlBuscarRecepcionistaForId(codFuncionario);
+        }
+
     }
 
 

@@ -68,8 +68,11 @@ public class ListaFuncionariosFrame extends JFrame{
                 if (e.getClickCount() == 1) {
                     int linha = table.getSelectedRow();
                     if (linha != -1) {
-                        Integer codPaciente = Integer.parseInt(table.getValueAt(linha, 0).toString());
-                        PacienteFrame pacienteFrame = new PacienteFrame(codPaciente); //ABRE O FRAME DE EDICAO DE DADOS DO USUARIOS
+                        Integer codFuncionario = Integer.parseInt(table.getValueAt(linha, 0).toString());// passar codFuncionario, crm, cri
+                        String crm = table.getValueAt(linha, 4).toString();// se crm vazio e cri cheio -> enfermerio
+                        String cri = table.getValueAt(linha, 5).toString();  // se crm cheio e cri vazio -> medico
+                        // se crm e cri vazios recepcionista
+                        PacienteFrame pacienteFrame = new PacienteFrame(codFuncionario, crm, cri); //ABRE O FRAME DE EDICAO DE DADOS DO USUARIOS
                         pacienteFrame.setSize(530,870);
                         pacienteFrame.setVisible(true);
                         ListaFuncionariosFrame.this.setVisible(false);

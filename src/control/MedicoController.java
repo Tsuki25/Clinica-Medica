@@ -1,9 +1,9 @@
 package control;
 
-import dao.EnderecoDao;
+import dao.*;
 import dao.MedicoDao;
-import model.Endereco;
-import model.Medico;
+import model.*;
+
 import view.FormularioFuncionarioPanel;
 
 import java.util.ArrayList;
@@ -48,6 +48,54 @@ public class MedicoController {
 
     }
 
+    public Medico controlAtualizarMedico(FormularioFuncionarioPanel updatePanel){
+        try{
+            MedicoDao medicoDao = new MedicoDao();
+            EnderecoDao enderecoDao = new EnderecoDao();
+
+            Medico medico = new Medico();
+            medico.setCpf(updatePanel.getTfCpf().getText());
+            medico.setNome(updatePanel.getTfNome().getText());
+            medico.setSobrenome(updatePanel.getTfSobrenome().getText());
+            medico.setDataNascimento(getDateFromString1(updatePanel.getFtfDtNasc().getText()));
+            medico.setTelefone(updatePanel.getTfTelefone().getText());
+            medico.setCelular(updatePanel.getTfCelular().getText());
+            medico.setEmail(updatePanel.getTfEmail().getText());
+            medico.setSexo(updatePanel.getCbSexo());
+            char[] senhaChars = updatePanel.getTfSenha().getPassword();
+            medico.setSenha(new String(senhaChars));
+            medico.setCrm(updatePanel.getTfCrm().getText());
+
+            Endereco endereco = new Endereco();
+            endereco.setCodEnd(medicoDao.getCodEnderecoForMedico(medico.getCpf()));//Função que busca no banco o cod de endereço do medico
+            endereco.setCep(Integer.parseInt(updatePanel.getTfCep().getText()));
+            endereco.setLogradouro(updatePanel.getTfLogradouro().getText());
+            endereco.setBairro(updatePanel.getTfBairro().getText());
+            endereco.setCidade(updatePanel.getTfCidade().getText());
+            endereco.setEstado((String) updatePanel.getCbEstado().getSelectedItem());
+            endereco.setNumero(Integer.parseInt(updatePanel.getTfNumero().getText()));
+            endereco.setComplemento(updatePanel.getTfComplemento().getText());
+
+            medico.setEndereco(endereco);
+
+            medicoDao.atualizarMedico(medico);
+            enderecoDao.atualizarEndereco(medico.getEndereco());
+            return medico;
+
+        }catch(InputMismatchException ime){
+            ime.printStackTrace();
+            return null;
+
+        }catch(MissingFormatArgumentException mfae){
+            mfae.printStackTrace();
+            return null;
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public ArrayList<Medico> controlListarMedicos(){
         MedicoDao medicoDao = new MedicoDao();
         EnderecoDao enderecoDao = new EnderecoDao();
@@ -74,5 +122,22 @@ public class MedicoController {
         }
 
         return medicos;
+    }
+
+    public Medico controlBuscarMedicoForId(Integer codFuncionario){
+        MedicoDao pd = new MedicoDao();
+        EnderecoDao ed = new EnderecoDao();
+        Medico medico = pd.getMedicoForId(codFuncionario);
+        Endereco endereco = ed.getEnderecoForId(medico.getEndereco().getCodEnd());
+        medico.setEndereco(endereco);
+
+        return medico;
+    }
+
+    public void controlExcluirMedico(Medico medico){
+        MedicoDao medicoDao = new MedicoDao();
+        EnderecoDao ec = new EnderecoDao();
+        medicoDao.excluirMedico(medico.getCpf());
+        ec.excluirEndereco(medico.getEndereco().getCodEnd());
     }
 }

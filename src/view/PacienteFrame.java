@@ -46,8 +46,24 @@ public class PacienteFrame extends JFrame {
         contentPane.add(tabbedPane, BorderLayout.CENTER);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
 
+    public PacienteFrame(Integer codFuncionario, String crm, String cip) { //FRAME DE EDICAO Funcionario
+        setTitle("Funcionarios");
+        setResizable(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 450, 300);
+        contentPane = new JPanel();
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        contentPane.setLayout(new BorderLayout(0, 0));
+        setContentPane(contentPane);
 
+        JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+        ListaFuncionariosFrame funcionariosPanel = new ListaFuncionariosFrame();
+        tabbedPane.addTab("Edição Funcionarios", new FormularioFuncionarioPanel(PacienteFrame.this, codFuncionario, crm, cip));
+        contentPane.add(tabbedPane, BorderLayout.CENTER);
+
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
 }

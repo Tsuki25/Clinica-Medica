@@ -2,9 +2,11 @@ package control;
 
 import dao.EnderecoDao;
 import dao.RecepcionistaDao;
+import dao.PacienteDao;
 import dao.RecepcionistaDao;
 import model.Endereco;
 import model.Recepcionista;
+import model.Paciente;
 import model.Recepcionista;
 import view.FormularioFuncionarioPanel;
 
@@ -50,6 +52,53 @@ public class RecepcionistaController {
 
     }
 
+    public Recepcionista controlAtualizarRecepcionista(FormularioFuncionarioPanel updatePanel){
+        try{
+            RecepcionistaDao recepcionistaDao = new RecepcionistaDao();
+            EnderecoDao enderecoDao = new EnderecoDao();
+
+            Recepcionista recepcionista = new Recepcionista();
+            recepcionista.setCpf(updatePanel.getTfCpf().getText());
+            recepcionista.setNome(updatePanel.getTfNome().getText());
+            recepcionista.setSobrenome(updatePanel.getTfSobrenome().getText());
+            recepcionista.setDataNascimento(getDateFromString1(updatePanel.getFtfDtNasc().getText()));
+            recepcionista.setTelefone(updatePanel.getTfTelefone().getText());
+            recepcionista.setCelular(updatePanel.getTfCelular().getText());
+            recepcionista.setEmail(updatePanel.getTfEmail().getText());
+            recepcionista.setSexo(updatePanel.getCbSexo());
+            char[] senhaChars = updatePanel.getTfSenha().getPassword();
+            recepcionista.setSenha(new String(senhaChars));
+
+            Endereco endereco = new Endereco();
+            endereco.setCodEnd(recepcionistaDao.getCodEnderecoForRecepcionista(recepcionista.getCpf()));//Função que busca no banco o cod de endereço do recepcionista
+            endereco.setCep(Integer.parseInt(updatePanel.getTfCep().getText()));
+            endereco.setLogradouro(updatePanel.getTfLogradouro().getText());
+            endereco.setBairro(updatePanel.getTfBairro().getText());
+            endereco.setCidade(updatePanel.getTfCidade().getText());
+            endereco.setEstado((String) updatePanel.getCbEstado().getSelectedItem());
+            endereco.setNumero(Integer.parseInt(updatePanel.getTfNumero().getText()));
+            endereco.setComplemento(updatePanel.getTfComplemento().getText());
+
+            recepcionista.setEndereco(endereco);
+
+            recepcionistaDao.atualizarRecepcionista(recepcionista);
+            enderecoDao.atualizarEndereco(recepcionista.getEndereco());
+            return recepcionista;
+
+        }catch(InputMismatchException ime){
+            ime.printStackTrace();
+            return null;
+
+        }catch(MissingFormatArgumentException mfae){
+            mfae.printStackTrace();
+            return null;
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public ArrayList<Recepcionista> controlListarRecepcionistas(){
         RecepcionistaDao recepcionistaDao = new RecepcionistaDao();
         EnderecoDao enderecoDao = new EnderecoDao();
@@ -76,5 +125,22 @@ public class RecepcionistaController {
         }
 
         return recepcionistas;
+    }
+
+    public Recepcionista controlBuscarRecepcionistaForId(Integer codFuncionario){
+        RecepcionistaDao pd = new RecepcionistaDao();
+        EnderecoDao ed = new EnderecoDao();
+        Recepcionista recepcionista = pd.getRecepcionistaForId(codFuncionario);
+        Endereco endereco = ed.getEnderecoForId(recepcionista.getEndereco().getCodEnd());
+        recepcionista.setEndereco(endereco);
+
+        return recepcionista;
+    }
+
+    public void controlExcluirRecepcionista(Recepcionista recepcionista){
+        RecepcionistaDao recepcionistaDao = new RecepcionistaDao();
+        EnderecoDao ec = new EnderecoDao();
+        recepcionistaDao.excluirRecepcionista(recepcionista.getCpf());
+        ec.excluirEndereco(recepcionista.getEndereco().getCodEnd());
     }
 }

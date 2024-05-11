@@ -1,8 +1,10 @@
 package control;
 
-import dao.EnderecoDao;
+import dao.*;
 import dao.EnfermeiroDao;
-import model.Endereco;
+import dao.EnfermeiroDao;
+import model.*;
+import model.Enfermeiro;
 import model.Enfermeiro;
 import view.FormularioFuncionarioPanel;
 
@@ -47,6 +49,54 @@ public class EnfermeiroController {
         }
     }
 
+    public Enfermeiro controlAtualizarEnfermeiro(FormularioFuncionarioPanel updatePanel){
+        try{
+            EnfermeiroDao enfermeiroDao = new EnfermeiroDao();
+            EnderecoDao enderecoDao = new EnderecoDao();
+
+            Enfermeiro enfermeiro = new Enfermeiro();
+            enfermeiro.setCpf(updatePanel.getTfCpf().getText());
+            enfermeiro.setNome(updatePanel.getTfNome().getText());
+            enfermeiro.setSobrenome(updatePanel.getTfSobrenome().getText());
+            enfermeiro.setDataNascimento(getDateFromString1(updatePanel.getFtfDtNasc().getText()));
+            enfermeiro.setTelefone(updatePanel.getTfTelefone().getText());
+            enfermeiro.setCelular(updatePanel.getTfCelular().getText());
+            enfermeiro.setEmail(updatePanel.getTfEmail().getText());
+            enfermeiro.setSexo(updatePanel.getCbSexo());
+            char[] senhaChars = updatePanel.getTfSenha().getPassword();
+            enfermeiro.setSenha(new String(senhaChars));
+            enfermeiro.setCip(updatePanel.getTfCip().getText());
+
+            Endereco endereco = new Endereco();
+            endereco.setCodEnd(enfermeiroDao.getCodEnderecoForEnfermeiro(enfermeiro.getCpf()));//Função que busca no banco o cod de endereço do enfermeiro
+            endereco.setCep(Integer.parseInt(updatePanel.getTfCep().getText()));
+            endereco.setLogradouro(updatePanel.getTfLogradouro().getText());
+            endereco.setBairro(updatePanel.getTfBairro().getText());
+            endereco.setCidade(updatePanel.getTfCidade().getText());
+            endereco.setEstado((String) updatePanel.getCbEstado().getSelectedItem());
+            endereco.setNumero(Integer.parseInt(updatePanel.getTfNumero().getText()));
+            endereco.setComplemento(updatePanel.getTfComplemento().getText());
+
+            enfermeiro.setEndereco(endereco);
+
+            enfermeiroDao.atualizarEnfermeiro(enfermeiro);
+            enderecoDao.atualizarEndereco(enfermeiro.getEndereco());
+            return enfermeiro;
+
+        }catch(InputMismatchException ime){
+            ime.printStackTrace();
+            return null;
+
+        }catch(MissingFormatArgumentException mfae){
+            mfae.printStackTrace();
+            return null;
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public ArrayList<Enfermeiro> controlListarEnfermeiros(){
         EnfermeiroDao enfermeiroDao = new EnfermeiroDao();
         EnderecoDao enderecoDao = new EnderecoDao();
@@ -73,5 +123,22 @@ public class EnfermeiroController {
         }
 
         return enfermeiros;
+    }
+
+    public Enfermeiro controlBuscarEnfermeiroForId(Integer codFuncionario){
+        EnfermeiroDao pd = new EnfermeiroDao();
+        EnderecoDao ed = new EnderecoDao();
+        Enfermeiro enfermeiro = pd.getEnfermeiroForId(codFuncionario);
+        Endereco endereco = ed.getEnderecoForId(enfermeiro.getEndereco().getCodEnd());
+        enfermeiro.setEndereco(endereco);
+
+        return enfermeiro;
+    }
+
+    public void controlExcluirEnfermeiro(Enfermeiro enfermeiro){
+        EnfermeiroDao enfermeiroDao = new EnfermeiroDao();
+        EnderecoDao ec = new EnderecoDao();
+        enfermeiroDao.excluirEnfermeiro(enfermeiro.getCpf());
+        ec.excluirEndereco(enfermeiro.getEndereco().getCodEnd());
     }
 }
