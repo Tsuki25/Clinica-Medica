@@ -11,7 +11,7 @@ public class PacienteFrame extends JFrame {
 
     private JPanel contentPane;
 
-    public PacienteFrame() {//FRAME DE CADASTRO
+    public PacienteFrame() {//FRAME PRINCIPAL
         setTitle("Pacientes");
         setResizable(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -25,12 +25,13 @@ public class PacienteFrame extends JFrame {
         ListaPacientesFrame pacientesPanel = new ListaPacientesFrame();
         tabbedPane.addTab("Pacientes", new FormularioPacientePanel(PacienteFrame.this));
         tabbedPane.addTab("Funcionarios", new FormularioFuncionarioPanel(PacienteFrame.this));
+        tabbedPane.addTab("Agendamento", new AgendamentoPanel(PacienteFrame.this));
         contentPane.add(tabbedPane, BorderLayout.CENTER);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    public PacienteFrame(Integer codPaciente) {//FRAME DE EDICAO
+    public PacienteFrame(Integer codPaciente) {//FRAME DE EDICAO PACIENTE
         setTitle("Pacientes");
         setResizable(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,7 +49,7 @@ public class PacienteFrame extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    public PacienteFrame(Integer codFuncionario, String crm, String cip) { //FRAME DE EDICAO Funcionario
+    public PacienteFrame(Integer codFuncionario, String crm, String cip) { //FRAME DE EDICAO FUNCIONARIO
         setTitle("Funcionarios");
         setResizable(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
