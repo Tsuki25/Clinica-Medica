@@ -4,11 +4,11 @@ import control.EnfermeiroController;
 import control.MedicoController;
 import control.PacienteController;
 import control.RecepcionistaController;
-import model.Endereco;
-import model.Paciente;
+import model.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,7 +17,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class ListaFuncionariosFrame extends JFrame{
-    /*
+
     private JTable table;
     private JTextField searchField;
 
@@ -54,6 +54,13 @@ public class ListaFuncionariosFrame extends JFrame{
         table.setFillsViewportHeight(true);
         table.setCellSelectionEnabled(true);
         scrollPane.setViewportView(table);
+
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+        table.setRowSorter(sorter);
+
+        // Ordena a tabela na ordem crescente pela primeira coluna "Cod. Funcionario"
+        sorter.setSortKeys(java.util.List.of(new RowSorter.SortKey(0, SortOrder.ASCENDING)));
+        sorter.sort();
 
         // Adiciona o evento de dois clicks à tabela
         table.addMouseListener(new MouseAdapter() {
@@ -99,7 +106,7 @@ public class ListaFuncionariosFrame extends JFrame{
     }
 
     private void updateTableData() {
-        // Popula a tabela com os dados dos pacientes e endereços
+        // Popula a tabela com os dados
         try {
             DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
             tableModel.setRowCount(0); // Limpa a tabela antes de preenchê-la novamente
@@ -107,35 +114,80 @@ public class ListaFuncionariosFrame extends JFrame{
             RecepcionistaController rc = new RecepcionistaController();
             EnfermeiroController ec = new EnfermeiroController();
             MedicoController mc = new MedicoController();
-            ArrayList<Object[]> recepcionistas = rc.controlListarRecepcionista();
-            ArrayList<Object[]> enfermeiros = rc.controlListarEnfermeiros();
-            ArrayList<Object[]> medicos = rc.controlListarMedicos();
 
-            for (Object[] dados : resposta) {
-                Paciente paciente = (Paciente) dados[0];
-                Endereco endereco = (Endereco) dados[1];
+            ArrayList<Recepcionista> recepcionistas = rc.controlListarRecepcionistas();
+            ArrayList<Enfermeiro> enfermeiros = ec.controlListarEnfermeiros();
+            ArrayList<Medico> medicos = mc.controlListarMedicos();
 
+            for (Recepcionista recepcionista : recepcionistas ) {
+                Endereco endereco = recepcionista.getEndereco();
                 tableModel.addRow(new String[]{
-                        paciente.getCodPaciente().toString(),
-                        paciente.getCpf(),
-                        paciente.getNome(),
-                        paciente.getSobrenome(),
-                        paciente.getSexo(),
-                        paciente.getDataNascimento().toString(),
-                        paciente.getTelefone(),
-                        paciente.getCelular(),
-                        paciente.getEmail(),
+                        recepcionista.getCodFuncionario().toString(),
+                        recepcionista.getCpf(),
+                        recepcionista.getNome(),
+                        recepcionista.getSobrenome(),
+                        "",//CRM
+                        "",//CIP
+                        recepcionista.getSexo(),
+                        recepcionista.getDataNascimento().toString(),
+                        recepcionista.getTelefone(),
+                        recepcionista.getCelular(),
+                        recepcionista.getEmail(),
                         endereco.getCep().toString(),
                         endereco.getLogradouro(),
                         endereco.getBairro(),
                         endereco.getCidade(),
                         endereco.getEstado(),
                         endereco.getNumero().toString(),
-                        endereco.getComplemento(),
-                        paciente.getHistorico(),
-                        paciente.getAlergias(),
-                        paciente.getMedicamentosUtilizados(),
-                        paciente.getAnotacoes()
+                        endereco.getComplemento()
+                });
+            }
+
+            for (Enfermeiro enfermeiro : enfermeiros ) {
+                Endereco endereco = enfermeiro.getEndereco();
+                tableModel.addRow(new String[]{
+                        enfermeiro.getCodFuncionario().toString(),
+                        enfermeiro.getCpf(),
+                        enfermeiro.getNome(),
+                        enfermeiro.getSobrenome(),
+                        "",//CRM
+                        enfermeiro.getCip(),//CIP
+                        enfermeiro.getSexo(),
+                        enfermeiro.getDataNascimento().toString(),
+                        enfermeiro.getTelefone(),
+                        enfermeiro.getCelular(),
+                        enfermeiro.getEmail(),
+                        endereco.getCep().toString(),
+                        endereco.getLogradouro(),
+                        endereco.getBairro(),
+                        endereco.getCidade(),
+                        endereco.getEstado(),
+                        endereco.getNumero().toString(),
+                        endereco.getComplemento()
+                });
+            }
+
+            for (Medico medico : medicos ) {
+                Endereco endereco = medico.getEndereco();
+                tableModel.addRow(new String[]{
+                        medico.getCodFuncionario().toString(),
+                        medico.getCpf(),
+                        medico.getNome(),
+                        medico.getSobrenome(),
+                        medico.getCrm(),//CRM
+                        "",//CIP
+                        medico.getSexo(),
+                        medico.getDataNascimento().toString(),
+                        medico.getTelefone(),
+                        medico.getCelular(),
+                        medico.getEmail(),
+                        endereco.getCep().toString(),
+                        endereco.getLogradouro(),
+                        endereco.getBairro(),
+                        endereco.getCidade(),
+                        endereco.getEstado(),
+                        endereco.getNumero().toString(),
+                        endereco.getComplemento()
                 });
             }
         } catch (Exception e) {
@@ -152,23 +204,76 @@ public class ListaFuncionariosFrame extends JFrame{
                 DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
                 tableModel.setRowCount(0); // Limpa a tabela antes de preenchê-la novamente
 
-                PacienteController pc = new PacienteController();
-                ArrayList<Object[]> resposta = pc.controlListarPacientesBusca(textoBusca);
+                RecepcionistaController rc = new RecepcionistaController();
+                EnfermeiroController ec = new EnfermeiroController();
+                MedicoController mc = new MedicoController();
 
-                for (Object[] dados : resposta) {
-                    Paciente paciente = (Paciente) dados[0];
-                    Endereco endereco = (Endereco) dados[1];
+                ArrayList<Recepcionista> recepcionistas = rc.controlListarRecepcionistasBusca(textoBusca);
+                ArrayList<Enfermeiro> enfermeiros = ec.controlListarEnfermeirosBusca(textoBusca);
+                ArrayList<Medico> medicos = mc.controlListarMedicosBusca(textoBusca);
 
+                for (Recepcionista recepcionista : recepcionistas ) {
+                    Endereco endereco = recepcionista.getEndereco();
                     tableModel.addRow(new String[]{
-                            paciente.getCodPaciente().toString(),
-                            paciente.getCpf(),
-                            paciente.getNome(),
-                            paciente.getSobrenome(),
-                            paciente.getSexo(),
-                            paciente.getDataNascimento().toString(),
-                            paciente.getTelefone(),
-                            paciente.getCelular(),
-                            paciente.getEmail(),
+                            recepcionista.getCodFuncionario().toString(),
+                            recepcionista.getCpf(),
+                            recepcionista.getNome(),
+                            recepcionista.getSobrenome(),
+                            "",//CRM
+                            "",//CIP
+                            recepcionista.getSexo(),
+                            recepcionista.getDataNascimento().toString(),
+                            recepcionista.getTelefone(),
+                            recepcionista.getCelular(),
+                            recepcionista.getEmail(),
+                            endereco.getCep().toString(),
+                            endereco.getLogradouro(),
+                            endereco.getBairro(),
+                            endereco.getCidade(),
+                            endereco.getEstado(),
+                            endereco.getNumero().toString(),
+                            endereco.getComplemento()
+                    });
+                }
+
+                for (Enfermeiro enfermeiro : enfermeiros ) {
+                    Endereco endereco = enfermeiro.getEndereco();
+                    tableModel.addRow(new String[]{
+                            enfermeiro.getCodFuncionario().toString(),
+                            enfermeiro.getCpf(),
+                            enfermeiro.getNome(),
+                            enfermeiro.getSobrenome(),
+                            "",//CRM
+                            enfermeiro.getCip(),//CIP
+                            enfermeiro.getSexo(),
+                            enfermeiro.getDataNascimento().toString(),
+                            enfermeiro.getTelefone(),
+                            enfermeiro.getCelular(),
+                            enfermeiro.getEmail(),
+                            endereco.getCep().toString(),
+                            endereco.getLogradouro(),
+                            endereco.getBairro(),
+                            endereco.getCidade(),
+                            endereco.getEstado(),
+                            endereco.getNumero().toString(),
+                            endereco.getComplemento()
+                    });
+                }
+
+                for (Medico medico : medicos ) {
+                    Endereco endereco = medico.getEndereco();
+                    tableModel.addRow(new String[]{
+                            medico.getCodFuncionario().toString(),
+                            medico.getCpf(),
+                            medico.getNome(),
+                            medico.getSobrenome(),
+                            medico.getCrm(),//CRM
+                            "",//CIP
+                            medico.getSexo(),
+                            medico.getDataNascimento().toString(),
+                            medico.getTelefone(),
+                            medico.getCelular(),
+                            medico.getEmail(),
                             endereco.getCep().toString(),
                             endereco.getLogradouro(),
                             endereco.getBairro(),
@@ -187,5 +292,5 @@ public class ListaFuncionariosFrame extends JFrame{
             updateTableData();
         }
     }
-    */
+
 }

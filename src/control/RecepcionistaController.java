@@ -1,10 +1,14 @@
 package control;
 
+import dao.EnderecoDao;
+import dao.RecepcionistaDao;
 import dao.RecepcionistaDao;
 import model.Endereco;
 import model.Recepcionista;
+import model.Recepcionista;
 import view.FormularioFuncionarioPanel;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.MissingFormatArgumentException;
 
@@ -44,5 +48,33 @@ public class RecepcionistaController {
             e.printStackTrace();
         }
 
+    }
+
+    public ArrayList<Recepcionista> controlListarRecepcionistas(){
+        RecepcionistaDao recepcionistaDao = new RecepcionistaDao();
+        EnderecoDao enderecoDao = new EnderecoDao();
+
+        ArrayList<Recepcionista> res = recepcionistaDao.listarRecepcionistas();
+
+        for (Recepcionista recepcionista : res) { //PREENCHE O VETOR DE ENDERECOS RELATIVOS AOS PACIENTES BUSCADOS NA ORDEM
+            Endereco endereco = enderecoDao.getEnderecoForId(recepcionista.getEndereco().getCodEnd());
+            recepcionista.setEndereco(endereco);
+        }
+
+        return res;
+    }
+
+    public ArrayList<Recepcionista> controlListarRecepcionistasBusca(String textoBusca){
+        RecepcionistaDao recepcionistaDao = new RecepcionistaDao();
+        EnderecoDao enderecoDao = new EnderecoDao();
+
+        ArrayList<Recepcionista> recepcionistas = recepcionistaDao.listarRecepcionistasBusca(textoBusca);
+
+        for (Recepcionista recepcionista : recepcionistas) { //PREENCHE O VETOR DE ENDERECOS RELATIVOS AOS PACIENTES BUSCADOS NA ORDEM
+            Endereco endereco = enderecoDao.getEnderecoForId(recepcionista.getEndereco().getCodEnd());
+            recepcionista.setEndereco(endereco);
+        }
+
+        return recepcionistas;
     }
 }

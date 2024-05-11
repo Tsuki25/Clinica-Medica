@@ -1,10 +1,12 @@
 package control;
 
+import dao.EnderecoDao;
 import dao.MedicoDao;
 import model.Endereco;
 import model.Medico;
 import view.FormularioFuncionarioPanel;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.MissingFormatArgumentException;
 
@@ -44,5 +46,33 @@ public class MedicoController {
             e.printStackTrace();
         }
 
+    }
+
+    public ArrayList<Medico> controlListarMedicos(){
+        MedicoDao medicoDao = new MedicoDao();
+        EnderecoDao enderecoDao = new EnderecoDao();
+
+        ArrayList<Medico> res = medicoDao.listarMedicos();
+
+        for (Medico medico : res) { //PREENCHE O VETOR DE ENDERECOS RELATIVOS AOS PACIENTES BUSCADOS NA ORDEM
+            Endereco endereco = enderecoDao.getEnderecoForId(medico.getEndereco().getCodEnd());
+            medico.setEndereco(endereco);
+        }
+
+        return res;
+    }
+
+    public ArrayList<Medico> controlListarMedicosBusca(String textoBusca){
+        MedicoDao medicoDao = new MedicoDao();
+        EnderecoDao enderecoDao = new EnderecoDao();
+
+        ArrayList<Medico> medicos = medicoDao.listarMedicosBusca(textoBusca);
+
+        for (Medico medico : medicos) { //PREENCHE O VETOR DE ENDERECOS RELATIVOS AOS PACIENTES BUSCADOS NA ORDEM
+            Endereco endereco = enderecoDao.getEnderecoForId(medico.getEndereco().getCodEnd());
+            medico.setEndereco(endereco);
+        }
+
+        return medicos;
     }
 }

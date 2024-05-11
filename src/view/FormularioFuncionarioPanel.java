@@ -40,7 +40,9 @@ public class FormularioFuncionarioPanel extends JPanel {
 
     JFormattedTextField ftfDtNasc;
 
+    private JLabel lbCrm;
     private JTextField tfCrm;
+    private JLabel lbCip;
     private JTextField tfCip;
     private JPasswordField tfSenha;
 
@@ -62,11 +64,7 @@ public class FormularioFuncionarioPanel extends JPanel {
     };
 
 
-    /**
-     * Create the panel.
-     */
-    public FormularioFuncionarioPanel() {}
-        /*
+    public FormularioFuncionarioPanel(JFrame pacienteFrame){
         setBackground(SystemColor.activeCaptionBorder);
         setLayout(null);
 
@@ -101,8 +99,11 @@ public class FormularioFuncionarioPanel extends JPanel {
         rdbtnRecepcionista.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                lbCrm.setVisible(false);
                 tfCrm.setVisible(false);
+                lbCip.setVisible(false);
                 tfCip.setVisible(false);
+
             }
         });
 
@@ -111,6 +112,8 @@ public class FormularioFuncionarioPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 tfCrm.setVisible(false);
                 tfCip.setVisible(true);
+                lbCrm.setVisible(false);
+                lbCip.setVisible(true);
             }
         });
 
@@ -119,6 +122,8 @@ public class FormularioFuncionarioPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 tfCrm.setVisible(true);
                 tfCip.setVisible(false);
+                lbCrm.setVisible(true);
+                lbCip.setVisible(false);
             }
         });
 
@@ -343,42 +348,46 @@ public class FormularioFuncionarioPanel extends JPanel {
         separator_1_1_1.setBounds(10, 575, 480, 2);
         add(separator_1_1_1);
 
+        JLabel lbSenha = new JLabel("Senha: ");
+        lbSenha.setLabelFor(tfSenha);
+        lbSenha.setFont(new Font("Bahnschrift", Font.BOLD, 12));
+        lbSenha.setBounds(20, 591, 87, 14);
+        add(lbSenha);
+
+        tfSenha = new JPasswordField();
+        tfSenha.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
+        tfSenha.setBounds(60, 588, 174, 20);
+        add(tfSenha);
+
         tfCrm = new JTextField();
         tfCrm.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
         tfCrm.setColumns(10);
-        tfCrm.setBounds(56, 588, 174, 20);
-        tfCip.setVisible(false);
+        tfCrm.setBounds(63, 623, 167, 20);
+        tfCrm.setVisible(false);
         add(tfCrm);
 
-        JLabel lbCrm = new JLabel("CRM: ");
+        lbCrm = new JLabel("CRM: ");
         lbCrm.setLabelFor(tfCrm);
         lbCrm.setFont(new Font("Bahnschrift", Font.BOLD, 12));
-        lbCrm.setBounds(20, 591, 87, 14);
+        lbCrm.setBounds(20, 627, 54, 14);
+        lbCrm.setVisible(false);
         add(lbCrm);
 
         tfCip = new JTextField();
         tfCip.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
         tfCip.setColumns(10);
-        tfCip.setBounds(56, 588, 174, 20);
+        tfCip.setBounds(63, 623, 167, 20);
         tfCip.setVisible(false);
         add(tfCip);
 
-        JLabel lbCip = new JLabel("CIP: ");
-        lbCrm.setLabelFor(tfCip);
-        lbCrm.setFont(new Font("Bahnschrift", Font.BOLD, 12));
-        lbCrm.setBounds(20, 591, 87, 14);
+        lbCip = new JLabel("CIP: ");
+        lbCip.setLabelFor(tfCip);
+        lbCip.setFont(new Font("Bahnschrift", Font.BOLD, 12));
+        lbCip.setBounds(20, 627, 54, 14);
+        lbCip.setVisible(false);
         add(lbCip);
 
-        JLabel lbSenha = new JLabel("Senha: ");
-        lbCrm.setLabelFor(tfSenha);
-        lbSenha.setFont(new Font("Bahnschrift", Font.BOLD, 12));
-        lbSenha.setBounds(20, 627, 54, 14);
-        add(lbSenha);
 
-        tfSenha = new JPasswordField();
-        tfSenha.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
-        tfSenha.setBounds(63, 623, 167, 20);
-        add(tfSenha);
 
         btnSalvar = new JButton();
         btnSalvar.setIcon(new ImageIcon(getClass().getResource("/view/icons/salvar-arquivo.png")));
@@ -431,9 +440,9 @@ public class FormularioFuncionarioPanel extends JPanel {
         btnBusca.setBackground(SystemColor.windowBorder);
         btnBusca.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ListaPacientesFrame listaPacienteFrame = new ListaPacientesFrame();
-                listaPacienteFrame.setSize(1600,900);
-                listaPacienteFrame.setVisible(true);
+                ListaFuncionariosFrame listaFuncionarioFrame = new ListaFuncionariosFrame();
+                listaFuncionarioFrame.setSize(1600,900);
+                listaFuncionarioFrame.setVisible(true);
                 pacienteFrame.setVisible(false);
             }
         });
@@ -442,6 +451,7 @@ public class FormularioFuncionarioPanel extends JPanel {
 
 
     }
+    /*
     public FormularioFuncionarioPanel(JFrame pacienteFrame, Integer codFuncionario){
         this(pacienteFrame);//chama o construtor padrão com o formulário de cadastro do paciente
         Paciente paciente = getDadosFuncionario(codFuncionario);
@@ -603,6 +613,8 @@ public class FormularioFuncionarioPanel extends JPanel {
         tfCip.setEditable(status);
         tfSenha.setEditable(status);
     }
+    */
+
     private void limparCampos() {
         tfCpf.setText("");
         tfNome.setText("");
@@ -622,9 +634,6 @@ public class FormularioFuncionarioPanel extends JPanel {
         tfSenha.setText("");
     }
 
-    private Object getDadosFuncionario(Integer codFuncionario) {
-        return null; // Aguardando desenvolvimento
-    }
 
     private void alterCoresCampos(Color corBorda, Color corFundo){
         tfNome.setBorder(BorderFactory.createLineBorder(corBorda));
@@ -682,8 +691,6 @@ public class FormularioFuncionarioPanel extends JPanel {
         tfSenha.setBorder(BorderFactory.createLineBorder(corBorda));
         tfSenha.setBackground(corFundo);
     }
-
-*/
 
     public JTextField getTfCpf() {
         return tfCpf;

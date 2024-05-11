@@ -17,6 +17,7 @@ public class Funcionario extends Pessoa{
     }
     public Funcionario(String cpf, String nome, String sobrenome, Sexo sexo, LocalDate dataNascimento, String telefone, String celular, String email, Endereco endereco, String senha) {
         super(cpf, nome, sobrenome, sexo, dataNascimento, telefone,celular, email, endereco);
+        this.senha = senha;
     }
 
     public Funcionario(){}
@@ -39,6 +40,7 @@ public class Funcionario extends Pessoa{
     public void setSenha(String senha) {
         this.senha = senha;
     }
+
 
     @Override
     public String toString() {

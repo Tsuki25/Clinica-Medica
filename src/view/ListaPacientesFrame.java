@@ -47,7 +47,7 @@ public class ListaPacientesFrame extends JFrame {
         table.setCellSelectionEnabled(true);
         scrollPane.setViewportView(table);
 
-        // Adiciona ouvinte de evento de clique duplo à tabela
+        // Adiciona ouvinte de evento de clique na tabela
         table.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 1) {
