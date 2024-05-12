@@ -249,5 +249,14 @@ SELECT MAX(codFuncionario) AS codigo_maximo FROM (
              UNION ALL
              SELECT codFuncionario FROM MEDICO
              ) AS todas_tabelas;
+             
+             SELECT nome, sobrenome FROM
+                    ( 
+                    SELECT nome, sobrenome FROM RECEPCIONISTA WHERE codFuncionario = 5 
+                    UNION ALL 
+                    SELECT nome, sobrenome FROM ENFERMEIRO WHERE codFuncionario = 5
+                    UNION ALL
+                    SELECT nome, sobrenome FROM MEDICO WHERE codFuncionario = 5 
+                    ) AS todas_tabelas;
 
 select count(codFuncionario) from enfermeiro where codFuncionario = 4;

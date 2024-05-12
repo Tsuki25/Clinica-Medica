@@ -142,6 +142,7 @@ public class FormularioAgendamentoPanel extends JPanel {
         JLabel lbStatus = new JLabel("Status:");
         lbStatus.setFont(new Font("Bahnschrift", Font.BOLD, 14));
         lbStatus.setBounds(20, 449, 60, 14);
+        lbStatus.setVisible(false);
         add(lbStatus);
 
         cbStatus = new JComboBox<>(StatusAgendamento.values());
@@ -184,6 +185,14 @@ public class FormularioAgendamentoPanel extends JPanel {
         btnBusca.setForeground(SystemColor.desktop);
         btnBusca.setFont(new Font("Bahnschrift", Font.PLAIN, 5));
         btnBusca.setBackground(SystemColor.windowBorder);
+        btnBusca.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ListaAgendamentosFrame listaAgendamentosFrame = new ListaAgendamentosFrame();
+                listaAgendamentosFrame.setSize(1600,900);
+                listaAgendamentosFrame.setVisible(true);
+                pacienteFrame.setVisible(false);
+            }
+        });
         btnBusca.setBounds(336, 433, 38, 38);
         add(btnBusca);
 

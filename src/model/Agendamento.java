@@ -9,6 +9,7 @@ import java.time.LocalTime;
 
 
 public class Agendamento {
+    private Integer codAgendamento;
     private Integer codPaciente;
     private Integer codFuncionario;
     private LocalDate dataAgendamento;
@@ -23,6 +24,20 @@ public class Agendamento {
         this.horarioAgendamento = horarioAgendamento;
         this.status = status;
         this.exame = exame;
+    }
+
+    public Agendamento(Integer codAgendamento, Integer codPaciente, Integer codFuncionario, LocalDate dataAgendamento, LocalTime horarioAgendamento, StatusAgendamento status, TipoExame exame) {
+        this.codAgendamento = codAgendamento;
+        this.codPaciente = codPaciente;
+        this.codFuncionario = codFuncionario;
+        this.dataAgendamento = dataAgendamento;
+        this.horarioAgendamento = horarioAgendamento;
+        this.status = status;
+        this.exame = exame;
+    }
+
+    public Agendamento(Integer codAgendamento){
+        this.codAgendamento = codAgendamento;
     }
 
     public Agendamento(){}
@@ -73,6 +88,14 @@ public class Agendamento {
 
     public void setExame(TipoExame exame) {
         this.exame = exame;
+    }
+
+    public Integer getCodAgendamento() {
+        return codAgendamento;
+    }
+
+    public void setCodAgendamento(Integer codAgendamento) {
+        this.codAgendamento = codAgendamento;
     }
 
     @Override

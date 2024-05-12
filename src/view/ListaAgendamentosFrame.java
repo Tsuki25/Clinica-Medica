@@ -1,9 +1,7 @@
 package view;
 
-import control.EnfermeiroController;
-import control.MedicoController;
-import control.PacienteController;
-import control.RecepcionistaController;
+import control.*;
+import dao.FuncionarioDao;
 import model.*;
 
 import javax.swing.*;
@@ -15,6 +13,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+
+import static dao.FuncionarioDao.getNomeFuncionarioForId;
 
 public class ListaAgendamentosFrame extends JFrame{
 
@@ -61,11 +61,11 @@ public class ListaAgendamentosFrame extends JFrame{
         sorter.setSortKeys(java.util.List.of(new RowSorter.SortKey(0, SortOrder.ASCENDING)));
         sorter.sort();
 
-        // Adiciona o evento de dois clicks à tabela
+        // Adiciona o evento de clicks à tabela
         table.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 1) {
-                    int linha = table.getSelectedRow();
+                   /* int linha = table.getSelectedRow();
                     if (linha != -1) {
                         Integer codFuncionario = Integer.parseInt(table.getValueAt(linha, 0).toString());// passar codFuncionario, crm, cri
                         String crm = table.getValueAt(linha, 4).toString();// se crm vazio e cri cheio -> enfermerio
@@ -75,7 +75,7 @@ public class ListaAgendamentosFrame extends JFrame{
                         pacienteFrame.setSize(530,870);
                         pacienteFrame.setVisible(true);
                         //ListaFuncionariosFrame.this.setVisible(false);
-                    }
+                    }*/
                 }
             }
         });
@@ -86,24 +86,15 @@ public class ListaAgendamentosFrame extends JFrame{
 
     private DefaultTableModel createTableModel() {
         DefaultTableModel tableModel = new DefaultTableModel();
+        tableModel.addColumn("Cod. Agendamento");
+        tableModel.addColumn("Data Agendamento");
+        tableModel.addColumn("Horario Agendamento");
+        tableModel.addColumn("Exame");
+        tableModel.addColumn("Cod. Paciente");
+        tableModel.addColumn("Nome Paciente");
         tableModel.addColumn("Cod. Funcionario");
-        tableModel.addColumn("CPF");
-        tableModel.addColumn("Nome");
-        tableModel.addColumn("Sobrenome");
-        tableModel.addColumn("CRM");
-        tableModel.addColumn("CIP");
-        tableModel.addColumn("Sexo");
-        tableModel.addColumn("Data de Nascimento");
-        tableModel.addColumn("Telefone");
-        tableModel.addColumn("Celular");
-        tableModel.addColumn("Email");
-        tableModel.addColumn("CEP");
-        tableModel.addColumn("Logradouro");
-        tableModel.addColumn("Bairro");
-        tableModel.addColumn("Cidade");
-        tableModel.addColumn("Estado");
-        tableModel.addColumn("Numero");
-        tableModel.addColumn("Complemento");
+        tableModel.addColumn("Nome Funcionario");
+        tableModel.addColumn("Status");
         return tableModel;
     }
 
@@ -113,83 +104,22 @@ public class ListaAgendamentosFrame extends JFrame{
             DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
             tableModel.setRowCount(0); // Limpa a tabela antes de preenchê-la novamente
 
-            RecepcionistaController rc = new RecepcionistaController();
-            EnfermeiroController ec = new EnfermeiroController();
-            MedicoController mc = new MedicoController();
+            AgendamentoController ac = new AgendamentoController();
+            PacienteController pc = new PacienteController();
 
-            ArrayList<Recepcionista> recepcionistas = rc.controlListarRecepcionistas();
-            ArrayList<Enfermeiro> enfermeiros = ec.controlListarEnfermeiros();
-            ArrayList<Medico> medicos = mc.controlListarMedicos();
+            ArrayList<Agendamento> agendamentos = ac.controlListarAgendamentos();
 
-            for (Recepcionista recepcionista : recepcionistas ) {
-                Endereco endereco = recepcionista.getEndereco();
+            for (Agendamento agendamento : agendamentos) {
                 tableModel.addRow(new String[]{
-                        recepcionista.getCodFuncionario().toString(),
-                        recepcionista.getCpf(),
-                        recepcionista.getNome(),
-                        recepcionista.getSobrenome(),
-                        "",//CRM
-                        "",//CIP
-                        recepcionista.getSexo(),
-                        recepcionista.getDataNascimento().toString(),
-                        recepcionista.getTelefone(),
-                        recepcionista.getCelular(),
-                        recepcionista.getEmail(),
-                        endereco.getCep().toString(),
-                        endereco.getLogradouro(),
-                        endereco.getBairro(),
-                        endereco.getCidade(),
-                        endereco.getEstado(),
-                        endereco.getNumero().toString(),
-                        endereco.getComplemento()
-                });
-            }
-
-            for (Enfermeiro enfermeiro : enfermeiros ) {
-                Endereco endereco = enfermeiro.getEndereco();
-                tableModel.addRow(new String[]{
-                        enfermeiro.getCodFuncionario().toString(),
-                        enfermeiro.getCpf(),
-                        enfermeiro.getNome(),
-                        enfermeiro.getSobrenome(),
-                        "",//CRM
-                        enfermeiro.getCip(),//CIP
-                        enfermeiro.getSexo(),
-                        enfermeiro.getDataNascimento().toString(),
-                        enfermeiro.getTelefone(),
-                        enfermeiro.getCelular(),
-                        enfermeiro.getEmail(),
-                        endereco.getCep().toString(),
-                        endereco.getLogradouro(),
-                        endereco.getBairro(),
-                        endereco.getCidade(),
-                        endereco.getEstado(),
-                        endereco.getNumero().toString(),
-                        endereco.getComplemento()
-                });
-            }
-
-            for (Medico medico : medicos ) {
-                Endereco endereco = medico.getEndereco();
-                tableModel.addRow(new String[]{
-                        medico.getCodFuncionario().toString(),
-                        medico.getCpf(),
-                        medico.getNome(),
-                        medico.getSobrenome(),
-                        medico.getCrm(),//CRM
-                        "",//CIP
-                        medico.getSexo(),
-                        medico.getDataNascimento().toString(),
-                        medico.getTelefone(),
-                        medico.getCelular(),
-                        medico.getEmail(),
-                        endereco.getCep().toString(),
-                        endereco.getLogradouro(),
-                        endereco.getBairro(),
-                        endereco.getCidade(),
-                        endereco.getEstado(),
-                        endereco.getNumero().toString(),
-                        endereco.getComplemento()
+                        agendamento.getCodAgendamento().toString(),
+                        agendamento.getDataAgendamento().toString(),
+                        agendamento.getHorarioAgendamento().toString(),
+                        agendamento.getExame().getTipo(),
+                        agendamento.getCodPaciente().toString(),
+                        pc.controlGetNomePacienteForId(agendamento.getCodPaciente()),
+                        agendamento.getCodFuncionario().toString(),
+                        getNomeFuncionarioForId(agendamento.getCodFuncionario()),
+                        agendamento.getStatus().getDescricao()
                 });
             }
         } catch (Exception e) {
@@ -206,87 +136,26 @@ public class ListaAgendamentosFrame extends JFrame{
                 DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
                 tableModel.setRowCount(0); // Limpa a tabela antes de preenchê-la novamente
 
-                RecepcionistaController rc = new RecepcionistaController();
-                EnfermeiroController ec = new EnfermeiroController();
-                MedicoController mc = new MedicoController();
+                AgendamentoController ac = new AgendamentoController();
+                PacienteController pc = new PacienteController();
 
-                ArrayList<Recepcionista> recepcionistas = rc.controlListarRecepcionistasBusca(textoBusca);
-                ArrayList<Enfermeiro> enfermeiros = ec.controlListarEnfermeirosBusca(textoBusca);
-                ArrayList<Medico> medicos = mc.controlListarMedicosBusca(textoBusca);
+                ArrayList<Agendamento> agendamentos = ac.controlListarAgendamentosBusca(textoBusca);
 
-                for (Recepcionista recepcionista : recepcionistas ) {
-                    Endereco endereco = recepcionista.getEndereco();
+                for (Agendamento agendamento : agendamentos) {
                     tableModel.addRow(new String[]{
-                            recepcionista.getCodFuncionario().toString(),
-                            recepcionista.getCpf(),
-                            recepcionista.getNome(),
-                            recepcionista.getSobrenome(),
-                            "",//CRM
-                            "",//CIP
-                            recepcionista.getSexo(),
-                            recepcionista.getDataNascimento().toString(),
-                            recepcionista.getTelefone(),
-                            recepcionista.getCelular(),
-                            recepcionista.getEmail(),
-                            endereco.getCep().toString(),
-                            endereco.getLogradouro(),
-                            endereco.getBairro(),
-                            endereco.getCidade(),
-                            endereco.getEstado(),
-                            endereco.getNumero().toString(),
-                            endereco.getComplemento()
-                    });
-                }
-
-                for (Enfermeiro enfermeiro : enfermeiros ) {
-                    Endereco endereco = enfermeiro.getEndereco();
-                    tableModel.addRow(new String[]{
-                            enfermeiro.getCodFuncionario().toString(),
-                            enfermeiro.getCpf(),
-                            enfermeiro.getNome(),
-                            enfermeiro.getSobrenome(),
-                            "",//CRM
-                            enfermeiro.getCip(),//CIP
-                            enfermeiro.getSexo(),
-                            enfermeiro.getDataNascimento().toString(),
-                            enfermeiro.getTelefone(),
-                            enfermeiro.getCelular(),
-                            enfermeiro.getEmail(),
-                            endereco.getCep().toString(),
-                            endereco.getLogradouro(),
-                            endereco.getBairro(),
-                            endereco.getCidade(),
-                            endereco.getEstado(),
-                            endereco.getNumero().toString(),
-                            endereco.getComplemento()
-                    });
-                }
-
-                for (Medico medico : medicos ) {
-                    Endereco endereco = medico.getEndereco();
-                    tableModel.addRow(new String[]{
-                            medico.getCodFuncionario().toString(),
-                            medico.getCpf(),
-                            medico.getNome(),
-                            medico.getSobrenome(),
-                            medico.getCrm(),//CRM
-                            "",//CIP
-                            medico.getSexo(),
-                            medico.getDataNascimento().toString(),
-                            medico.getTelefone(),
-                            medico.getCelular(),
-                            medico.getEmail(),
-                            endereco.getCep().toString(),
-                            endereco.getLogradouro(),
-                            endereco.getBairro(),
-                            endereco.getCidade(),
-                            endereco.getEstado(),
-                            endereco.getNumero().toString(),
-                            endereco.getComplemento()
+                            agendamento.getCodAgendamento().toString(),
+                            agendamento.getDataAgendamento().toString(),
+                            agendamento.getHorarioAgendamento().toString(),
+                            agendamento.getExame().getTipo(),
+                            agendamento.getCodPaciente().toString(),
+                            pc.controlGetNomePacienteForId(agendamento.getCodPaciente()),
+                            agendamento.getCodFuncionario().toString(),
+                            getNomeFuncionarioForId(agendamento.getCodFuncionario()),
+                            agendamento.getStatus().getDescricao()
                     });
                 }
             } catch (Exception e) {
-                e.printStackTrace(); // TEMPORARIO
+                e.printStackTrace();
             }
 
         } else {

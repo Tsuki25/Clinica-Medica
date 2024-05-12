@@ -1,13 +1,20 @@
 package control;
 
 import dao.AgendamentoDao;
+import dao.EnderecoDao;
+import dao.AgendamentoDao;
+import dao.PacienteDao;
 import model.Agendamento;
+import model.Endereco;
+import model.Agendamento;
+import model.Paciente;
 import model.enums.StatusAgendamento;
 import view.FormularioAgendamentoPanel;
 
 import javax.swing.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.MissingFormatArgumentException;
 
@@ -45,7 +52,16 @@ public class AgendamentoController {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
 
+    public ArrayList<Agendamento> controlListarAgendamentos(){
+        AgendamentoDao agendamentoDao = new AgendamentoDao();
+        return agendamentoDao.listarAgendamentos();
+    }
+
+    public ArrayList<Agendamento> controlListarAgendamentosBusca(String textoBusca){
+        AgendamentoDao agendamentoDao = new AgendamentoDao();
+        return agendamentoDao.listarAgendamentosBusca(textoBusca);
     }
     
 }
