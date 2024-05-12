@@ -142,4 +142,9 @@ public class PacienteController {
         pacienteDao.excluirPaciente(paciente.getCpf());
         ec.excluirEndereco(paciente.getEndereco().getCodEnd());
     }
+
+    public String controlGetNomePacienteForId(Integer codPaciente){
+        PacienteDao pacienteDao = new PacienteDao();
+        return pacienteDao.getNomePacienteForId(codPaciente);
+    }
 }

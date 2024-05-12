@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS ENDERECO(
 
 CREATE TABLE IF NOT EXISTS PACIENTE(
     codPaciente BIGINT PRIMARY KEY AUTO_INCREMENT,
-    cpf VARCHAR(11) UNIQUE NOT NULL,
+    cpf VARCHAR(14) UNIQUE NOT NULL,
     nome VARCHAR(20) NOT NULL,
     sobrenome VARCHAR(150) NOT NULL,
     sexo VARCHAR(15) NOT NULL,
@@ -168,7 +168,7 @@ CREATE TABLE IF NOT EXISTS AGENDAMENTO(
     dataAgendamento DATE NOT NULL,
     horarioAgendamento TIME NOT NULL,
     statusAgendamento VARCHAR(10) NOT NULL,
-    #exame varchar(25) NOT NULL,
+    exame varchar(25) NOT NULL,
     codMedico BIGINT,
     codEnfermeiro BIGINT,
     codPaciente BIGINT NOT NULL,
@@ -176,6 +176,7 @@ CREATE TABLE IF NOT EXISTS AGENDAMENTO(
     FOREIGN KEY (codEnfermeiro) REFERENCES ENFERMEIRO(codFuncionario),
     FOREIGN KEY (codPaciente) REFERENCES PACIENTE(codPaciente)
 );
+
 
 # INSERT DE DADOS PARA TESTE
 -- Inserts para a tabela ENDERECO
@@ -238,3 +239,15 @@ INSERT INTO AGENDAMENTO (dataAgendamento, horarioAgendamento, statusAgendamento,
 ('2024-05-13', '10:00:00', 'Agendado', null, 4, 2);
 
 select * from paciente;
+select * from recepcionista;
+SELECT * FROM agendamento;
+
+SELECT MAX(codFuncionario) AS codigo_maximo FROM (
+             SELECT codFuncionario FROM RECEPCIONISTA
+             UNION ALL 
+             SELECT codFuncionario FROM ENFERMEIRO
+             UNION ALL
+             SELECT codFuncionario FROM MEDICO
+             ) AS todas_tabelas;
+
+select count(codFuncionario) from enfermeiro where codFuncionario = 4;

@@ -1,5 +1,12 @@
 package view;
 
+import control.AgendamentoController;
+import control.PacienteController;
+import dao.AgendamentoDao;
+import dao.FuncionarioDao;
+import model.enums.StatusAgendamento;
+import model.enums.TipoExame;
+
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
@@ -7,21 +14,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 
-public class AgendamentoPanel extends JPanel {
-    private JComboBox<String> cbExames, cbStatus;
+import static dao.FuncionarioDao.getNomeFuncionarioForId;
+
+public class FormularioAgendamentoPanel extends JPanel {
+    private JComboBox<TipoExame> cbExames;
+    private JComboBox<StatusAgendamento> cbStatus;
     private JTextField tfCodPaciente, tfNomePaciente, tfCodFuncionario, tfNomeFuncionario;
     private JFormattedTextField ftfDataAgendamento, ftfHorarioAgendamento;
-    private JButton btnSalvar, btnLimpar, btnBusca;
+    private JButton btnSalvar;
+    private JButton btnLimpar;
+    private JButton btnBusca;
+    private JButton btnEditar;
+    private JButton btnExcluir;
+    private JButton btnSalvarEdicao;
+    private JButton btnCancelarEdicao;
+    private JButton btnNovoCadastro;
 
-    String[] exames = {
-            "Ecocardiograma", "Eletrocardiograma", "Teste Ergonometrico", "Holter 24 Horas"
-    };
-
-    String[] status = {
-            "Agendado", "Realizado", "Cancelado"
-    };
-
-    public AgendamentoPanel(JFrame pacienteFrame) {
+    public FormularioAgendamentoPanel(JFrame pacienteFrame) {
         setBackground(SystemColor.activeCaptionBorder);
         setLayout(null);
 
@@ -30,7 +39,7 @@ public class AgendamentoPanel extends JPanel {
         lbExames.setBounds(20, 87, 60, 14);
         add(lbExames);
 
-        cbExames = new JComboBox<>(exames);
+        cbExames = new JComboBox<>(TipoExame.values());
         cbExames.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
         cbExames.setBounds(74, 81, 200, 26);
         add(cbExames);
@@ -43,7 +52,16 @@ public class AgendamentoPanel extends JPanel {
         tfCodPaciente = new JTextField();
         tfCodPaciente.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
         tfCodPaciente.setColumns(10);
-        tfCodPaciente.setBounds(137, 317, 45, 20);
+        tfCodPaciente.setBounds(115, 213, 45, 20);
+        tfCodPaciente.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PacienteController pc = new PacienteController();
+
+                String nomePaciente = pc.controlGetNomePacienteForId(Integer.parseInt(tfCodPaciente.getText()));
+                tfNomePaciente.setText(nomePaciente);
+            }
+        });
         add(tfCodPaciente);
 
         JLabel lbNomePaciente = new JLabel("Nome Paciente:");
@@ -56,6 +74,7 @@ public class AgendamentoPanel extends JPanel {
         tfNomePaciente.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
         tfNomePaciente.setColumns(10);
         tfNomePaciente.setBounds(115, 241, 164, 20);
+
         add(tfNomePaciente);
 
         JLabel lbCodFuncionario = new JLabel("Código Funcionário:");
@@ -66,7 +85,14 @@ public class AgendamentoPanel extends JPanel {
         tfCodFuncionario = new JTextField();
         tfCodFuncionario.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
         tfCodFuncionario.setColumns(10);
-        tfCodFuncionario.setBounds(115, 213, 45, 20);
+        tfCodFuncionario.setBounds(137, 317, 45, 20);
+        tfCodFuncionario.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String nomeFuncionario = getNomeFuncionarioForId(Integer.parseInt(tfCodFuncionario.getText()));
+                tfNomeFuncionario.setText(nomeFuncionario);
+            }
+        });
         add(tfCodFuncionario);
 
         JLabel lbNomeFuncionario = new JLabel("Nome Funcionário:");
@@ -118,9 +144,10 @@ public class AgendamentoPanel extends JPanel {
         lbStatus.setBounds(20, 449, 60, 14);
         add(lbStatus);
 
-        cbStatus = new JComboBox<>(status);
+        cbStatus = new JComboBox<>(StatusAgendamento.values());
         cbStatus.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
         cbStatus.setBounds(74, 443, 100, 26);
+        cbStatus.setVisible(false);
         add(cbStatus);
 
         btnSalvar = new JButton();
@@ -130,7 +157,10 @@ public class AgendamentoPanel extends JPanel {
         btnSalvar.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
         btnSalvar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                AgendamentoController ac = new AgendamentoController();
+                ac.controlSalvar(FormularioAgendamentoPanel.this);
 
+                limparCampos();
             }
         });
         btnSalvar.setBounds(432, 433, 38, 38);
@@ -143,7 +173,7 @@ public class AgendamentoPanel extends JPanel {
         btnLimpar.setBackground(SystemColor.windowBorder);
         btnLimpar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                limparCampos();
             }
         });
         btnLimpar.setBounds(384, 433, 38, 38);
@@ -187,5 +217,80 @@ public class AgendamentoPanel extends JPanel {
         JSeparator separator_2_2 = new JSeparator();
         separator_2_2.setBounds(10, 304, 480, 2);
         add(separator_2_2);
+    }
+
+    private void limparCampos() {
+        cbExames.setSelectedIndex(0);
+        cbStatus.setSelectedIndex(0);
+        tfCodPaciente.setText("");
+        tfNomePaciente.setText("");
+        tfCodFuncionario.setText("");
+        tfNomeFuncionario.setText("");
+        ftfDataAgendamento.setValue("");
+        ftfHorarioAgendamento.setValue("");
+    }
+
+    public TipoExame getCbExames() {
+        return (TipoExame) cbExames.getSelectedItem();
+    }
+
+    public void setCbExames(JComboBox<TipoExame> cbExames) {
+        this.cbExames = cbExames;
+    }
+
+    public StatusAgendamento getCbStatus() {
+        return (StatusAgendamento) cbStatus.getSelectedItem();
+    }
+
+    public void setCbStatus(JComboBox<StatusAgendamento> cbStatus) {
+        this.cbStatus = cbStatus;
+    }
+
+    public JTextField getTfCodPaciente() {
+        return tfCodPaciente;
+    }
+
+    public void setTfCodPaciente(JTextField tfCodPaciente) {
+        this.tfCodPaciente = tfCodPaciente;
+    }
+
+    public JTextField getTfNomePaciente() {
+        return tfNomePaciente;
+    }
+
+    public void setTfNomePaciente(JTextField tfNomePaciente) {
+        this.tfNomePaciente = tfNomePaciente;
+    }
+
+    public JTextField getTfCodFuncionario() {
+        return tfCodFuncionario;
+    }
+
+    public void setTfCodFuncionario(JTextField tfCodFuncionario) {
+        this.tfCodFuncionario = tfCodFuncionario;
+    }
+
+    public JTextField getTfNomeFuncionario() {
+        return tfNomeFuncionario;
+    }
+
+    public void setTfNomeFuncionario(JTextField tfNomeFuncionario) {
+        this.tfNomeFuncionario = tfNomeFuncionario;
+    }
+
+    public JFormattedTextField getFtfDataAgendamento() {
+        return ftfDataAgendamento;
+    }
+
+    public void setFtfDataAgendamento(JFormattedTextField ftfDataAgendamento) {
+        this.ftfDataAgendamento = ftfDataAgendamento;
+    }
+
+    public JFormattedTextField getFtfHorarioAgendamento() {
+        return ftfHorarioAgendamento;
+    }
+
+    public void setFtfHorarioAgendamento(JFormattedTextField ftfHorarioAgendamento) {
+        this.ftfHorarioAgendamento = ftfHorarioAgendamento;
     }
 }

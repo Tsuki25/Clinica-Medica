@@ -222,4 +222,20 @@ public class EnfermeiroDao {
             throw new RuntimeException(e);
         }
     }
+
+    public Integer verificarEnfermeiro(Integer codFuncionario) {
+        Conexao conexao = new Conexao();
+        PreparedStatement stmt;
+
+        try {
+            stmt = conexao.getConn().prepareStatement("select count(*) as total from enfermeiro where codFuncionario = ?");
+            stmt.setString(1, codFuncionario.toString());
+            ResultSet rs = stmt.executeQuery();
+
+            rs.next();
+            return rs.getInt("total");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

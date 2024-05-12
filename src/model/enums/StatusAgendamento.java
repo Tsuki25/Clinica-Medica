@@ -1,9 +1,9 @@
 package model.enums;
 
 public enum StatusAgendamento {
-    AGENDADO("agendado"),
-    CONCLUIDO("concluido"),
-    CANCELADO("cancelado");
+    AGENDADO("AGENDADO"),
+    CONCLUIDO("CONCLUIDO"),
+    CANCELADO("CANCELADO");
 
     private String descricao;
 

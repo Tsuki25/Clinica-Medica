@@ -229,4 +229,20 @@ public class PacienteDao {
             throw new RuntimeException(e);
         }
     }
+
+    public String getNomePacienteForId(Integer codPaciente){
+        Conexao conexao = new Conexao();
+        PreparedStatement stmt;
+
+        try {
+            stmt = conexao.getConn().prepareStatement("select nome, sobrenome from paciente where codPaciente = ?");
+            stmt.setString(1, codPaciente.toString());
+            ResultSet rs = stmt.executeQuery();
+
+            rs.next();
+            return rs.getString("nome") + " " + rs.getString("sobrenome");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

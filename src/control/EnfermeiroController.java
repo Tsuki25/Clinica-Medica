@@ -141,4 +141,9 @@ public class EnfermeiroController {
         enfermeiroDao.excluirEnfermeiro(enfermeiro.getCpf());
         ec.excluirEndereco(enfermeiro.getEndereco().getCodEnd());
     }
+
+    public static Integer controlVerificarEnfermeiro(Integer codFuncionario){
+        EnfermeiroDao enfermeiroDao = new EnfermeiroDao();
+        return enfermeiroDao.verificarEnfermeiro(codFuncionario);
+    }
 }

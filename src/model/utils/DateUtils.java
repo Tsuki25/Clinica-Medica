@@ -23,7 +23,7 @@ public class DateUtils {
 
     public static LocalTime getTimeFromString(String timeStr){
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 
         return LocalTime.parse(timeStr,formatter);
     }

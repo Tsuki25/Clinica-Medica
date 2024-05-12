@@ -1,6 +1,7 @@
 package model;
 
 import model.enums.StatusAgendamento;
+import model.enums.TipoExame;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,16 +14,15 @@ public class Agendamento {
     private LocalDate dataAgendamento;
     private LocalTime horarioAgendamento;
     private StatusAgendamento status;
-    private LocalDateTime dataCriacao;
+    private TipoExame exame;
 
-    public Agendamento(Integer codPaciente, Integer codFuncionario, LocalDate dataAgendamento, LocalTime horarioAgendamento, StatusAgendamento status) {
+    public Agendamento(Integer codPaciente, Integer codFuncionario, LocalDate dataAgendamento, LocalTime horarioAgendamento, StatusAgendamento status, TipoExame exame) {
         this.codPaciente = codPaciente;
         this.codFuncionario = codFuncionario;
         this.dataAgendamento = dataAgendamento;
         this.horarioAgendamento = horarioAgendamento;
         this.status = status;
-
-        this.dataCriacao = LocalDateTime.now();
+        this.exame = exame;
     }
 
     public Agendamento(){}
@@ -67,8 +67,12 @@ public class Agendamento {
         this.status = status;
     }
 
-    public LocalDateTime getDataCriacao() {
-        return dataCriacao;
+    public TipoExame getExame() {
+        return exame;
+    }
+
+    public void setExame(TipoExame exame) {
+        this.exame = exame;
     }
 
     @Override
@@ -79,7 +83,7 @@ public class Agendamento {
                 ", dataAgendamento=" + dataAgendamento +
                 ", horarioAgendamento=" + horarioAgendamento +
                 ", status=" + status +
-                ", dataCriacao=" + dataCriacao +
+                ", exame=" + exame +
                 '}';
     }
 }

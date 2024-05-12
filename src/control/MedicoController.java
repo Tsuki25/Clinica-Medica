@@ -140,4 +140,9 @@ public class MedicoController {
         medicoDao.excluirMedico(medico.getCpf());
         ec.excluirEndereco(medico.getEndereco().getCodEnd());
     }
+
+    public static Integer controlVerificarMedico(Integer codFuncionario){
+        MedicoDao medicoDao = new MedicoDao();
+        return medicoDao.verificarMedico(codFuncionario);
+    }
 }
