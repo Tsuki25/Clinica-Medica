@@ -69,7 +69,7 @@ public class AgendamentoDao {
                 agendamento.setCodAgendamento(rs.getInt("codAgendamento"));
                 agendamento.setExame(TipoExame.valueOf(rs.getString("exame").toUpperCase()));
                 agendamento.setDataAgendamento(getDateFromString2(rs.getString("dataAgendamento")));
-                agendamento.setHorarioAgendamento(getTimeFromString(rs.getString("horarioAgendamento")));
+                agendamento.setHorarioAgendamento(getTimeFromString2(rs.getString("horarioAgendamento")));
                 agendamento.setStatus(StatusAgendamento.valueOf((rs.getString("statusAgendamento").toUpperCase())));
                 agendamento.setCodPaciente(rs.getInt("codPaciente"));
 
@@ -94,12 +94,13 @@ public class AgendamentoDao {
         ArrayList<Agendamento> agendamentos;
 
         try {
-            stmt = conexao.getConn().prepareStatement("SELECT * FROM agendamento WHERE codPaciente = ? OR codAgendamento = ? OR codFuncionario = ? OR exame LIKE ? OR status LIKE ?");
+            stmt = conexao.getConn().prepareStatement("SELECT * FROM agendamento WHERE codPaciente = ? OR codAgendamento = ? OR codMedico = ? OR codEnfermeiro = ? OR exame LIKE ? OR statusAgendamento LIKE ?");
             stmt.setString(1, textoBusca);
             stmt.setString(2, textoBusca);
             stmt.setString(3, textoBusca);
-            stmt.setString(4, "%" + textoBusca + "%");
-            stmt.setString(5, "%" + textoBusca + "%");
+            stmt.setString(4, textoBusca);
+            stmt.setString(5, "%" + textoBusca.toUpperCase() + "%");
+            stmt.setString(6, "%" + textoBusca.toUpperCase() + "%");
 
             ResultSet rs = stmt.executeQuery();
             agendamentos = new ArrayList<Agendamento>();
@@ -108,12 +109,13 @@ public class AgendamentoDao {
                 agendamento.setCodAgendamento(rs.getInt("codAgendamento"));
                 agendamento.setExame(TipoExame.valueOf(rs.getString("exame").toUpperCase()));
                 agendamento.setDataAgendamento(getDateFromString2(rs.getString("dataAgendamento")));
-                agendamento.setHorarioAgendamento(getTimeFromString(rs.getString("horarioAgendamento")));
+                agendamento.setHorarioAgendamento(getTimeFromString2(rs.getString("horarioAgendamento")));
                 agendamento.setStatus(StatusAgendamento.valueOf((rs.getString("statusAgendamento").toUpperCase())));
                 agendamento.setCodPaciente(rs.getInt("codPaciente"));
 
                 if(rs.getInt("codMedico") > 0)agendamento.setCodFuncionario(rs.getInt("codMedico"));
                 else agendamento.setCodFuncionario(rs.getInt("codEnfermeiro"));
+
                 agendamentos.add(agendamento);
             }
 
@@ -124,6 +126,85 @@ public class AgendamentoDao {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public void atualizarAgendamento(Agendamento agendamento){
+        Conexao conexao = new Conexao();
+        String sql = "UPDATE agendamento " +
+                "SET dataAgendamento = ?, " + "horarioAgendamento = ?, " + "statusAgendamento = ?, " + "exame = ?, " +
+                "codMedico = ?, " + "codEnfermeiro = ?, " + "codPaciente = ?" +
+                "WHERE codAgendamento = ?";
+        try {
+            PreparedStatement stmt = conexao.getConn().prepareStatement(sql);
+            stmt.setString(1, getStringFromDate1(agendamento.getDataAgendamento()));
+            stmt.setString(2, getStringFromTime(agendamento.getHorarioAgendamento()));
+            stmt.setString(3, agendamento.getStatus().getDescricao());
+            stmt.setString(4, agendamento.getExame().getTipo());
+
+            if(controlVerificarMedico(agendamento.getCodFuncionario()) > 0){//CONTOU-SE REGISTROS COM ESTE CODIGO NO MEDICO, PORTANTO É UM MEDICO
+                stmt.setString(5, agendamento.getCodFuncionario().toString());
+                stmt.setString(6, null);
+            }else{//CONTOU-SE REGISTROS COM ESTE CODIGO NO ENFERMEIRO, PORTANTO É UM ENFERMEIRO
+                stmt.setString(5, null);
+                stmt.setString(6, agendamento.getCodFuncionario().toString());
+            }
+            stmt.setString(7, agendamento.getCodPaciente().toString());
+
+            stmt.setString(8, agendamento.getCodAgendamento().toString());
+
+            stmt.execute();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public Agendamento getAgendamentoForId(Integer codAgendamento) {
+        Conexao conexao = new Conexao();
+        PreparedStatement stmt;
+
+        try {
+            stmt = conexao.getConn().prepareStatement("select * from agendamento where codAgendamento = ?");
+            stmt.setString(1, codAgendamento.toString());
+            ResultSet rs = stmt.executeQuery();
+
+            rs.next();
+            Agendamento agendamento = new Agendamento();
+            agendamento.setCodAgendamento(rs.getInt("codAgendamento"));
+            agendamento.setExame(TipoExame.valueOf(rs.getString("exame").toUpperCase()));
+            agendamento.setDataAgendamento(getDateFromString2(rs.getString("dataAgendamento")));
+            agendamento.setHorarioAgendamento(getTimeFromString2(rs.getString("horarioAgendamento")));
+            agendamento.setStatus(StatusAgendamento.valueOf((rs.getString("statusAgendamento").toUpperCase())));
+            agendamento.setCodPaciente(rs.getInt("codPaciente"));
+
+            if(rs.getInt("codMedico") > 0)agendamento.setCodFuncionario(rs.getInt("codMedico"));
+            else agendamento.setCodFuncionario(rs.getInt("codEnfermeiro"));
+
+            rs.close();
+            stmt.close();
+            return agendamento;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void excluirAgendamento(Integer codAgendamento) {
+        Conexao conexao = new Conexao();
+        String sql = "DELETE FROM agendamento WHERE codAgendamento = ?";
+        try {
+            PreparedStatement stmt = conexao.getConn().prepareStatement(sql);
+            stmt.setString(1, codAgendamento.toString());
+
+            stmt.execute();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

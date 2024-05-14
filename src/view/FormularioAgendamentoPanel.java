@@ -2,8 +2,7 @@ package view;
 
 import control.AgendamentoController;
 import control.PacienteController;
-import dao.AgendamentoDao;
-import dao.FuncionarioDao;
+import model.Agendamento;
 import model.enums.StatusAgendamento;
 import model.enums.TipoExame;
 
@@ -15,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.text.ParseException;
 
 import static dao.FuncionarioDao.getNomeFuncionarioForId;
+import static model.utils.DateUtils.getStringFromDate2;
 
 public class FormularioAgendamentoPanel extends JPanel {
     private JComboBox<TipoExame> cbExames;
@@ -29,6 +29,7 @@ public class FormularioAgendamentoPanel extends JPanel {
     private JButton btnSalvarEdicao;
     private JButton btnCancelarEdicao;
     private JButton btnNovoCadastro;
+    private JLabel lbStatus;
 
     public FormularioAgendamentoPanel(JFrame pacienteFrame) {
         setBackground(SystemColor.activeCaptionBorder);
@@ -74,7 +75,8 @@ public class FormularioAgendamentoPanel extends JPanel {
         tfNomePaciente.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
         tfNomePaciente.setColumns(10);
         tfNomePaciente.setBounds(115, 241, 164, 20);
-
+        tfNomePaciente.setBorder(BorderFactory.createLineBorder(new Color(96, 8, 166)));
+        tfNomePaciente.setBackground(new Color(226, 207, 241));
         add(tfNomePaciente);
 
         JLabel lbCodFuncionario = new JLabel("Código Funcionário:");
@@ -105,6 +107,8 @@ public class FormularioAgendamentoPanel extends JPanel {
         tfNomeFuncionario.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
         tfNomeFuncionario.setColumns(10);
         tfNomeFuncionario.setBounds(132, 348, 147, 20);
+        tfNomeFuncionario.setBorder(BorderFactory.createLineBorder(new Color(96, 8, 166)));
+        tfNomeFuncionario.setBackground(new Color(226, 207, 241));
         add(tfNomeFuncionario);
 
         JLabel lbDataAgendamento = new JLabel("Data Agendamento:");
@@ -139,7 +143,7 @@ public class FormularioAgendamentoPanel extends JPanel {
         ftfHorarioAgendamento.setBounds(150, 140, 38, 20);
         add(ftfHorarioAgendamento);
 
-        JLabel lbStatus = new JLabel("Status:");
+        lbStatus = new JLabel("Status:");
         lbStatus.setFont(new Font("Bahnschrift", Font.BOLD, 14));
         lbStatus.setBounds(20, 449, 60, 14);
         lbStatus.setVisible(false);
@@ -147,7 +151,7 @@ public class FormularioAgendamentoPanel extends JPanel {
 
         cbStatus = new JComboBox<>(StatusAgendamento.values());
         cbStatus.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
-        cbStatus.setBounds(74, 443, 100, 26);
+        cbStatus.setBounds(74, 443, 115, 26);
         cbStatus.setVisible(false);
         add(cbStatus);
 
@@ -228,6 +232,143 @@ public class FormularioAgendamentoPanel extends JPanel {
         add(separator_2_2);
     }
 
+
+    public FormularioAgendamentoPanel(JFrame pacienteFrame, Integer codAgendamento){
+        this(pacienteFrame);//chama o construtor padrão
+        Agendamento agendamento = getDadosAgendamento(codAgendamento);
+
+        btnLimpar.setVisible(false);//Deixa os botões do outro formulario ocultos
+        btnSalvar.setVisible(false);
+        lbStatus.setVisible(true);
+        cbStatus.setVisible(true);
+
+        preencherCampos(agendamento);// preenche o formulario com os dados
+        setStatusEdicaoCampos(false); //Deixa todos os campos editaveis(true) ou não editaveis(false)
+
+        btnEditar = new JButton();
+        btnEditar.setIcon(new ImageIcon(getClass().getResource("/view/icons/editar.png")));
+        btnEditar.setBackground(SystemColor.windowBorder);
+        btnEditar.setForeground(SystemColor.desktop);
+        btnEditar.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
+        btnEditar.setBounds(432, 433, 38, 38);
+        btnEditar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                setStatusEdicaoCampos(true);
+                btnEditar.setVisible(false);
+                btnExcluir.setVisible(false);
+                btnCancelarEdicao.setVisible(true);
+                btnSalvarEdicao.setVisible(true);
+            }
+        });
+        add(btnEditar);
+
+
+        btnExcluir = new JButton();
+        btnExcluir.setIcon(new ImageIcon(getClass().getResource("/view/icons/lata-de-lixo.png")));
+        btnExcluir.setForeground(SystemColor.desktop);
+        btnExcluir.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
+        btnExcluir.setBackground(SystemColor.windowBorder);
+        btnExcluir.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                int confirmacao = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir o registro?", "Confirmação", JOptionPane.YES_NO_OPTION);
+                if (confirmacao == JOptionPane.YES_OPTION) {
+                    AgendamentoController ac = new AgendamentoController();
+                    ac.controlExcluirAgendamento(agendamento);
+                    JOptionPane.showMessageDialog(null, "Agendamento excluido com sucesso");
+                    limparCampos();
+                }
+            }
+        });
+        btnExcluir.setBounds(384, 433, 38, 38);
+        add(btnExcluir);
+
+        btnSalvarEdicao = new JButton(); // APARECE NO LUGAR DO btnEditar
+        btnSalvarEdicao.setIcon(new ImageIcon(getClass().getResource("/view/icons/confirmar.png")));
+        btnSalvarEdicao.setBackground(SystemColor.windowBorder);
+        btnSalvarEdicao.setForeground(SystemColor.desktop);
+        btnSalvarEdicao.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
+        btnSalvarEdicao.setBounds(432, 433, 38, 38);
+        btnSalvarEdicao.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                AgendamentoController ac = new AgendamentoController();
+                Agendamento agendamentoAtualizado =  ac.controlAtualizarAgendamento(FormularioAgendamentoPanel.this, agendamento);
+                preencherCampos(agendamentoAtualizado);
+                JOptionPane.showMessageDialog(null, "Paciente atualizado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+
+                setStatusEdicaoCampos(false);
+                btnEditar.setVisible(true);
+                btnExcluir.setVisible(true);
+                btnCancelarEdicao.setVisible(false);
+                btnSalvarEdicao.setVisible(false);
+            }
+        });
+        add(btnSalvarEdicao);
+
+        btnCancelarEdicao = new JButton(); // APARECE NO LUGAR DO btnExcluir
+        btnCancelarEdicao.setIcon(new ImageIcon(getClass().getResource("/view/icons/cancelar.png")));
+        btnCancelarEdicao.setForeground(SystemColor.desktop);
+        btnCancelarEdicao.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
+        btnCancelarEdicao.setBackground(SystemColor.windowBorder);
+        btnCancelarEdicao.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                setStatusEdicaoCampos(false);
+                btnEditar.setVisible(true);
+                btnExcluir.setVisible(true);
+                preencherCampos(agendamento);
+                btnCancelarEdicao.setVisible(false);
+                btnSalvarEdicao.setVisible(false);
+            }
+        });
+        btnCancelarEdicao.setBounds(384, 433, 38, 38);
+        add(btnCancelarEdicao);
+
+        btnNovoCadastro = new JButton();
+        btnNovoCadastro.setIcon(new ImageIcon(getClass().getResource("/view/icons/adicionar.png")));
+        btnNovoCadastro.setBackground(SystemColor.windowBorder);
+        btnNovoCadastro.setForeground(SystemColor.desktop);
+        btnNovoCadastro.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
+        btnNovoCadastro.setBounds(288, 433, 38, 38);
+        btnNovoCadastro.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                PacienteFrame novoFrame = new PacienteFrame();
+                novoFrame.setSize(530, 870);
+                novoFrame.setVisible(true);
+                pacienteFrame.setVisible(false);
+            }
+        });
+        add(btnNovoCadastro);
+
+    }
+
+    private void preencherCampos(Agendamento agendamento){
+        // SETA OS VALORES DOS CAMPOS DE ACORDO COM O RECUPERADO DO BANCO DE DADOS
+
+        cbExames.setSelectedItem(agendamento.getExame());
+        cbStatus.setSelectedItem(agendamento.getStatus());
+        tfCodPaciente.setText(agendamento.getCodPaciente().toString());
+        tfCodFuncionario.setText(agendamento.getCodFuncionario().toString());
+        ftfDataAgendamento.setText(getStringFromDate2(agendamento.getDataAgendamento()));
+        ftfHorarioAgendamento.setText(agendamento.getHorarioAgendamento().toString());
+    }
+
+    private void setStatusEdicaoCampos(Boolean status){
+        Color borderEditavel = new Color(66, 64, 64);
+        Color borderIneditavel = new Color(96, 8, 166);
+        Color bgEditavel = new Color(238, 240, 242);
+        Color bgIneditavel = new Color(226, 207, 241);
+
+        if(status) alterCoresCampos(borderEditavel, bgEditavel);
+        else alterCoresCampos(borderIneditavel, bgIneditavel);
+
+
+        cbExames.setEnabled(status);
+        cbStatus.setEnabled(status);
+        tfCodPaciente.setEditable(status);
+        tfCodFuncionario.setEditable(status);
+        ftfDataAgendamento.setEditable(status);
+        ftfHorarioAgendamento.setEditable(status);
+    }
+
     private void limparCampos() {
         cbExames.setSelectedIndex(0);
         cbStatus.setSelectedIndex(0);
@@ -237,6 +378,36 @@ public class FormularioAgendamentoPanel extends JPanel {
         tfNomeFuncionario.setText("");
         ftfDataAgendamento.setValue("");
         ftfHorarioAgendamento.setValue("");
+    }
+
+    private Agendamento getDadosAgendamento(Integer codAgendamento) {
+        AgendamentoController ac = new AgendamentoController();
+        return ac.controlBuscarAgendamentoForId(codAgendamento);
+    }
+
+    private void alterCoresCampos(Color corBorda, Color corFundo){
+
+        cbExames.setBackground(corFundo);
+        ((JLabel) cbExames.getRenderer()).setOpaque(true); // Torna o fundo do item selecionado visível
+        cbExames.setBorder(BorderFactory.createLineBorder(corBorda));
+        cbExames.setForeground(Color.BLACK);
+
+        cbStatus.setBackground(corFundo);
+        ((JLabel) cbStatus.getRenderer()).setOpaque(true); // Torna o fundo do item selecionado visível
+        cbStatus.setBorder(BorderFactory.createLineBorder(corBorda));
+        cbStatus.setForeground(Color.BLACK);
+
+        tfCodPaciente.setBorder(BorderFactory.createLineBorder(corBorda));
+        tfCodPaciente.setBackground(corFundo);
+
+        tfCodFuncionario.setBorder(BorderFactory.createLineBorder(corBorda));
+        tfCodFuncionario.setBackground(corFundo);
+
+        ftfDataAgendamento.setBorder(BorderFactory.createLineBorder(corBorda));
+        ftfDataAgendamento.setBackground(corFundo);
+
+        ftfHorarioAgendamento.setBorder(BorderFactory.createLineBorder(corBorda));
+        ftfHorarioAgendamento.setBackground(corFundo);
     }
 
     public TipoExame getCbExames() {

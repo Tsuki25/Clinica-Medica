@@ -65,17 +65,15 @@ public class ListaAgendamentosFrame extends JFrame{
         table.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 1) {
-                   /* int linha = table.getSelectedRow();
+                    int linha = table.getSelectedRow();
                     if (linha != -1) {
-                        Integer codFuncionario = Integer.parseInt(table.getValueAt(linha, 0).toString());// passar codFuncionario, crm, cri
-                        String crm = table.getValueAt(linha, 4).toString();// se crm vazio e cri cheio -> enfermerio
-                        String cri = table.getValueAt(linha, 5).toString();  // se crm cheio e cri vazio -> medico
-                        // se crm e cri vazios recepcionista
-                        PacienteFrame pacienteFrame = new PacienteFrame(codFuncionario, crm, cri); //ABRE O FRAME DE EDICAO DE DADOS DO USUARIOS
-                        pacienteFrame.setSize(530,870);
-                        pacienteFrame.setVisible(true);
-                        //ListaFuncionariosFrame.this.setVisible(false);
-                    }*/
+                        Integer codAgendamento = Integer.parseInt(table.getValueAt(linha, 0).toString());
+                        Integer codFuncionario = Integer.parseInt(table.getValueAt(linha, 6).toString());
+                        PacienteFrame agendamentoEditionFrame = new PacienteFrame(codAgendamento, codFuncionario); //ABRE O FRAME DE EDICAO DE DADOS DO USUARIOS
+                        agendamentoEditionFrame.setSize(530,870);
+                        agendamentoEditionFrame.setVisible(true);
+                        ListaAgendamentosFrame.this.setVisible(false);
+                    }
                 }
             }
         });
