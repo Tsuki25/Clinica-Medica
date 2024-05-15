@@ -7,6 +7,8 @@ import model.Paciente;
 import view.FormularioPacientePanel;
 
 import javax.swing.*;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.MissingFormatArgumentException;
@@ -21,18 +23,24 @@ public class PacienteController {
             paciente.setNome(cadastroPanel.getTfNome().getText());
             paciente.setSobrenome(cadastroPanel.getTfSobrenome().getText());
             paciente.setDataNascimento(getDateFromString1(cadastroPanel.getFtfDtNasc().getText()));
-            paciente.setTelefone(cadastroPanel.getTfTelefone().getText());
-            paciente.setCelular(cadastroPanel.getTfCelular().getText());
-            paciente.setEmail(cadastroPanel.getTfEmail().getText());
-            paciente.setSexo(cadastroPanel.getCbSexo());
-            paciente.setHistorico(cadastroPanel.getTfHistorico().getText());
-            paciente.setAlergias(cadastroPanel.getTfAlergia().getText());
-            paciente.setMedicamentosUtilizados(cadastroPanel.getTfMedicamentosUtilizados().getText());
-            paciente.setAnotacoes(cadastroPanel.getTfAnotacoes().getText());
-            paciente.setEndereco(endereco);
 
-            PacienteDao pacienteDao = new PacienteDao();
-            pacienteDao.salvar(paciente);
+            if(paciente.getDataNascimento().isAfter(LocalDate.now()) || paciente.getDataNascimento().equals(LocalDate.now())) {
+                JOptionPane.showMessageDialog(null, "Data de nascimento inválida", "Data inválido", JOptionPane.INFORMATION_MESSAGE);
+
+            }else{
+                paciente.setTelefone(cadastroPanel.getTfTelefone().getText());
+                paciente.setCelular(cadastroPanel.getTfCelular().getText());
+                paciente.setEmail(cadastroPanel.getTfEmail().getText());
+                paciente.setSexo(cadastroPanel.getCbSexo());
+                paciente.setHistorico(cadastroPanel.getTfHistorico().getText());
+                paciente.setAlergias(cadastroPanel.getTfAlergia().getText());
+                paciente.setMedicamentosUtilizados(cadastroPanel.getTfMedicamentosUtilizados().getText());
+                paciente.setAnotacoes(cadastroPanel.getTfAnotacoes().getText());
+                paciente.setEndereco(endereco);
+
+                PacienteDao pacienteDao = new PacienteDao();
+                pacienteDao.salvar(paciente);
+            }
         }catch(InputMismatchException ime){
             EnderecoController end = new EnderecoController();
             end.controlExcluirEnd(endereco);
@@ -77,7 +85,7 @@ public class PacienteController {
         return pacientes;
     }
 
-    public Paciente controlAtualizarPaciente(FormularioPacientePanel updatePanel){
+    public Paciente controlAtualizarPaciente(FormularioPacientePanel updatePanel, Paciente pacienteAux){
         try{
             PacienteDao pacienteDao = new PacienteDao();
             EnderecoDao enderecoDao = new EnderecoDao();
@@ -87,30 +95,35 @@ public class PacienteController {
             paciente.setNome(updatePanel.getTfNome().getText());
             paciente.setSobrenome(updatePanel.getTfSobrenome().getText());
             paciente.setDataNascimento(getDateFromString1(updatePanel.getFtfDtNasc().getText()));
-            paciente.setTelefone(updatePanel.getTfTelefone().getText());
-            paciente.setCelular(updatePanel.getTfCelular().getText());
-            paciente.setEmail(updatePanel.getTfEmail().getText());
-            paciente.setSexo(updatePanel.getCbSexo());
-            paciente.setHistorico(updatePanel.getTfHistorico().getText());
-            paciente.setAlergias(updatePanel.getTfAlergia().getText());
-            paciente.setMedicamentosUtilizados(updatePanel.getTfMedicamentosUtilizados().getText());
-            paciente.setAnotacoes(updatePanel.getTfAnotacoes().getText());
+            if(paciente.getDataNascimento().isAfter(LocalDate.now()) || paciente.getDataNascimento().equals(LocalDate.now())) {
+                JOptionPane.showMessageDialog(null, "Data de nascimento inválida", "Data inválido", JOptionPane.INFORMATION_MESSAGE);
+                return pacienteAux;
+            }else{
+                paciente.setTelefone(updatePanel.getTfTelefone().getText());
+                paciente.setCelular(updatePanel.getTfCelular().getText());
+                paciente.setEmail(updatePanel.getTfEmail().getText());
+                paciente.setSexo(updatePanel.getCbSexo());
+                paciente.setHistorico(updatePanel.getTfHistorico().getText());
+                paciente.setAlergias(updatePanel.getTfAlergia().getText());
+                paciente.setMedicamentosUtilizados(updatePanel.getTfMedicamentosUtilizados().getText());
+                paciente.setAnotacoes(updatePanel.getTfAnotacoes().getText());
 
-            Endereco endereco = new Endereco();
-            endereco.setCodEnd(pacienteDao.getCodEnderecoForPaciente(paciente.getCpf()));//Função que busca no banco o cod de endereço do paciente
-            endereco.setCep(Integer.parseInt(updatePanel.getTfCep().getText()));
-            endereco.setLogradouro(updatePanel.getTfLogradouro().getText());
-            endereco.setBairro(updatePanel.getTfBairro().getText());
-            endereco.setCidade(updatePanel.getTfCidade().getText());
-            endereco.setEstado((String) updatePanel.getCbEstado().getSelectedItem());
-            endereco.setNumero(Integer.parseInt(updatePanel.getTfNumero().getText()));
-            endereco.setComplemento(updatePanel.getTfComplemento().getText());
+                Endereco endereco = new Endereco();
+                endereco.setCodEnd(pacienteDao.getCodEnderecoForPaciente(paciente.getCpf()));//Função que busca no banco o cod de endereço do paciente
+                endereco.setCep(Integer.parseInt(updatePanel.getTfCep().getText()));
+                endereco.setLogradouro(updatePanel.getTfLogradouro().getText());
+                endereco.setBairro(updatePanel.getTfBairro().getText());
+                endereco.setCidade(updatePanel.getTfCidade().getText());
+                endereco.setEstado((String) updatePanel.getCbEstado().getSelectedItem());
+                endereco.setNumero(Integer.parseInt(updatePanel.getTfNumero().getText()));
+                endereco.setComplemento(updatePanel.getTfComplemento().getText());
 
-            paciente.setEndereco(endereco);
+                paciente.setEndereco(endereco);
 
-            pacienteDao.atualizarPaciente(paciente);
-            enderecoDao.atualizarEndereco(paciente.getEndereco());
-            return paciente;
+                pacienteDao.atualizarPaciente(paciente);
+                enderecoDao.atualizarEndereco(paciente.getEndereco());
+                return paciente;
+            }
 
         }catch(InputMismatchException ime){
             ime.printStackTrace();

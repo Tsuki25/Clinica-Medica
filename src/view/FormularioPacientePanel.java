@@ -59,9 +59,6 @@ public class FormularioPacientePanel extends JPanel {
             "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SE", "TO"
     };
 
-    /**
-     * Create the panel.
-     */
     public FormularioPacientePanel(JFrame pacienteFrame) {
         setBackground(SystemColor.activeCaptionBorder);
         setLayout(null);
@@ -436,7 +433,7 @@ public class FormularioPacientePanel extends JPanel {
         btnSalvarEdicao.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 PacienteController pc = new PacienteController();
-                Paciente pacienteAtualizado =  pc.controlAtualizarPaciente(FormularioPacientePanel.this);
+                Paciente pacienteAtualizado =  pc.controlAtualizarPaciente(FormularioPacientePanel.this, paciente);
                 preencherCampos(pacienteAtualizado);
                 JOptionPane.showMessageDialog(null, "Paciente atualizado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
 
