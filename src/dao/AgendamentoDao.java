@@ -207,4 +207,75 @@ public class AgendamentoDao {
             e.printStackTrace();
         }
     }
+
+    public ArrayList<Agendamento> listarAgendamentoFuncDia(Agendamento agendamentoAux){
+        Conexao conexao = new Conexao();
+        PreparedStatement stmt;
+        ArrayList<Agendamento> agendamentos = new ArrayList<>();
+
+        try {
+            stmt = conexao.getConn().prepareStatement("select * from agendamento where dataAgendamento = ? and (codMedico = ? or codEnfermeiro = ?)");
+            stmt.setString(1, getStringFromDate1(agendamentoAux.getDataAgendamento()));
+            stmt.setString(2, agendamentoAux.getCodFuncionario().toString());
+            stmt.setString(3, agendamentoAux.getCodFuncionario().toString());
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next()){
+                Agendamento agendamento = new Agendamento();
+                agendamento.setCodAgendamento(rs.getInt("codAgendamento"));
+                agendamento.setExame(TipoExame.valueOf(rs.getString("exame").toUpperCase()));
+                agendamento.setDataAgendamento(getDateFromString2(rs.getString("dataAgendamento")));
+                agendamento.setHorarioAgendamento(getTimeFromString2(rs.getString("horarioAgendamento")));
+                agendamento.setStatus(StatusAgendamento.valueOf((rs.getString("statusAgendamento").toUpperCase())));
+                agendamento.setCodPaciente(rs.getInt("codPaciente"));
+
+                if(rs.getInt("codMedico") > 0)agendamento.setCodFuncionario(rs.getInt("codMedico"));
+                else agendamento.setCodFuncionario(rs.getInt("codEnfermeiro"));
+                agendamentos.add(agendamento);
+
+            }
+            rs.close();
+            stmt.close();
+            return agendamentos;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public ArrayList<Agendamento> listarAgendamentoPacienteDia(Agendamento agendamentoAux){
+        Conexao conexao = new Conexao();
+        PreparedStatement stmt;
+        ArrayList<Agendamento> agendamentos = new ArrayList<>();
+
+        try {
+            stmt = conexao.getConn().prepareStatement("select * from agendamento where dataAgendamento = ? and codPaciente = ?");
+            stmt.setString(1, getStringFromDate1(agendamentoAux.getDataAgendamento()));
+            stmt.setString(2, agendamentoAux.getCodPaciente().toString());
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next()){
+                Agendamento agendamento = new Agendamento();
+                agendamento.setCodAgendamento(rs.getInt("codAgendamento"));
+                agendamento.setExame(TipoExame.valueOf(rs.getString("exame").toUpperCase()));
+                agendamento.setDataAgendamento(getDateFromString2(rs.getString("dataAgendamento")));
+                agendamento.setHorarioAgendamento(getTimeFromString2(rs.getString("horarioAgendamento")));
+                agendamento.setStatus(StatusAgendamento.valueOf((rs.getString("statusAgendamento").toUpperCase())));
+                agendamento.setCodPaciente(rs.getInt("codPaciente"));
+
+                if(rs.getInt("codMedico") > 0)agendamento.setCodFuncionario(rs.getInt("codMedico"));
+                else agendamento.setCodFuncionario(rs.getInt("codEnfermeiro"));
+                agendamentos.add(agendamento);
+
+            }
+            rs.close();
+            stmt.close();
+            return agendamentos;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

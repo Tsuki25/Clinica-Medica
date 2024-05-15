@@ -15,6 +15,7 @@ import view.FormularioPacientePanel;
 import javax.swing.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.MissingFormatArgumentException;
@@ -29,18 +30,11 @@ public class AgendamentoController {
             agendamento.setExame(cadastroPanel.getCbExames());
             agendamento.setDataAgendamento(getDateFromString1(cadastroPanel.getFtfDataAgendamento().getText()));
             agendamento.setHorarioAgendamento(getTimeFromString(cadastroPanel.getFtfHorarioAgendamento().getText()));
+            agendamento.setCodFuncionario(Integer.parseInt(cadastroPanel.getTfCodFuncionario().getText()));
+            agendamento.setCodPaciente(Integer.parseInt(cadastroPanel.getTfCodPaciente().getText()));
+            agendamento.setStatus(StatusAgendamento.AGENDADO);
 
-            if(agendamento.getDataAgendamento().isBefore(LocalDate.now())){
-                JOptionPane.showMessageDialog(null, "A data de agendamento não pode ser anterior a hoje", "Data Inválida", JOptionPane.INFORMATION_MESSAGE);
-
-            }else if(agendamento.getHorarioAgendamento().isBefore(LocalTime.of(8, 0)) || agendamento.getHorarioAgendamento().isAfter(LocalTime.of(18, 0))) {
-                JOptionPane.showMessageDialog(null, "Agendamentos permitidos apenas em horário comercial", "Horário Inválido", JOptionPane.INFORMATION_MESSAGE);
-
-            }else{
-                agendamento.setCodFuncionario(Integer.parseInt(cadastroPanel.getTfCodFuncionario().getText()));
-                agendamento.setCodPaciente(Integer.parseInt(cadastroPanel.getTfCodPaciente().getText()));
-                agendamento.setStatus(StatusAgendamento.AGENDADO);
-
+            if(verificarDisponibilidadeAgendamento(agendamento)){ // verifica a validade das dats informadas
                 AgendamentoDao agendamentoDao = new AgendamentoDao();
                 agendamentoDao.salvar(agendamento);
                 JOptionPane.showMessageDialog(null, "Agendamento realizado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
@@ -61,19 +55,12 @@ public class AgendamentoController {
             agendamento.setExame(updatePanel.getCbExames());
             agendamento.setDataAgendamento(getDateFromString1(updatePanel.getFtfDataAgendamento().getText()));
             agendamento.setHorarioAgendamento(getTimeFromString(updatePanel.getFtfHorarioAgendamento().getText()));
+            agendamento.setCodFuncionario(Integer.parseInt(updatePanel.getTfCodFuncionario().getText()));
+            agendamento.setCodPaciente(Integer.parseInt(updatePanel.getTfCodPaciente().getText()));
+            agendamento.setStatus(updatePanel.getCbStatus());
+            agendamento.setCodAgendamento(agendamentoEditado.getCodAgendamento());
 
-            if(agendamento.getDataAgendamento().isBefore(LocalDate.now())){
-                JOptionPane.showMessageDialog(null, "A data de agendamento não pode ser anterior a hoje", "Data Inválida", JOptionPane.INFORMATION_MESSAGE);
-
-            }else if(agendamento.getHorarioAgendamento().isBefore(LocalTime.of(8, 0)) || agendamento.getHorarioAgendamento().isAfter(LocalTime.of(18, 0))) {
-                JOptionPane.showMessageDialog(null, "Agendamentos permitidos apenas em horário comercial", "Horário Inválido", JOptionPane.INFORMATION_MESSAGE);
-
-            }else{
-                agendamento.setCodFuncionario(Integer.parseInt(updatePanel.getTfCodFuncionario().getText()));
-                agendamento.setCodPaciente(Integer.parseInt(updatePanel.getTfCodPaciente().getText()));
-                agendamento.setStatus(updatePanel.getCbStatus());
-                agendamento.setCodAgendamento(agendamentoEditado.getCodAgendamento());
-
+            if(verificarDisponibilidadeAgendamento(agendamento)){
                 AgendamentoDao agendamentoDao = new AgendamentoDao();
                 agendamentoDao.atualizarAgendamento(agendamento);
                 return agendamento;
@@ -113,6 +100,40 @@ public class AgendamentoController {
     public void controlExcluirAgendamento(Agendamento agendamento){
         AgendamentoDao agendamentoDao = new AgendamentoDao();
         agendamentoDao.excluirAgendamento(agendamento.getCodAgendamento());
+    }
+
+    public Boolean verificarDisponibilidadeAgendamento(Agendamento agendamento) {
+        AgendamentoDao agendamentoDao = new AgendamentoDao();
+
+        if (agendamento.getDataAgendamento().isBefore(LocalDate.now())) { // VERIFICA SE A DATA É ANTERIOR A HOJE
+            JOptionPane.showMessageDialog(null, "A data de agendamento não pode ser anterior a hoje", "Data Inválida", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+
+        } else if (agendamento.getHorarioAgendamento().isBefore(LocalTime.of(8, 0)) || agendamento.getHorarioAgendamento().isAfter(LocalTime.of(18, 0))) {
+            JOptionPane.showMessageDialog(null, "Agendamentos permitidos apenas em horário comercial", "Horário Inválido", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+
+        ArrayList<Agendamento> agendamentos = agendamentoDao.listarAgendamentoFuncDia(agendamento);
+        for (Agendamento agendamentoIterator : agendamentos) {
+            if(agendamento.getHorarioAgendamento().isAfter(agendamentoIterator.getHorarioAgendamento()) || agendamento.getHorarioAgendamento().isBefore(agendamentoIterator.getHorarioAgendamento().plus(15, ChronoUnit.MINUTES))  || agendamento.getHorarioAgendamento().equals(agendamentoIterator.getHorarioAgendamento())) {
+                JOptionPane.showMessageDialog(null, "Funcionário Indisponivel", "Agendamento Inválido", JOptionPane.INFORMATION_MESSAGE);
+                return false;
+            }
+        }
+
+        agendamentos = agendamentoDao.listarAgendamentoPacienteDia(agendamento);
+        for (Agendamento agendamentoIterator : agendamentos) {
+            if(agendamento.getHorarioAgendamento().isAfter(agendamentoIterator.getHorarioAgendamento()) || agendamento.getHorarioAgendamento().isBefore(agendamentoIterator.getHorarioAgendamento().plus(15, ChronoUnit.MINUTES)) || agendamento.getHorarioAgendamento().equals(agendamentoIterator.getHorarioAgendamento())) {
+                JOptionPane.showMessageDialog(null, "Paciente Indisponivel", "Agendamento Inválido", JOptionPane.INFORMATION_MESSAGE);
+                return false;
+            }
+        }
+
+        return true; // cadastro validado para todas as datas possivelmente invalida ou indisponiveis
+
+        // consultar a tabela exames, verificando se funcionario && data e comparo os horario até horario+15
+        // consulta a tabela exames, verificando se o paciente e data + horario até horario+15
     }
     
 }
