@@ -24,6 +24,7 @@ public class FormularioFuncionarioPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
     private JTextField tfCpf;
+    private JTextField tfCodFuncionario;
     private JTextField tfNome;
     private JTextField tfSobrenome;
     private JTextField tfTelefone;
@@ -79,6 +80,7 @@ public class FormularioFuncionarioPanel extends JPanel {
         rdbtnRecepcionista.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
         rdbtnRecepcionista.setBackground(SystemColor.activeCaptionBorder);
         rdbtnRecepcionista.setBounds(95, 54, 109, 23);
+        rdbtnRecepcionista.setSelected(true);
         add(rdbtnRecepcionista);
 
         rdbtnEnfermeiro = new JRadioButton("Enfermeiro");
@@ -458,6 +460,19 @@ public class FormularioFuncionarioPanel extends JPanel {
         this(pacienteFrame);//chama o construtor padrão com o formulário de cadastro do paciente
         Object funcionario = getDadosFuncionario(codFuncionario, crm, cip);
 
+        JLabel lbCodFuncionario = new JLabel("Cod. Funcionario:");
+        lbCodFuncionario.setFont(new Font("Bahnschrift", Font.BOLD, 14));
+        lbCodFuncionario.setBounds(200, 112, 120, 14);
+        add(lbCodFuncionario);
+
+        tfCodFuncionario = new JTextField();
+        lbCodFuncionario.setLabelFor(tfCodFuncionario);
+        tfCodFuncionario.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
+        tfCodFuncionario.setBounds(330, 109, 50, 20);
+        add(tfCodFuncionario);
+        tfCodFuncionario.setEditable(false);//NÃO É POSSIVEL EDITAR O CPF
+        tfCodFuncionario.setColumns(10);
+
         // VERIFICA O TIPO DE FUNCIONARIO QUE SERA EDITADO
         if(funcionario instanceof Medico){
             Medico funcionarioAux = (Medico) funcionario;
@@ -470,7 +485,7 @@ public class FormularioFuncionarioPanel extends JPanel {
             preencherCampos(funcionarioAux);// preenche o formulario com os dados do recepcionista
         }
 
-        btnLimpar.setVisible(false);//Deixa os botões do outro formilario ocultos
+        btnLimpar.setVisible(false);//Deixa os botões do outro formulario ocultos
         btnSalvar.setVisible(false);
         rdbtnEnfermeiro.setVisible(false);
         rdbtnMedico.setVisible(false);
@@ -622,6 +637,7 @@ public class FormularioFuncionarioPanel extends JPanel {
         tfCip.setVisible(false);
 
         tfCpf.setText(funcionario.getCpf());
+        tfCodFuncionario.setText(funcionario.getCodFuncionario().toString());
         tfNome.setText(funcionario.getNome());
         tfSobrenome.setText(funcionario.getSobrenome());
         cbSexo.setSelectedItem(funcionario.getSexoObj().getDescricao());
@@ -650,6 +666,7 @@ public class FormularioFuncionarioPanel extends JPanel {
         tfCip.setVisible(true);
 
         tfCpf.setText(funcionario.getCpf());
+        tfCodFuncionario.setText(funcionario.getCodFuncionario().toString());
         tfNome.setText(funcionario.getNome());
         tfSobrenome.setText(funcionario.getSobrenome());
         cbSexo.setSelectedItem(funcionario.getSexoObj().getDescricao());
@@ -678,6 +695,7 @@ public class FormularioFuncionarioPanel extends JPanel {
         tfCip.setVisible(false);
 
         tfCpf.setText(funcionario.getCpf());
+        tfCodFuncionario.setText(funcionario.getCodFuncionario().toString());
         tfNome.setText(funcionario.getNome());
         tfSobrenome.setText(funcionario.getSobrenome());
         cbSexo.setSelectedItem(funcionario.getSexoObj().getDescricao());

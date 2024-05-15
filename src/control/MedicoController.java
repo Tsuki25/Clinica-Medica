@@ -125,9 +125,11 @@ public class MedicoController {
     }
 
     public Medico controlBuscarMedicoForId(Integer codFuncionario){
-        MedicoDao pd = new MedicoDao();
+        MedicoDao md = new MedicoDao();
         EnderecoDao ed = new EnderecoDao();
-        Medico medico = pd.getMedicoForId(codFuncionario);
+
+        Medico medico = md.getMedicoForId(codFuncionario);
+
         Endereco endereco = ed.getEnderecoForId(medico.getEndereco().getCodEnd());
         medico.setEndereco(endereco);
 

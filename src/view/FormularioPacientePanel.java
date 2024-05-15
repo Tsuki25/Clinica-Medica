@@ -23,6 +23,7 @@ public class FormularioPacientePanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
     private JTextField tfCpf;
+    private JTextField tfCodPaciente;
     private JTextField tfNome;
     private JTextField tfSobrenome;
     private JTextField tfTelefone;
@@ -38,9 +39,7 @@ public class FormularioPacientePanel extends JPanel {
     private JTextField tfMedicamentosUtilizados;
     private JTextField tfAnotacoes;
     private JTextField tfHistorico;
-
     JFormattedTextField ftfDtNasc;
-
     private JComboBox<Sexo> cbSexo;
     private JComboBox<String> cbEstado;
 
@@ -379,6 +378,19 @@ public class FormularioPacientePanel extends JPanel {
         this(pacienteFrame);//chama o construtor padrão com o formulário de cadastro do paciente
         Paciente paciente = getDadosPaciente(codPaciente);
 
+        JLabel lbCodPaciente = new JLabel("Cod. Paciente:");
+        lbCodPaciente.setFont(new Font("Bahnschrift", Font.BOLD, 14));
+        lbCodPaciente.setBounds(200, 25, 100, 14);
+        add(lbCodPaciente);
+
+        tfCodPaciente = new JTextField();
+        lbCodPaciente.setLabelFor(tfCodPaciente);
+        tfCodPaciente.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
+        tfCodPaciente.setBounds(310, 22, 50, 20);
+        add(tfCodPaciente);
+        tfCodPaciente.setEditable(false);//NÃO É POSSIVEL EDITAR O CPF
+        tfCodPaciente.setColumns(10);
+
         btnLimpar.setVisible(false);//Deixa os botões do outro formilario ocultos
         btnSalvar.setVisible(false);
 
@@ -487,6 +499,7 @@ public class FormularioPacientePanel extends JPanel {
         Endereco endereco = paciente.getEndereco();
 
         tfCpf.setText(paciente.getCpf());
+        tfCodPaciente.setText(paciente.getCodPaciente().toString());
         tfNome.setText(paciente.getNome());
         tfSobrenome.setText(paciente.getSobrenome());
         cbSexo.setSelectedItem(paciente.getSexoObj().getDescricao());
