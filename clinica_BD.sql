@@ -239,10 +239,12 @@ INSERT INTO AGENDAMENTO (dataAgendamento, horarioAgendamento, statusAgendamento,
 ('2024-05-12', '08:00:00', 'Agendado', 5, null, 1),
 ('2024-05-13', '10:00:00', 'Agendado', null, 4, 2);
 
+use clinica;
 
 select * from paciente;
 select * from recepcionista;
 SELECT * FROM agendamento;
+SELECT * FROM agenda;
 
 SELECT MAX(codFuncionario) AS codigo_maximo FROM (
              SELECT codFuncionario FROM RECEPCIONISTA
