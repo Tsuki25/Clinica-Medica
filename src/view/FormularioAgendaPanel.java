@@ -1,10 +1,9 @@
 package view;
 
+import control.AgendaController;
 import control.AgendamentoController;
 import control.PacienteController;
-import model.Agendamento;
-import model.enums.StatusAgendamento;
-import model.enums.TipoExame;
+import model.Agenda;
 
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
@@ -17,10 +16,8 @@ import static dao.FuncionarioDao.getNomeFuncionarioForId;
 import static model.utils.DateUtils.getStringFromDate2;
 
 public class FormularioAgendaPanel extends JPanel {
-   /* private JComboBox<TipoExame> cbExames;
-    private JComboBox<StatusAgendamento> cbStatus;
-    private JTextField tfCodPaciente, tfNomePaciente, tfCodFuncionario, tfNomeFuncionario;
-    private JFormattedTextField ftfDataAgendamento, ftfHorarioAgendamento;
+    private JTextField tfCodFuncionario, tfNomeFuncionario, tfMotivo;
+    private JFormattedTextField ftfDataReserva, ftfIntervaloInicio, ftfIntervaloFim;
     private JButton btnSalvar;
     private JButton btnLimpar;
     private JButton btnBusca;
@@ -29,65 +26,16 @@ public class FormularioAgendaPanel extends JPanel {
     private JButton btnSalvarEdicao;
     private JButton btnCancelarEdicao;
     private JButton btnNovoCadastro;
-    private JLabel lbStatus;
 
     public FormularioAgendaPanel(JFrame pacienteFrame) {
         setBackground(SystemColor.activeCaptionBorder);
         setLayout(null);
 
-        JLabel lbExames = new JLabel("Exame:");
-        lbExames.setFont(new Font("Bahnschrift", Font.BOLD, 14));
-        lbExames.setBounds(20, 87, 60, 14);
-        add(lbExames);
-
-        cbExames = new JComboBox<>(TipoExame.values());
-        cbExames.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
-        cbExames.setBounds(74, 81, 200, 26);
-        add(cbExames);
-
-        JLabel lbCodPaciente = new JLabel("Código Paciente:");
-        lbCodPaciente.setFont(new Font("Bahnschrift", Font.BOLD, 12));
-        lbCodPaciente.setBounds(20, 216, 100, 14);
-        add(lbCodPaciente);
-
-        tfCodPaciente = new JTextField();
-        tfCodPaciente.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
-        tfCodPaciente.setColumns(10);
-        tfCodPaciente.setBounds(115, 213, 45, 20);
-        tfCodPaciente.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                PacienteController pc = new PacienteController();
-
-                String nomePaciente = pc.controlGetNomePacienteForId(Integer.parseInt(tfCodPaciente.getText()));
-                tfNomePaciente.setText(nomePaciente);
-            }
-        });
-        add(tfCodPaciente);
-
-        JLabel lbNomePaciente = new JLabel("Nome Paciente:");
-        lbNomePaciente.setFont(new Font("Bahnschrift", Font.BOLD, 12));
-        lbNomePaciente.setBounds(20, 244, 92, 14);
-        add(lbNomePaciente);
-
-        tfNomePaciente = new JTextField();
-        tfNomePaciente.setEditable(false);
-        tfNomePaciente.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
-        tfNomePaciente.setColumns(10);
-        tfNomePaciente.setBounds(115, 241, 164, 20);
-        tfNomePaciente.setBorder(BorderFactory.createLineBorder(new Color(96, 8, 166)));
-        tfNomePaciente.setBackground(new Color(226, 207, 241));
-        add(tfNomePaciente);
-
-        JLabel lbCodFuncionario = new JLabel("Código Funcionário:");
-        lbCodFuncionario.setFont(new Font("Bahnschrift", Font.BOLD, 12));
-        lbCodFuncionario.setBounds(20, 320, 120, 14);
-        add(lbCodFuncionario);
-
         tfCodFuncionario = new JTextField();
-        tfCodFuncionario.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
+        tfCodFuncionario.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
         tfCodFuncionario.setColumns(10);
-        tfCodFuncionario.setBounds(137, 317, 45, 20);
+        tfCodFuncionario.setBounds(158, 99, 72, 20);
+
         tfCodFuncionario.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -98,23 +46,23 @@ public class FormularioAgendaPanel extends JPanel {
         add(tfCodFuncionario);
 
         JLabel lbNomeFuncionario = new JLabel("Nome Funcionário:");
-        lbNomeFuncionario.setFont(new Font("Bahnschrift", Font.BOLD, 12));
-        lbNomeFuncionario.setBounds(20, 351, 120, 14);
+        lbNomeFuncionario.setFont(new Font("Bahnschrift", Font.BOLD, 14));
+        lbNomeFuncionario.setBounds(20, 130, 134, 14);
         add(lbNomeFuncionario);
 
         tfNomeFuncionario = new JTextField();
         tfNomeFuncionario.setEditable(false);
-        tfNomeFuncionario.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
+        tfNomeFuncionario.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
         tfNomeFuncionario.setColumns(10);
-        tfNomeFuncionario.setBounds(132, 348, 147, 20);
+        tfNomeFuncionario.setBounds(152, 127, 117, 20);
         tfNomeFuncionario.setBorder(BorderFactory.createLineBorder(new Color(96, 8, 166)));
         tfNomeFuncionario.setBackground(new Color(226, 207, 241));
         add(tfNomeFuncionario);
 
-        JLabel lbDataAgendamento = new JLabel("Data Agendamento:");
-        lbDataAgendamento.setFont(new Font("Bahnschrift", Font.BOLD, 12));
-        lbDataAgendamento.setBounds(20, 115, 120, 14);
-        add(lbDataAgendamento);
+        JLabel lbDataReserva = new JLabel("Data de reserva:");
+        lbDataReserva.setFont(new Font("Bahnschrift", Font.BOLD, 14));
+        lbDataReserva.setBounds(20, 216, 117, 14);
+        add(lbDataReserva);
 
         MaskFormatter dateFormatter = null;
         try {
@@ -122,15 +70,15 @@ public class FormularioAgendaPanel extends JPanel {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        ftfDataAgendamento = new JFormattedTextField(dateFormatter);
-        ftfDataAgendamento.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
-        ftfDataAgendamento.setBounds(137, 112, 67, 20);
-        add(ftfDataAgendamento);
+        ftfDataReserva = new JFormattedTextField(dateFormatter);
+        ftfDataReserva.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
+        ftfDataReserva.setBounds(140, 213, 80, 20);
+        add(ftfDataReserva);
 
-        JLabel lbHorarioAgendamento = new JLabel("Horário Agendamento:");
-        lbHorarioAgendamento.setFont(new Font("Bahnschrift", Font.BOLD, 12));
-        lbHorarioAgendamento.setBounds(20, 143, 130, 14);
-        add(lbHorarioAgendamento);
+        JLabel lbIntervaloInicio = new JLabel("De:");
+        lbIntervaloInicio.setFont(new Font("Bahnschrift", Font.BOLD, 14));
+        lbIntervaloInicio.setBounds(20, 244, 38, 14);
+        add(lbIntervaloInicio);
 
         MaskFormatter timeFormatter = null;
         try {
@@ -138,22 +86,31 @@ public class FormularioAgendaPanel extends JPanel {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        ftfHorarioAgendamento = new JFormattedTextField(timeFormatter);
-        ftfHorarioAgendamento.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
-        ftfHorarioAgendamento.setBounds(150, 140, 38, 20);
-        add(ftfHorarioAgendamento);
+        ftfIntervaloInicio = new JFormattedTextField(timeFormatter);
+        ftfIntervaloInicio.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
+        ftfIntervaloInicio.setBounds(54, 241, 40, 20);
+        add(ftfIntervaloInicio);
 
-        lbStatus = new JLabel("Status:");
-        lbStatus.setFont(new Font("Bahnschrift", Font.BOLD, 14));
-        lbStatus.setBounds(20, 449, 60, 14);
-        lbStatus.setVisible(false);
-        add(lbStatus);
+        JLabel lbIntervaloFim = new JLabel("Até:");
+        lbIntervaloFim.setFont(new Font("Bahnschrift", Font.BOLD, 14));
+        lbIntervaloFim.setBounds(20, 272, 38, 14);
+        add(lbIntervaloFim);
 
-        cbStatus = new JComboBox<>(StatusAgendamento.values());
-        cbStatus.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
-        cbStatus.setBounds(74, 443, 115, 26);
-        cbStatus.setVisible(false);
-        add(cbStatus);
+        ftfIntervaloFim = new JFormattedTextField(timeFormatter);
+        ftfIntervaloFim.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
+        ftfIntervaloFim.setBounds(54, 269, 40, 20);
+        add(ftfIntervaloFim);
+
+        JLabel lbCodFuncionario = new JLabel("Código Funcionario:");
+        lbCodFuncionario.setFont(new Font("Bahnschrift", Font.BOLD, 14));
+        lbCodFuncionario.setBounds(20, 102, 146, 14);
+        add(lbCodFuncionario);
+
+        tfMotivo = new JTextField();
+        tfMotivo.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
+        tfMotivo.setColumns(10);
+        tfMotivo.setBounds(10, 338, 480, 71);
+        add(tfMotivo);
 
         btnSalvar = new JButton();
         btnSalvar.setIcon(new ImageIcon(getClass().getResource("/view/icons/salvar-arquivo.png")));
@@ -162,10 +119,12 @@ public class FormularioAgendaPanel extends JPanel {
         btnSalvar.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
         btnSalvar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                AgendamentoController ac = new AgendamentoController();
-                ac.controlSalvar(FormularioAgendaPanel.this);
+                AgendaController ac = new AgendaController();
+                if(ac.controlSalvar(FormularioAgendaPanel.this)){// Se for inserido com sucesso, limpa os campos
+                    JOptionPane.showMessageDialog(null, "Agenda realizado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                    limparCampos();
+                }
 
-                limparCampos();
             }
         });
         btnSalvar.setBounds(432, 433, 38, 38);
@@ -191,58 +150,58 @@ public class FormularioAgendaPanel extends JPanel {
         btnBusca.setBackground(SystemColor.windowBorder);
         btnBusca.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ListaAgendamentosFrame listaAgendamentosFrame = new ListaAgendamentosFrame();
-                listaAgendamentosFrame.setSize(1600,900);
-                listaAgendamentosFrame.setVisible(true);
+                ListaAgendaFrame listaAgendaFrame = new ListaAgendaFrame();
+                listaAgendaFrame.setSize(1600,900);
+                listaAgendaFrame.setVisible(true);
                 pacienteFrame.setVisible(false);
             }
         });
         btnBusca.setBounds(336, 433, 38, 38);
         add(btnBusca);
 
-        JLabel lbAgendamento = new JLabel("Agendamento");
-        lbAgendamento.setFont(new Font("Bahnschrift", Font.BOLD, 18));
-        lbAgendamento.setBounds(187, 23, 135, 14);
-        add(lbAgendamento);
+        JLabel lbTitle = new JLabel("Agenda");
+        lbTitle.setFont(new Font("Bahnschrift", Font.BOLD, 18));
+        lbTitle.setBounds(215, 22, 79, 25);
+        add(lbTitle);
+
+        JLabel lblNewLabel = new JLabel("Periodo:");
+        lblNewLabel.setFont(new Font("Bahnschrift", Font.BOLD, 14));
+        lblNewLabel.setBounds(20, 177, 267, 14);
+        add(lblNewLabel);
 
         JSeparator separator = new JSeparator();
-        separator.setBounds(229, 50, 151, 0);
+        separator.setBounds(10, 194, 480, 2);
         add(separator);
 
-        JLabel lblPaciente = new JLabel("Paciente");
-        lblPaciente.setFont(new Font("Bahnschrift", Font.BOLD, 14));
-        lblPaciente.setBounds(20, 183, 267, 14);
-        add(lblPaciente);
+        JLabel lblContato = new JLabel("Reservado para:");
+        lblContato.setBackground(SystemColor.textHighlight);
+        lblContato.setFont(new Font("Bahnschrift", Font.BOLD, 14));
+        lblContato.setBounds(20, 65, 267, 14);
+        add(lblContato);
+
+        JSeparator separator_1 = new JSeparator();
+        separator_1.setBounds(10, 82, 480, 2);
+        add(separator_1);
+
+        JLabel lblMotivo = new JLabel("Motivo:");
+        lblMotivo.setFont(new Font("Bahnschrift", Font.BOLD, 14));
+        lblMotivo.setBounds(20, 311, 267, 14);
+        add(lblMotivo);
 
         JSeparator separator_2 = new JSeparator();
-        separator_2.setBounds(10, 200, 480, 2);
+        separator_2.setBounds(10, 328, 480, 2);
         add(separator_2);
 
-        JSeparator separator_2_1 = new JSeparator();
-        separator_2_1.setBounds(10, 50, 480, 2);
-        add(separator_2_1);
-
-        JLabel lblResponsvelPeloExame = new JLabel("Responsável pelo Exame");
-        lblResponsvelPeloExame.setFont(new Font("Bahnschrift", Font.BOLD, 14));
-        lblResponsvelPeloExame.setBounds(20, 287, 267, 14);
-        add(lblResponsvelPeloExame);
-
-        JSeparator separator_2_2 = new JSeparator();
-        separator_2_2.setBounds(10, 304, 480, 2);
-        add(separator_2_2);
     }
 
-
-    public FormularioAgendaPanel(JFrame pacienteFrame, Integer codAgendamento){
+    public FormularioAgendaPanel(JFrame pacienteFrame, Integer codAgenda){
         this(pacienteFrame);//chama o construtor padrão
-        Agendamento agendamento = getDadosAgendamento(codAgendamento);
+        Agenda agenda = getDadosAgenda(codAgenda);
 
         btnLimpar.setVisible(false);//Deixa os botões do outro formulario ocultos
         btnSalvar.setVisible(false);
-        lbStatus.setVisible(true);
-        cbStatus.setVisible(true);
 
-        preencherCampos(agendamento);// preenche o formulario com os dados
+        preencherCampos(agenda);// preenche o formulario com os dados
         setStatusEdicaoCampos(false); //Deixa todos os campos editaveis(true) ou não editaveis(false)
 
         btnEditar = new JButton();
@@ -272,9 +231,9 @@ public class FormularioAgendaPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 int confirmacao = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir o registro?", "Confirmação", JOptionPane.YES_NO_OPTION);
                 if (confirmacao == JOptionPane.YES_OPTION) {
-                    AgendamentoController ac = new AgendamentoController();
-                    ac.controlExcluirAgendamento(agendamento);
-                    JOptionPane.showMessageDialog(null, "Agendamento excluido com sucesso");
+                    AgendaController ac = new AgendaController();
+                    ac.controlExcluirAgenda(agenda);
+                    JOptionPane.showMessageDialog(null, "Agenda excluido com sucesso");
                     limparCampos();
                 }
             }
@@ -290,7 +249,7 @@ public class FormularioAgendaPanel extends JPanel {
         btnSalvarEdicao.setBounds(432, 433, 38, 38);
         btnSalvarEdicao.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                AgendamentoController ac = new AgendamentoController();
+                /*AgendamentoController ac = new AgendamentoController();
                 Agendamento agendamentoAtualizado =  ac.controlAtualizarAgendamento(FormularioAgendaPanel.this, agendamento);
                 preencherCampos(agendamentoAtualizado);
                 JOptionPane.showMessageDialog(null, "Paciente atualizado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
@@ -299,7 +258,7 @@ public class FormularioAgendaPanel extends JPanel {
                 btnEditar.setVisible(true);
                 btnExcluir.setVisible(true);
                 btnCancelarEdicao.setVisible(false);
-                btnSalvarEdicao.setVisible(false);
+                btnSalvarEdicao.setVisible(false);*/
             }
         });
         add(btnSalvarEdicao);
@@ -314,7 +273,7 @@ public class FormularioAgendaPanel extends JPanel {
                 setStatusEdicaoCampos(false);
                 btnEditar.setVisible(true);
                 btnExcluir.setVisible(true);
-                preencherCampos(agendamento);
+                preencherCampos(agenda);
                 btnCancelarEdicao.setVisible(false);
                 btnSalvarEdicao.setVisible(false);
             }
@@ -340,15 +299,14 @@ public class FormularioAgendaPanel extends JPanel {
 
     }
 
-    private void preencherCampos(Agendamento agendamento){
+    private void preencherCampos(Agenda agenda){
         // SETA OS VALORES DOS CAMPOS DE ACORDO COM O RECUPERADO DO BANCO DE DADOS
-
-        cbExames.setSelectedItem(agendamento.getExame());
-        cbStatus.setSelectedItem(agendamento.getStatus());
-        tfCodPaciente.setText(agendamento.getCodPaciente().toString());
-        tfCodFuncionario.setText(agendamento.getCodFuncionario().toString());
-        ftfDataAgendamento.setText(getStringFromDate2(agendamento.getDataAgendamento()));
-        ftfHorarioAgendamento.setText(agendamento.getHorarioAgendamento().toString());
+        tfCodFuncionario.setText(agenda.getCodFuncionario().toString());
+        tfNomeFuncionario.setText(getNomeFuncionarioForId(Integer.parseInt(tfCodFuncionario.getText())));
+        ftfDataReserva.setText(getStringFromDate2(agenda.getDataReserva()));
+        ftfIntervaloInicio.setText(agenda.getHorarioInicio().toString());
+        ftfIntervaloFim.setText(agenda.getHorarioFim().toString());
+        tfMotivo.setText(agenda.getMotivo());
     }
 
     private void setStatusEdicaoCampos(Boolean status){
@@ -360,86 +318,42 @@ public class FormularioAgendaPanel extends JPanel {
         if(status) alterCoresCampos(borderEditavel, bgEditavel);
         else alterCoresCampos(borderIneditavel, bgIneditavel);
 
-
-        cbExames.setEnabled(status);
-        cbStatus.setEnabled(status);
-        tfCodPaciente.setEditable(status);
         tfCodFuncionario.setEditable(status);
-        ftfDataAgendamento.setEditable(status);
-        ftfHorarioAgendamento.setEditable(status);
+        ftfDataReserva.setEditable(status);
+        ftfIntervaloInicio.setEditable(status);
+        ftfIntervaloFim.setEditable(status);
+        tfMotivo.setEditable(status);
     }
 
-    private void limparCampos() {
-        cbExames.setSelectedIndex(0);
-        cbStatus.setSelectedIndex(0);
-        tfCodPaciente.setText("");
-        tfNomePaciente.setText("");
-        tfCodFuncionario.setText("");
-        tfNomeFuncionario.setText("");
-        ftfDataAgendamento.setValue("");
-        ftfHorarioAgendamento.setValue("");
-    }
-
-    private Agendamento getDadosAgendamento(Integer codAgendamento) {
-        AgendamentoController ac = new AgendamentoController();
-        return ac.controlBuscarAgendamentoForId(codAgendamento);
+    private Agenda getDadosAgenda(Integer codAgenda) {
+        AgendaController ac = new AgendaController();
+        return ac.controlBuscarAgendaForId(codAgenda);
     }
 
     private void alterCoresCampos(Color corBorda, Color corFundo){
-
-        cbExames.setBackground(corFundo);
-        ((JLabel) cbExames.getRenderer()).setOpaque(true); // Torna o fundo do item selecionado visível
-        cbExames.setBorder(BorderFactory.createLineBorder(corBorda));
-        cbExames.setForeground(Color.BLACK);
-
-        cbStatus.setBackground(corFundo);
-        ((JLabel) cbStatus.getRenderer()).setOpaque(true); // Torna o fundo do item selecionado visível
-        cbStatus.setBorder(BorderFactory.createLineBorder(corBorda));
-        cbStatus.setForeground(Color.BLACK);
-
-        tfCodPaciente.setBorder(BorderFactory.createLineBorder(corBorda));
-        tfCodPaciente.setBackground(corFundo);
-
         tfCodFuncionario.setBorder(BorderFactory.createLineBorder(corBorda));
         tfCodFuncionario.setBackground(corFundo);
 
-        ftfDataAgendamento.setBorder(BorderFactory.createLineBorder(corBorda));
-        ftfDataAgendamento.setBackground(corFundo);
+        ftfDataReserva.setBorder(BorderFactory.createLineBorder(corBorda));
+        ftfDataReserva.setBackground(corFundo);
 
-        ftfHorarioAgendamento.setBorder(BorderFactory.createLineBorder(corBorda));
-        ftfHorarioAgendamento.setBackground(corFundo);
+        ftfIntervaloInicio.setBorder(BorderFactory.createLineBorder(corBorda));
+        ftfIntervaloInicio.setBackground(corFundo);
+
+        ftfIntervaloFim.setBorder(BorderFactory.createLineBorder(corBorda));
+        ftfIntervaloFim.setBackground(corFundo);
+
+        tfMotivo.setBorder(BorderFactory.createLineBorder(corBorda));
+        tfMotivo.setBackground(corFundo);
     }
 
-    public TipoExame getCbExames() {
-        return (TipoExame) cbExames.getSelectedItem();
-    }
-
-    public void setCbExames(JComboBox<TipoExame> cbExames) {
-        this.cbExames = cbExames;
-    }
-
-    public StatusAgendamento getCbStatus() {
-        return (StatusAgendamento) cbStatus.getSelectedItem();
-    }
-
-    public void setCbStatus(JComboBox<StatusAgendamento> cbStatus) {
-        this.cbStatus = cbStatus;
-    }
-
-    public JTextField getTfCodPaciente() {
-        return tfCodPaciente;
-    }
-
-    public void setTfCodPaciente(JTextField tfCodPaciente) {
-        this.tfCodPaciente = tfCodPaciente;
-    }
-
-    public JTextField getTfNomePaciente() {
-        return tfNomePaciente;
-    }
-
-    public void setTfNomePaciente(JTextField tfNomePaciente) {
-        this.tfNomePaciente = tfNomePaciente;
+    private void limparCampos() {
+        tfCodFuncionario.setText("");
+        tfNomeFuncionario.setText("");
+        tfMotivo.setText("");
+        ftfDataReserva.setValue("");
+        ftfIntervaloInicio.setValue("");
+        ftfIntervaloFim.setValue("");
     }
 
     public JTextField getTfCodFuncionario() {
@@ -458,19 +372,35 @@ public class FormularioAgendaPanel extends JPanel {
         this.tfNomeFuncionario = tfNomeFuncionario;
     }
 
-    public JFormattedTextField getFtfDataAgendamento() {
-        return ftfDataAgendamento;
+    public JFormattedTextField getFtfDataReserva() {
+        return ftfDataReserva;
     }
 
-    public void setFtfDataAgendamento(JFormattedTextField ftfDataAgendamento) {
-        this.ftfDataAgendamento = ftfDataAgendamento;
+    public void setFtfDataReserva(JFormattedTextField ftfDataReserva) {
+        this.ftfDataReserva = ftfDataReserva;
     }
 
-    public JFormattedTextField getFtfHorarioAgendamento() {
-        return ftfHorarioAgendamento;
+    public JFormattedTextField getFtfIntervaloInicio() {
+        return ftfIntervaloInicio;
     }
 
-    public void setFtfHorarioAgendamento(JFormattedTextField ftfHorarioAgendamento) {
-        this.ftfHorarioAgendamento = ftfHorarioAgendamento;
-    }*/
+    public void setFtfIntervaloInicio(JFormattedTextField ftfIntervaloInicio) {
+        this.ftfIntervaloInicio = ftfIntervaloInicio;
+    }
+
+    public JFormattedTextField getFtfIntervaloFim() {
+        return ftfIntervaloFim;
+    }
+
+    public void setFtfIntervaloFim(JFormattedTextField ftfIntervaloFim) {
+        this.ftfIntervaloFim = ftfIntervaloFim;
+    }
+
+    public JTextField getTfMotivo() {
+        return tfMotivo;
+    }
+
+    public void setTfMotivo(JTextField tfMotivo) {
+        this.tfMotivo = tfMotivo;
+    }
 }

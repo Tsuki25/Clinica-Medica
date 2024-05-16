@@ -80,9 +80,10 @@ CREATE TABLE IF NOT EXISTS MEDICO( #NECESSARIO TRATIVA INTERNA DO SISTEMA PARA U
 
 CREATE TABLE IF NOT EXISTS AGENDA(
     codAgenda BIGINT PRIMARY KEY AUTO_INCREMENT,
-    dataReservada DATE NOT NULL,
+    dataReserva DATE NOT NULL,
     horarioInicio TIME NOT NULL,
     horarioFim TIME NOT NULL,
+    motivo VARCHAR(200) NOT NULL,
     codMedico BIGINT,
     codEnfermeiro BIGINT ,
     FOREIGN KEY (codMedico) REFERENCES MEDICO(codFuncionario),
@@ -238,6 +239,7 @@ INSERT INTO AGENDAMENTO (dataAgendamento, horarioAgendamento, statusAgendamento,
 ('2024-05-12', '08:00:00', 'Agendado', 5, null, 1),
 ('2024-05-13', '10:00:00', 'Agendado', null, 4, 2);
 
+
 select * from paciente;
 select * from recepcionista;
 SELECT * FROM agendamento;
@@ -252,11 +254,11 @@ SELECT MAX(codFuncionario) AS codigo_maximo FROM (
              
              SELECT nome, sobrenome FROM
                     ( 
-                    SELECT nome, sobrenome FROM RECEPCIONISTA WHERE codFuncionario = 5 
+                    SELECT codFuncionario, nome, sobrenome FROM RECEPCIONISTA
                     UNION ALL 
-                    SELECT nome, sobrenome FROM ENFERMEIRO WHERE codFuncionario = 5
+                    SELECT codFuncionario, nome, sobrenome FROM ENFERMEIRO
                     UNION ALL
-                    SELECT nome, sobrenome FROM MEDICO WHERE codFuncionario = 5 
+                    SELECT codFuncionario, nome, sobrenome FROM MEDICO
                     ) AS todas_tabelas;
 
 select count(codFuncionario) from enfermeiro where codFuncionario = 4;

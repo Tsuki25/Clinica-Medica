@@ -156,7 +156,7 @@ public class PacienteController {
         ec.excluirEndereco(paciente.getEndereco().getCodEnd());
     }
 
-    public String controlGetNomePacienteForId(Integer codPaciente){
+    public static String getNomePacienteForId(Integer codPaciente){
         PacienteDao pacienteDao = new PacienteDao();
         return pacienteDao.getNomePacienteForId(codPaciente);
     }

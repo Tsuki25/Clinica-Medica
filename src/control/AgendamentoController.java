@@ -116,7 +116,7 @@ public class AgendamentoController {
 
         ArrayList<Agendamento> agendamentos = agendamentoDao.listarAgendamentoFuncDia(agendamento);
         for (Agendamento agendamentoIterator : agendamentos) {
-            if(agendamento.getHorarioAgendamento().isAfter(agendamentoIterator.getHorarioAgendamento()) || agendamento.getHorarioAgendamento().isBefore(agendamentoIterator.getHorarioAgendamento().plus(15, ChronoUnit.MINUTES))  || agendamento.getHorarioAgendamento().equals(agendamentoIterator.getHorarioAgendamento())) {
+            if(agendamento.getHorarioAgendamento().isAfter(agendamentoIterator.getHorarioAgendamento()) && agendamento.getHorarioAgendamento().isBefore(agendamentoIterator.getHorarioAgendamento().plus(15, ChronoUnit.MINUTES))  || agendamento.getHorarioAgendamento().equals(agendamentoIterator.getHorarioAgendamento())) {
                 JOptionPane.showMessageDialog(null, "Funcionário Indisponivel", "Agendamento Inválido", JOptionPane.INFORMATION_MESSAGE);
                 return false;
             }
@@ -124,7 +124,7 @@ public class AgendamentoController {
 
         agendamentos = agendamentoDao.listarAgendamentoPacienteDia(agendamento);
         for (Agendamento agendamentoIterator : agendamentos) {
-            if(agendamento.getHorarioAgendamento().isAfter(agendamentoIterator.getHorarioAgendamento()) || agendamento.getHorarioAgendamento().isBefore(agendamentoIterator.getHorarioAgendamento().plus(15, ChronoUnit.MINUTES)) || agendamento.getHorarioAgendamento().equals(agendamentoIterator.getHorarioAgendamento())) {
+            if(agendamento.getHorarioAgendamento().isAfter(agendamentoIterator.getHorarioAgendamento()) && agendamento.getHorarioAgendamento().isBefore(agendamentoIterator.getHorarioAgendamento().plus(15, ChronoUnit.MINUTES)) || agendamento.getHorarioAgendamento().equals(agendamentoIterator.getHorarioAgendamento())) {
                 JOptionPane.showMessageDialog(null, "Paciente Indisponivel", "Agendamento Inválido", JOptionPane.INFORMATION_MESSAGE);
                 return false;
             }

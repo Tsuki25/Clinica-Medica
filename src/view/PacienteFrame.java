@@ -20,6 +20,7 @@ public class PacienteFrame extends JFrame {
         tabbedPane.addTab("Pacientes", new FormularioPacientePanel(PacienteFrame.this));
         tabbedPane.addTab("Funcionarios", new FormularioFuncionarioPanel(PacienteFrame.this));
         tabbedPane.addTab("Agendamento", new FormularioAgendamentoPanel(PacienteFrame.this));
+        tabbedPane.addTab("Agenda", new FormularioAgendaPanel(PacienteFrame.this));
         contentPane.add(tabbedPane, BorderLayout.CENTER);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -59,6 +60,17 @@ public class PacienteFrame extends JFrame {
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
         ListaAgendamentosFrame agendamentosFrame = new ListaAgendamentosFrame();
         tabbedPane.addTab("Edição de Agendamento", new FormularioAgendamentoPanel(PacienteFrame.this, codAgendamento));
+        contentPane.add(tabbedPane, BorderLayout.CENTER);
+
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    public PacienteFrame(Integer codAgenda, String dataAgenda) { //FRAME DE EDICAO AGENDA
+        setTitle("Agenda");
+        estruturaFrame();
+
+        JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+        tabbedPane.addTab("Edição de Reservas", new FormularioAgendaPanel(PacienteFrame.this, codAgenda));
         contentPane.add(tabbedPane, BorderLayout.CENTER);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

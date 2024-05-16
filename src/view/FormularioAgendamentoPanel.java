@@ -1,7 +1,6 @@
 package view;
 
 import control.AgendamentoController;
-import control.PacienteController;
 import model.Agendamento;
 import model.enums.StatusAgendamento;
 import model.enums.TipoExame;
@@ -13,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 
+import static control.PacienteController.getNomePacienteForId;
 import static dao.FuncionarioDao.getNomeFuncionarioForId;
 import static model.utils.DateUtils.getStringFromDate2;
 
@@ -57,9 +57,7 @@ public class FormularioAgendamentoPanel extends JPanel {
         tfCodPaciente.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                PacienteController pc = new PacienteController();
-
-                String nomePaciente = pc.controlGetNomePacienteForId(Integer.parseInt(tfCodPaciente.getText()));
+                String nomePaciente = getNomePacienteForId(Integer.parseInt(tfCodPaciente.getText()));
                 tfNomePaciente.setText(nomePaciente);
             }
         });
@@ -346,7 +344,9 @@ public class FormularioAgendamentoPanel extends JPanel {
         cbExames.setSelectedItem(agendamento.getExame());
         cbStatus.setSelectedItem(agendamento.getStatus());
         tfCodPaciente.setText(agendamento.getCodPaciente().toString());
+        tfNomePaciente.setText(getNomePacienteForId(Integer.parseInt(tfCodPaciente.getText())));
         tfCodFuncionario.setText(agendamento.getCodFuncionario().toString());
+        tfNomeFuncionario.setText(getNomeFuncionarioForId(Integer.parseInt(tfCodFuncionario.getText())));
         ftfDataAgendamento.setText(getStringFromDate2(agendamento.getDataAgendamento()));
         ftfHorarioAgendamento.setText(agendamento.getHorarioAgendamento().toString());
     }

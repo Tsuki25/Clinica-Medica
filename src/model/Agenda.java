@@ -4,51 +4,84 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Agenda {
-    private LocalDate data;
-    private LocalTime horario;
-    private Funcionario proprietario;
-    private Object evento; // Pode ser um agendamento ou um evento externo de ausencia do funcionario
+    private Integer codAgenda;
+    private LocalDate dataReserva;
+    private LocalTime horarioInicio;
+    private LocalTime horarioFim;
+    private Integer codFuncionario;
+    private String motivo;
 
     public Agenda(){}
 
-    public Agenda(LocalDate data, LocalTime horario, Funcionario proprietario, Object evento) {
-        this.data = data;
-        this.horario = horario;
-        this.proprietario = proprietario;
-        this.evento = evento;
+    public Agenda(Integer codAgenda, LocalDate dataReserva, LocalTime horarioInicio, LocalTime horarioFim, Integer codFuncionario, String motivo) {
+        this.codAgenda = codAgenda;
+        this.dataReserva = dataReserva;
+        this.horarioInicio = horarioInicio;
+        this.horarioFim = horarioFim;
+        this.codFuncionario = codFuncionario;
+        this.motivo = motivo;
     }
 
-    public LocalDate getData() {
-        return data;
+    public Agenda(Integer codAgenda){
+        this.codAgenda = codAgenda;
     }
 
-    public void setData(LocalDate data) {
-        this.data = data;
+    public Integer getCodAgenda() {
+        return codAgenda;
     }
 
-    public LocalTime getHorario() {
-        return horario;
+    public void setCodAgenda(Integer codAgenda) {
+        this.codAgenda = codAgenda;
     }
 
-    public void setHorario(LocalTime horario) {
-        this.horario = horario;
+    public LocalDate getDataReserva() {
+        return dataReserva;
     }
 
-    public Funcionario getProprietario() {
-        return proprietario;
+    public void setDataReserva(LocalDate dataReserva) {
+        this.dataReserva = dataReserva;
     }
 
-    public void setProprietario(Funcionario proprietario) {
-        this.proprietario = proprietario;
+    public LocalTime getHorarioInicio() {
+        return horarioInicio;
     }
 
+    public void setHorarioInicio(LocalTime horarioInicio) {
+        this.horarioInicio = horarioInicio;
+    }
+
+    public LocalTime getHorarioFim() {
+        return horarioFim;
+    }
+
+    public void setHorarioFim(LocalTime horarioFim) {
+        this.horarioFim = horarioFim;
+    }
+
+    public String getMotivo() {
+        return motivo;
+    }
+
+    public void setMotivo(String motivo) {
+        this.motivo = motivo;
+    }
+
+    public Integer getCodFuncionario() {
+        return codFuncionario;
+    }
+
+    public void setCodFuncionario(Integer codFuncionario) {
+        this.codFuncionario = codFuncionario;
+    }
     @Override
     public String toString() {
         return "Agenda{" +
-                "data=" + data +
-                ", horario=" + horario +
-                ", proprietario=" + proprietario +
-                ", evento=" + evento +
+                "codAgenda=" + codAgenda +
+                ", dataReserva=" + dataReserva +
+                ", horarioInicio=" + horarioInicio +
+                ", horarioFim=" + horarioFim +
+                ", codFuncionario=" + codFuncionario +
+                ", motivo='" + motivo + '\'' +
                 '}';
     }
 }
