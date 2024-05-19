@@ -55,7 +55,7 @@ public class FormularioFuncionarioPanel extends JPanel {
     JButton btnExcluir;
     JButton btnSalvarEdicao;
     JButton btnCancelarEdicao;
-    JButton btnNovoCadastro;
+    JButton btnVoltar;
 
     JRadioButton rdbtnRecepcionista;
     JRadioButton rdbtnEnfermeiro;
@@ -608,13 +608,13 @@ public class FormularioFuncionarioPanel extends JPanel {
         btnCancelarEdicao.setBounds(384, 742, 38, 38);
         add(btnCancelarEdicao);
 
-        btnNovoCadastro = new JButton();
-        btnNovoCadastro.setIcon(new ImageIcon(getClass().getResource("/view/icons/adicionar.png")));
-        btnNovoCadastro.setBackground(SystemColor.windowBorder);
-        btnNovoCadastro.setForeground(SystemColor.desktop);
-        btnNovoCadastro.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
-        btnNovoCadastro.setBounds(288, 742, 38, 38);
-        btnNovoCadastro.addActionListener(new ActionListener() {
+        btnVoltar = new JButton();
+        btnVoltar.setIcon(new ImageIcon(getClass().getResource("/view/icons/voltar.png")));
+        btnVoltar.setBackground(SystemColor.windowBorder);
+        btnVoltar.setForeground(SystemColor.desktop);
+        btnVoltar.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
+        btnVoltar.setBounds(288, 742, 38, 38);
+        btnVoltar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 PacienteFrame novoFrame = new PacienteFrame();
                 novoFrame.setSize(530, 870);
@@ -622,7 +622,7 @@ public class FormularioFuncionarioPanel extends JPanel {
                 pacienteFrame.setVisible(false);
             }
         });
-        add(btnNovoCadastro);
+        add(btnVoltar);
 
     }
 

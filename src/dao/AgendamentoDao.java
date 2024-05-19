@@ -1,11 +1,6 @@
 package dao;
 
-import control.EnderecoController;
 import model.Agendamento;
-import model.Endereco;
-import model.Agendamento;
-import model.Paciente;
-import model.enums.Sexo;
 import model.enums.StatusAgendamento;
 import model.enums.TipoExame;
 
@@ -13,8 +8,7 @@ import javax.swing.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 
 import static control.EnfermeiroController.controlVerificarEnfermeiro;
@@ -22,7 +16,7 @@ import static control.MedicoController.controlVerificarMedico;
 import static model.utils.DateUtils.*;
 
 public class AgendamentoDao {
-    public void salvar(Agendamento agendamento) {
+    public Boolean salvar(Agendamento agendamento) {
         Conexao conexao = new Conexao();
         String sql = "INSERT INTO " +
                 "agendamento (dataAgendamento, horarioAgendamento, statusAgendamento, exame, codMedico, codEnfermeiro, codPaciente) " +
@@ -38,7 +32,7 @@ public class AgendamentoDao {
             if(controlVerificarMedico(agendamento.getCodFuncionario()) > 0){//CONTOU-SE REGISTROS COM ESTE CODIGO NO MEDICO, PORTANTO É UM MEDICO
                 stmt.setString(5, agendamento.getCodFuncionario().toString());
                 stmt.setString(6, null);
-            }else{//CONTOU-SE REGISTROS COM ESTE CODIGO NO ENFERMEIRO, PORTANTO É UM ENFERMEIRO
+            }else if(controlVerificarEnfermeiro(agendamento.getCodFuncionario()) > 0){//CONTOU-SE REGISTROS COM ESTE CODIGO NO ENFERMEIRO, PORTANTO É UM ENFERMEIRO
                 stmt.setString(5, null);
                 stmt.setString(6, agendamento.getCodFuncionario().toString());
             }
@@ -46,11 +40,20 @@ public class AgendamentoDao {
 
             stmt.execute();
             stmt.close();
+            return true;
+
+        } catch (SQLIntegrityConstraintViolationException sqlcve) {
+            JOptionPane.showMessageDialog(null, "O codigo de funcionario deve se referenciar a um Médico ou Enfermeiro");
+            return false;
+
         } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Dados inválidos");
             e.printStackTrace();
+            return false;
 
         } catch (Exception ex) {
             ex.printStackTrace();
+            return false;
         }
     }
 
@@ -145,7 +148,7 @@ public class AgendamentoDao {
             if(controlVerificarMedico(agendamento.getCodFuncionario()) > 0){//CONTOU-SE REGISTROS COM ESTE CODIGO NO MEDICO, PORTANTO É UM MEDICO
                 stmt.setString(5, agendamento.getCodFuncionario().toString());
                 stmt.setString(6, null);
-            }else{//CONTOU-SE REGISTROS COM ESTE CODIGO NO ENFERMEIRO, PORTANTO É UM ENFERMEIRO
+            }else if(controlVerificarEnfermeiro(agendamento.getCodFuncionario()) > 0){//CONTOU-SE REGISTROS COM ESTE CODIGO NO ENFERMEIRO, PORTANTO É UM ENFERMEIRO
                 stmt.setString(5, null);
                 stmt.setString(6, agendamento.getCodFuncionario().toString());
             }
@@ -155,7 +158,11 @@ public class AgendamentoDao {
 
             stmt.execute();
             stmt.close();
-        } catch (SQLException e) {
+        } catch (SQLIntegrityConstraintViolationException sqlcve) {
+            JOptionPane.showMessageDialog(null, "O codigo de funcionario deve se referenciar a um Médico ou Enfermeiro");
+
+        }catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Dados inválidos");
             e.printStackTrace();
 
         } catch (Exception ex) {

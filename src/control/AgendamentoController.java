@@ -36,14 +36,19 @@ public class AgendamentoController {
 
             if(verificarDisponibilidadeAgendamento(agendamento)){ // verifica a validade das dats informadas
                 AgendamentoDao agendamentoDao = new AgendamentoDao();
-                agendamentoDao.salvar(agendamento);
-                JOptionPane.showMessageDialog(null, "Agendamento realizado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+
+                if(agendamentoDao.salvar(agendamento)){
+                    JOptionPane.showMessageDialog(null, "Agendamento realizado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                }
+
             }
 
         }catch(InputMismatchException ime){
             ime.printStackTrace();
+
         }catch(MissingFormatArgumentException mfae){
             mfae.printStackTrace();
+
         }catch (Exception e){
             e.printStackTrace();
         }

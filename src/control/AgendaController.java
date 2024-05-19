@@ -8,6 +8,7 @@ import model.*;
 import model.Agenda;
 import model.Agenda;
 import view.FormularioAgendaPanel;
+import view.FormularioAgendamentoPanel;
 
 import javax.swing.*;
 import java.time.LocalDate;
@@ -32,7 +33,9 @@ public class AgendaController {
 
             if(verificarDisponibilidadeAgenda(agenda)){ // verifica a validade das dats informadas
                 AgendaDao agendaDao = new AgendaDao();
-                agendaDao.salvar(agenda);
+                if(agendaDao.salvar(agenda)){
+                    JOptionPane.showMessageDialog(null, "Agendamento realizado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                }
                 return true;
             }
 
@@ -44,6 +47,38 @@ public class AgendaController {
         }catch(MissingFormatArgumentException mfae){
             mfae.printStackTrace();
             return null;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Agenda controlAtualizarAgenda(FormularioAgendaPanel updatePanel, Agenda agendaEditado){
+        try{
+            Agenda agenda = new Agenda();
+            agenda.setCodFuncionario(Integer.parseInt(updatePanel.getTfCodFuncionario().getText()));
+            agenda.setDataReserva(getDateFromString1(updatePanel.getFtfDataReserva().getText()));
+            agenda.setHorarioInicio(getTimeFromString(updatePanel.getFtfIntervaloInicio().getText()));
+            agenda.setHorarioFim(getTimeFromString(updatePanel.getFtfIntervaloFim().getText()));
+            agenda.setMotivo(updatePanel.getTfMotivo().getText());
+            agenda.setCodAgenda(agendaEditado.getCodAgenda());
+
+            if(verificarValidadeHorarios(agenda)){ // verifica a validade das dats informadas
+                AgendaDao agendaDao = new AgendaDao();
+                agendaDao.atualizarAgenda(agenda);
+                return agenda;
+            }
+
+            return agendaEditado; //Assegura um retorno de dados corretos(agenda SENDO EDITADO), independente de possiveis erros de inserção de data e hora
+
+        }catch(InputMismatchException ime){
+            ime.printStackTrace();
+            return null;
+
+        }catch(MissingFormatArgumentException mfae){
+            mfae.printStackTrace();
+            return null;
+
         }catch (Exception e){
             e.printStackTrace();
             return null;
@@ -91,6 +126,22 @@ public class AgendaController {
                 JOptionPane.showMessageDialog(null, "Horario já preenchido, de: " + agendaIterator.getHorarioInicio() + " - até: " + agendaIterator.getHorarioFim(), "Agenda Inválido", JOptionPane.INFORMATION_MESSAGE);
                 return false;
             }
+        }
+
+        return true; // cadastro validado para todas as datas possivelmente invalida ou indisponiveis
+
+    }
+
+    public Boolean verificarValidadeHorarios(Agenda agenda) {
+        AgendaDao agendaDao = new AgendaDao();
+
+        if (agenda.getDataReserva().isBefore(LocalDate.now())) { // VERIFICA SE A DATA É ANTERIOR A HOJE
+            JOptionPane.showMessageDialog(null, "A data de agenda não pode ser anterior a hoje", "Data Inválida", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+
+        } else if (agenda.getHorarioInicio().isBefore(LocalTime.of(8, 0)) || agenda.getHorarioInicio().isAfter(LocalTime.of(18, 0)) || agenda.getHorarioFim().isBefore(LocalTime.of(8, 0)) || agenda.getHorarioFim().isAfter(LocalTime.of(18, 0))) {
+            JOptionPane.showMessageDialog(null, "Apenas em horário comercial", "Horário Inválido", JOptionPane.INFORMATION_MESSAGE);
+            return false;
         }
 
         return true; // cadastro validado para todas as datas possivelmente invalida ou indisponiveis

@@ -2,17 +2,20 @@ package dao;
 
 import model.Agenda;
 
+import javax.swing.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 
+import static control.EnfermeiroController.controlVerificarEnfermeiro;
 import static control.MedicoController.controlVerificarMedico;
 import static model.utils.DateUtils.*;
 
 public class AgendaDao {
 
-    public void salvar(Agenda agenda) {
+    public Boolean salvar(Agenda agenda) {
         Conexao conexao = new Conexao();
         String sql = "INSERT INTO " +
                 "agenda (dataReserva, horarioInicio, horarioFim, motivo, codMedico, codEnfermeiro) " +
@@ -28,14 +31,61 @@ public class AgendaDao {
             if(controlVerificarMedico(agenda.getCodFuncionario()) > 0){//CONTOU-SE REGISTROS COM ESTE CODIGO NO MEDICO, PORTANTO É UM MEDICO
                 stmt.setString(5, agenda.getCodFuncionario().toString());
                 stmt.setString(6, null);
-            }else{//CONTOU-SE REGISTROS COM ESTE CODIGO NO ENFERMEIRO, PORTANTO É UM ENFERMEIRO
+            }else if(controlVerificarEnfermeiro(agenda.getCodFuncionario()) > 0){//CONTOU-SE REGISTROS COM ESTE CODIGO NO ENFERMEIRO, PORTANTO É UM ENFERMEIRO
                 stmt.setString(5, null);
                 stmt.setString(6, agenda.getCodFuncionario().toString());
             }
 
             stmt.execute();
             stmt.close();
+            return true;
+
+        } catch (SQLIntegrityConstraintViolationException sqlcve) {
+            JOptionPane.showMessageDialog(null, "O codigo de funcionario deve se referenciar a um Médico ou Enfermeiro");
+            return false;
+
         } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Dados inválidos");
+            e.printStackTrace();
+            return false;
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    public void atualizarAgenda(Agenda agenda){
+        Conexao conexao = new Conexao();
+        String sql = "UPDATE agenda " +
+                "SET dataReserva = ?, " + "horarioInicio= ?, " + "horarioFim = ?, " + "motivo= ?, " +
+                "codMedico = ?, " + "codEnfermeiro = ? " +
+                "WHERE codAgenda = ?";
+        try {
+            PreparedStatement stmt = conexao.getConn().prepareStatement(sql);
+            stmt.setString(1, getStringFromDate1(agenda.getDataReserva()));
+            stmt.setString(2, getStringFromTime(agenda.getHorarioInicio()));
+            stmt.setString(3, getStringFromTime(agenda.getHorarioFim()));
+            stmt.setString(4, agenda.getMotivo());
+
+            if(controlVerificarMedico(agenda.getCodFuncionario()) > 0){//CONTOU-SE REGISTROS COM ESTE CODIGO NO MEDICO, PORTANTO É UM MEDICO
+                stmt.setString(5, agenda.getCodFuncionario().toString());
+                stmt.setString(6, null);
+            }else if(controlVerificarEnfermeiro(agenda.getCodFuncionario()) > 0){//CONTOU-SE REGISTROS COM ESTE CODIGO NO ENFERMEIRO, PORTANTO É UM ENFERMEIRO
+                stmt.setString(5, null);
+                stmt.setString(6, agenda.getCodFuncionario().toString());
+            }
+
+            stmt.setString(7, agenda.getCodAgenda().toString());
+
+            stmt.execute();
+            stmt.close();
+
+        } catch (SQLIntegrityConstraintViolationException sqlcve) {
+            JOptionPane.showMessageDialog(null, "O codigo de funcionario deve se referenciar a um Médico ou Enfermeiro");
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Dados inválidos");
             e.printStackTrace();
 
         } catch (Exception ex) {

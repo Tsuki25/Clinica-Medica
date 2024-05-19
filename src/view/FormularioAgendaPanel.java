@@ -1,8 +1,6 @@
 package view;
 
 import control.AgendaController;
-import control.AgendamentoController;
-import control.PacienteController;
 import model.Agenda;
 
 import javax.swing.*;
@@ -25,7 +23,7 @@ public class FormularioAgendaPanel extends JPanel {
     private JButton btnExcluir;
     private JButton btnSalvarEdicao;
     private JButton btnCancelarEdicao;
-    private JButton btnNovoCadastro;
+    private JButton btnVoltar;
 
     public FormularioAgendaPanel(JFrame pacienteFrame) {
         setBackground(SystemColor.activeCaptionBorder);
@@ -249,16 +247,16 @@ public class FormularioAgendaPanel extends JPanel {
         btnSalvarEdicao.setBounds(432, 433, 38, 38);
         btnSalvarEdicao.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                /*AgendamentoController ac = new AgendamentoController();
-                Agendamento agendamentoAtualizado =  ac.controlAtualizarAgendamento(FormularioAgendaPanel.this, agendamento);
-                preencherCampos(agendamentoAtualizado);
-                JOptionPane.showMessageDialog(null, "Paciente atualizado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                AgendaController ac = new AgendaController();
+                Agenda agendaAtualizado =  ac.controlAtualizarAgenda(FormularioAgendaPanel.this, agenda);
+                preencherCampos(agendaAtualizado);
+                JOptionPane.showMessageDialog(null, "Agenda atualizada com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
 
                 setStatusEdicaoCampos(false);
                 btnEditar.setVisible(true);
                 btnExcluir.setVisible(true);
                 btnCancelarEdicao.setVisible(false);
-                btnSalvarEdicao.setVisible(false);*/
+                btnSalvarEdicao.setVisible(false);
             }
         });
         add(btnSalvarEdicao);
@@ -281,13 +279,13 @@ public class FormularioAgendaPanel extends JPanel {
         btnCancelarEdicao.setBounds(384, 433, 38, 38);
         add(btnCancelarEdicao);
 
-        btnNovoCadastro = new JButton();
-        btnNovoCadastro.setIcon(new ImageIcon(getClass().getResource("/view/icons/adicionar.png")));
-        btnNovoCadastro.setBackground(SystemColor.windowBorder);
-        btnNovoCadastro.setForeground(SystemColor.desktop);
-        btnNovoCadastro.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
-        btnNovoCadastro.setBounds(288, 433, 38, 38);
-        btnNovoCadastro.addActionListener(new ActionListener() {
+        btnVoltar = new JButton();
+        btnVoltar.setIcon(new ImageIcon(getClass().getResource("/view/icons/voltar.png")));
+        btnVoltar.setBackground(SystemColor.windowBorder);
+        btnVoltar.setForeground(SystemColor.desktop);
+        btnVoltar.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
+        btnVoltar.setBounds(288, 433, 38, 38);
+        btnVoltar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 PacienteFrame novoFrame = new PacienteFrame();
                 novoFrame.setSize(530, 870);
@@ -295,7 +293,7 @@ public class FormularioAgendaPanel extends JPanel {
                 pacienteFrame.setVisible(false);
             }
         });
-        add(btnNovoCadastro);
+        add(btnVoltar);
 
     }
 

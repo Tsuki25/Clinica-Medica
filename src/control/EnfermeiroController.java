@@ -146,4 +146,5 @@ public class EnfermeiroController {
         EnfermeiroDao enfermeiroDao = new EnfermeiroDao();
         return enfermeiroDao.verificarEnfermeiro(codFuncionario);
     }
+
 }
