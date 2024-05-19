@@ -21,6 +21,7 @@ public class PacienteFrame extends JFrame {
         tabbedPane.addTab("Funcionarios", new FormularioFuncionarioPanel(PacienteFrame.this));
         tabbedPane.addTab("Agendamento", new FormularioAgendamentoPanel(PacienteFrame.this));
         tabbedPane.addTab("Agenda", new FormularioAgendaPanel(PacienteFrame.this));
+        tabbedPane.addTab("Exames", new ExamesPanel(PacienteFrame.this));
         contentPane.add(tabbedPane, BorderLayout.CENTER);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -1,43 +1,30 @@
 package model;
 
-import java.util.HashMap;
+import model.enums.TipoDiagnosticoPadrao;
 
 public class Exame {
-    private static final HashMap<String, String> mapDiagnostico = new HashMap<>();//CRIA O MAPA DE DIAGNOSTICOS DISPONIVEIS PARA O EXAME
-    static {
-        // Adicionando valores predefinidos ao HashMap
-        mapDiagnostico.put("NORMALADULTO", "texto padrão, normal adulto");
-        mapDiagnostico.put("NORMALCRIANCA", "texto padrão, normal criança");
-        mapDiagnostico.put("ALTERACAORELAXAMENTOVE", "texto padrão, alteração do relaxamento do V.E.");
-        mapDiagnostico.put("PVM", "texto padrão, P.V.M");
-        mapDiagnostico.put("OUTROS", "texto padrão, outros");
-    }
-
     protected Integer codExame;
-    protected String diagnostico;
+    protected TipoDiagnosticoPadrao diagnostico;
     protected Double peso;
     protected Double altura;
-    protected String nomeSolicitante;
     protected String convenio;
-    protected Integer codResponsavel;
+    protected Integer codFuncionario;
+    protected Integer codPaciente;
 
-    public Exame(Integer codExame, String codDiagnostico, Double peso, Double altura, String nomeSolicitante, String convenio) {
+    public Exame(Integer codExame, TipoDiagnosticoPadrao diagnostico, Double peso, Double altura, String convenio, Integer codFuncionario, Integer codPaciente) {
         this.codExame = codExame;
-        this.diagnostico = mapDiagnostico.get(codDiagnostico);
+        this.diagnostico = diagnostico;
         this.peso = peso;
         this.altura = altura;
-        this.nomeSolicitante = nomeSolicitante;
         this.convenio = convenio;
+        this.codFuncionario = codFuncionario;
+        this.codPaciente = codPaciente;
     }
 
     public Exame(){}
 
-    public Integer getCodResponsavel() {
-        return codResponsavel;
-    }
-
-    public void setCodResponsavel(Integer codResponsavel) {
-        this.codResponsavel = codResponsavel;
+    public Exame(Integer codExame) {
+        this.codExame = codExame;
     }
 
     public Integer getCodExame() {
@@ -46,14 +33,6 @@ public class Exame {
 
     public void setCodExame(Integer codExame) {
         this.codExame = codExame;
-    }
-
-    public String getDiagnostico() {
-        return diagnostico;
-    }
-
-    public void setDiagnostico(String diagnostico) {
-        this.diagnostico = diagnostico;
     }
 
     public Double getPeso() {
@@ -72,14 +51,6 @@ public class Exame {
         this.altura = altura;
     }
 
-    public String getNomeSolicitante() {
-        return nomeSolicitante;
-    }
-
-    public void setNomeSolicitante(String nomeSolicitante) {
-        this.nomeSolicitante = nomeSolicitante;
-    }
-
     public String getConvenio() {
         return convenio;
     }
@@ -88,28 +59,45 @@ public class Exame {
         this.convenio = convenio;
     }
 
-    // METODOS DE MANIPULAÇÃO DO HASH MAP =============================================================================
-    public static void adicionarDiagnostico(String chave, String descricao) {
-        mapDiagnostico.put(chave, descricao);
+    public Integer getCodFuncionario() {
+        return codFuncionario;
     }
 
-    public static void atualizarDescricao(String chave, String novaDescricao) {
-        mapDiagnostico.put(chave, novaDescricao);
+    public void setCodFuncionario(Integer codFuncionario) {
+        this.codFuncionario = codFuncionario;
     }
 
-    public static void removerDiagnostico(String chave) {
-        mapDiagnostico.remove(chave);
+    public Integer getCodPaciente() {
+        return codPaciente;
     }
-    // METODOS DE MANIPULAÇÃO DO HASH MAP =============================================================================
+
+    public void setCodPaciente(Integer codPaciente) {
+        this.codPaciente = codPaciente;
+    }
+
+    public TipoDiagnosticoPadrao getDiagnostico() {
+        return diagnostico;
+    }
+
+    public String getDiagnosticoText() {
+        return diagnostico.getTipo();
+    }
+
+    public void setDiagnostico(TipoDiagnosticoPadrao diagnostico) {
+        this.diagnostico = diagnostico;
+    }
+
+
     @Override
     public String toString() {
         return "Exame{" +
                 "codExame=" + codExame +
-                ", diagnostico='" + diagnostico + '\'' +
+                ", diagnostico='" + diagnostico.getTipo() + '\'' +
                 ", peso=" + peso +
                 ", altura=" + altura +
-                ", nomeSolicitante='" + nomeSolicitante + '\'' +
                 ", convenio='" + convenio + '\'' +
+                ", codFuncionario=" + codFuncionario +
+                ", codPaciente=" + codPaciente +
                 '}';
     }
 }

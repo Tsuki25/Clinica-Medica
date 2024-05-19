@@ -100,7 +100,11 @@ CREATE TABLE IF NOT EXISTS ELETROCARDIOGRAMA( #NECESSARIO TRATIVA INTERNA DO SIS
     fc INT NOT NULL,
     conclusoes VARCHAR(360) NOT NULL,
     codPaciente BIGINT NOT NULL,
-    FOREIGN KEY (codPaciente) REFERENCES PACIENTE(codPaciente)
+	codMedico BIGINT,
+    codEnfermeiro BIGINT,
+    FOREIGN KEY (codPaciente) REFERENCES PACIENTE(codPaciente),
+    FOREIGN KEY (codMedico) REFERENCES MEDICO(codFuncionario),
+    FOREIGN KEY (codEnfermeiro) REFERENCES ENFERMEIRO(codFuncionario)
 );
 
 CREATE TABLE IF NOT EXISTS ECOCARDIOGRAMA( #NECESSARIO TRATIVA INTERNA DO SISTEMA PARA UMA CONTAGEM UNICA DE IDS PARA TODO O SISTEMA
@@ -119,7 +123,11 @@ CREATE TABLE IF NOT EXISTS ECOCARDIOGRAMA( #NECESSARIO TRATIVA INTERNA DO SISTEM
     fraccaoEncurtamento DOUBLE NOT NULL,
     fraccaoEjecao DOUBLE NOT NULL,
     codPaciente BIGINT NOT NULL,
-    FOREIGN KEY (codPaciente) REFERENCES PACIENTE(codPaciente)
+	codMedico BIGINT,
+    codEnfermeiro BIGINT,
+    FOREIGN KEY (codPaciente) REFERENCES PACIENTE(codPaciente),
+    FOREIGN KEY (codMedico) REFERENCES MEDICO(codFuncionario),
+    FOREIGN KEY (codEnfermeiro) REFERENCES ENFERMEIRO(codFuncionario)
 );
 
 CREATE TABLE IF NOT EXISTS ERGONOMETRICO( #NECESSARIO TRATIVA INTERNA DO SISTEMA PARA UMA CONTAGEM UNICA DE IDS PARA TODO O SISTEMA
@@ -132,7 +140,11 @@ CREATE TABLE IF NOT EXISTS ERGONOMETRICO( #NECESSARIO TRATIVA INTERNA DO SISTEMA
     fumante BOOLEAN NOT NULL,
     observacoes VARCHAR(360) NOT NULL,
     codPaciente BIGINT NOT NULL,
-    FOREIGN KEY (codPaciente) REFERENCES PACIENTE(codPaciente)
+	codMedico BIGINT,
+    codEnfermeiro BIGINT,
+    FOREIGN KEY (codPaciente) REFERENCES PACIENTE(codPaciente),
+    FOREIGN KEY (codMedico) REFERENCES MEDICO(codFuncionario),
+    FOREIGN KEY (codEnfermeiro) REFERENCES ENFERMEIRO(codFuncionario)
 );
 
 CREATE TABLE IF NOT EXISTS HOLTER( #NECESSARIO TRATIVA INTERNA DO SISTEMA PARA UMA CONTAGEM UNICA DE IDS PARA TODO O SISTEMA
@@ -151,7 +163,11 @@ CREATE TABLE IF NOT EXISTS HOLTER( #NECESSARIO TRATIVA INTERNA DO SISTEMA PARA U
     arritmias VARCHAR(240) NOT NULL,
     observacoes VARCHAR(360) NOT NULL,
     codPaciente BIGINT NOT NULL,
-    FOREIGN KEY (codPaciente) REFERENCES PACIENTE(codPaciente)
+    codMedico BIGINT,
+    codEnfermeiro BIGINT,
+    FOREIGN KEY (codPaciente) REFERENCES PACIENTE(codPaciente),
+    FOREIGN KEY (codMedico) REFERENCES MEDICO(codFuncionario),
+    FOREIGN KEY (codEnfermeiro) REFERENCES ENFERMEIRO(codFuncionario)
 );
 
 CREATE TABLE IF NOT EXISTS ENTREGA(
@@ -179,65 +195,77 @@ CREATE TABLE IF NOT EXISTS AGENDAMENTO(
 );
 
 
-# INSERT DE DADOS PARA TESTE
 -- Inserts para a tabela ENDERECO
 INSERT INTO ENDERECO (cep, logradouro, bairro, cidade, estado, numero, complemento) VALUES
-('12345-678', 'Rua Teste', 'Centro', 'Cidade Teste', 'TS', 123, 'Complemento Teste'),
-('54321-876', 'Avenida Principal', 'Bairro Novo', 'Cidade Nova', 'NV', 456, 'Complemento Novo');
+(12345678, 'Rua das Flores', 'Jardim das Rosas', 'São Paulo', 'SP', 100, 'Apto 101'),
+(87654321, 'Avenida Central', 'Centro', 'Rio de Janeiro', 'RJ', 200, 'Bloco B'),
+(11223344, 'Travessa da Esperança', 'Alvorada', 'Curitiba', 'PR', 300, NULL);
 
 -- Inserts para a tabela PACIENTE
-INSERT INTO PACIENTE (cpf, nome, sobrenome, sexo, dataNascimento, celular, email, codEnd) VALUES
-('12345678901', 'João', 'Silva', 'Masculino', '1990-05-10', '(99) 99999-9999', 'joao@email.com', 1),
-('98765432109', 'Maria', 'Santos', 'Feminino', '1985-08-15', '(88) 88888-8888', 'maria@email.com', 2);
+INSERT INTO PACIENTE (cpf, nome, sobrenome, sexo, dataNascimento, telefone, celular, email, historico, alergias, medicamentosUtilizados, anotacoes, codEnd) VALUES
+('123.456.789-00', 'João', 'Silva', 'Masculino', '1990-01-01', '1111-1111', '99999-9999', 'joao.silva@example.com', 'Histórico do paciente João', 'Nenhuma', 'Nenhum', 'Nenhuma', 1),
+('987.654.321-00', 'Maria', 'Oliveira', 'Feminino', '1985-05-05', '2222-2222', '88888-8888', 'maria.oliveira@example.com', 'Histórico do paciente Maria', 'Poeira', 'Paracetamol', 'Nenhuma', 2),
+('555.666.777-88', 'Carlos', 'Santos', 'Masculino', '1975-12-12', '3333-3333', '77777-7777', 'carlos.santos@example.com', 'Histórico do paciente Carlos', 'Lactose', 'Ibuprofeno', 'Nenhuma', 3);
 
 -- Inserts para a tabela RECEPCIONISTA
-INSERT INTO RECEPCIONISTA (codFuncionario, cpf, nome, sobrenome, sexo, dataNascimento, celular, email, senha, codEnd) VALUES
-(1, '11122233344', 'Ana', 'Souza', 'Feminino', '1980-01-20', '(77) 77777-7777', 'ana@email.com', 'senha123', 1),
-(2, '22233344455', 'Pedro', 'Oliveira', 'Masculino', '1975-11-05', '(66) 66666-6666', 'pedro@email.com', 'senha456', 2);
+INSERT INTO RECEPCIONISTA (codFuncionario, cpf, nome, sobrenome, sexo, dataNascimento, telefone, celular, email, senha, codEnd) VALUES
+(1, '111.222.333-44', 'Ana', 'Pereira', 'Feminino', '1992-03-10', '4444-4444', '66666-6666', 'ana.pereira@example.com', 'senha123', 1),
+(2, '555.666.777-88', 'José', 'Fernandes', 'Masculino', '1988-07-25', '5555-5555', '55555-5555', 'jose.fernandes@example.com', 'senha456', 2),
+(3, '999.888.777-66', 'Beatriz', 'Costa', 'Feminino', '1980-11-30', '6666-6666', '44444-4444', 'beatriz.costa@example.com', 'senha789', 3);
 
 -- Inserts para a tabela ENFERMEIRO
-INSERT INTO ENFERMEIRO (codFuncionario, cpf, nome, sobrenome, sexo, dataNascimento, celular, email, senha, cip, codEnd) VALUES
-(3, '33344455566', 'Mariana', 'Costa', 'Feminino', '1983-04-15', '(55) 55555-5555', 'mariana@email.com', 'senha789', 'CIP123', 1),
-(4, '44455566677', 'Lucas', 'Ferreira', 'Masculino', '1978-07-25', '(44) 44444-4444', 'lucas@email.com', 'senha012', 'CIP456', 2);
+INSERT INTO ENFERMEIRO (codFuncionario, cpf, nome, sobrenome, sexo, dataNascimento, telefone, celular, email, senha, cip, codEnd) VALUES
+(4, '333.444.555-66', 'Lucas', 'Almeida', 'Masculino', '1995-02-20', '7777-7777', '33333-3333', 'lucas.almeida@example.com', 'senha321', 'CIP12345', 1),
+(5, '222.333.444-55', 'Fernanda', 'Lima', 'Feminino', '1991-08-15', '8888-8888', '22222-2222', 'fernanda.lima@example.com', 'senha654', 'CIP54321', 2),
+(6, '666.555.444-33', 'Paulo', 'Souza', 'Masculino', '1983-04-10', '9999-9999', '11111-1111', 'paulo.souza@example.com', 'senha987', 'CIP98765', 3);
 
 -- Inserts para a tabela MEDICO
-INSERT INTO MEDICO (codFuncionario, cpf, nome, sobrenome, sexo, dataNascimento, celular, email, senha, crm, codEnd) VALUES
-(5, '55566677788', 'Juliana', 'Martins', 'Feminino', '1970-03-30', '(33) 33333-3333', 'juliana@email.com', 'senha345', 'CRM123', 1),
-(6, '66677788899', 'Carlos', 'Lima', 'Masculino', '1965-09-10', '(22) 22222-2222', 'carlos@email.com', 'senha678', 'CRM456', 2);
+INSERT INTO MEDICO (codFuncionario, cpf, nome, sobrenome, sexo, dataNascimento, telefone, celular, email, senha, crm, codEnd) VALUES
+(7, '777.888.999-00', 'Roberta', 'Mendes', 'Feminino', '1970-10-05', '1111-1112', '99999-9991', 'roberta.mendes@example.com', 'senhaabc', 'CRM11111', 1),
+(8, '888.999.000-11', 'Marcos', 'Ribeiro', 'Masculino', '1965-09-22', '1111-1113', '99999-9992', 'marcos.ribeiro@example.com', 'senhadef', 'CRM22222', 2),
+(9, '999.000.111-22', 'Aline', 'Barbosa', 'Feminino', '1980-06-12', '1111-1114', '99999-9993', 'aline.barbosa@example.com', 'senhaghi', 'CRM33333', 3);
 
 -- Inserts para a tabela AGENDA
-INSERT INTO AGENDA (codAgenda, dataReservada, horarioInicio, horarioFim, codMedico, codEnfermeiro) VALUES #MUDAR O NOME SE PA
-(default, '2024-05-10', '08:00:00', '09:00:00', 5, null),
-(default, '2024-05-11', '09:00:00', '10:00:00', 6, null);
+INSERT INTO AGENDA (dataReserva, horarioInicio, horarioFim, motivo, codMedico, codEnfermeiro) VALUES
+('2024-06-01', '08:00:00', '09:00:00', 'Consulta de rotina', 7, 4),
+('2024-06-02', '09:00:00', '10:00:00', 'Consulta de retorno', 8, 5),
+('2024-06-03', '10:00:00', '11:00:00', 'Exame preventivo', 9, 6);
 
 -- Inserts para a tabela ELETROCARDIOGRAMA
-INSERT INTO ELETROCARDIOGRAMA (codExame, diagClinico, peso, altura, convenio, ritmo, fc, conclusoes, codPaciente) VALUES
-(1, 'Normal', 70.5, 1.75, 'Unimed', 'Sinusal', 70, 'Conclusões do eletrocardiograma', 1),
-(2, 'Arritmia', 65.2, 1.68, 'Bradesco Saúde', 'Fibrilação Atrial', 85, 'Conclusões do eletrocardiograma', 2);
+INSERT INTO ELETROCARDIOGRAMA (codExame, diagClinico, peso, altura, convenio, ritmo, fc, conclusoes, codPaciente, codMedico, codEnfermeiro) VALUES
+(1, 'Diagnóstico 1', 70.5, 1.75, 'Convenio A', 'Sinusal', 75, 'Conclusão 1', 1, 7, 4),
+(2, 'Diagnóstico 2', 60.0, 1.65, 'Convenio B', 'Arritmia', 85, 'Conclusão 2', 2, 8, 5),
+(3, 'Diagnóstico 3', 80.0, 1.80, 'Convenio C', 'Bradicardia', 65, 'Conclusão 3', 3, 9, 6);
 
 -- Inserts para a tabela ECOCARDIOGRAMA
-INSERT INTO ECOCARDIOGRAMA (codExame, diagClinico, peso, altura, convenio, raizAorta, atrioEsquerdo, ventriculoDir, ventriculoEsqSis, ventriculoEsqDias, ventriculoEsqParede, septoIntra, fraccaoEncurtamento, fraccaoEjecao, codPaciente) VALUES
-(3, 'Normal', 70.5, 1.75, 'Unimed', 30, 25, 30, 55, 25, 10, 12, 0.35, 0.60, 1),
-(4, 'Cardiomiopatia', 65.2, 1.68, 'Bradesco Saúde', 35, 28, 35, 60, 28, 15, 14, 0.30, 0.55, 2);
+INSERT INTO ECOCARDIOGRAMA (codExame, diagClinico, peso, altura, convenio, raizAorta, atrioEsquerdo, ventriculoDir, ventriculoEsqSis, ventriculoEsqDias, ventriculoEsqParede, septoIntra, fraccaoEncurtamento, fraccaoEjecao, codPaciente, codMedico, codEnfermeiro) VALUES
+(4, 'Diagnóstico 4', 75.0, 1.70, 'Convenio D', 35, 40, 30, 50, 55, 10, 9, 0.40, 0.60, 1, 7, 4),
+(5, 'Diagnóstico 5', 65.0, 1.60, 'Convenio E', 36, 41, 31, 51, 56, 11, 10, 0.42, 0.62, 2, 8, 5),
+(6, 'Diagnóstico 6', 85.0, 1.85, 'Convenio F', 37, 42, 32, 52, 57, 12, 11, 0.44, 0.64, 3, 9, 6);
 
 -- Inserts para a tabela ERGONOMETRICO
-INSERT INTO ERGONOMETRICO (codExame, diagClinico, peso, altura, convenio, marcaPasso, fumante, observacoes, codPaciente) VALUES
-(5, 'Normal', 70.5, 1.75, 'Unimed', 0, 1, 'Observações sobre o teste ergométrico', 1),
-(6, 'Descondicionado', 65.2, 1.68, 'Bradesco Saúde', 1, 0, 'Observações sobre o teste ergométrico', 2);
+INSERT INTO ERGONOMETRICO (codExame, diagClinico, peso, altura, convenio, marcaPasso, fumante, observacoes, codPaciente, codMedico, codEnfermeiro) VALUES
+(7, 'Diagnóstico 7', 78.0, 1.78, 'Convenio G', 0, 1, 'Observação 1', 1, 7, 4),
+(8, 'Diagnóstico 8', 68.0, 1.68, 'Convenio H', 1, 0, 'Observação 2', 2, 8, 5),
+(9, 'Diagnóstico 9', 88.0, 1.88, 'Convenio I', 0, 0, 'Observação 3', 3, 9, 6);
 
 -- Inserts para a tabela HOLTER
-INSERT INTO HOLTER (codExame, diagClinico, peso, altura, convenio, ritmoCardiaco, variabilidadeCardiaca, intervaloQT, intervaloPR, condIntraventricular, segmentoST, extrassistotoles, arritmias, observacoes, codPaciente) VALUES
-(7, 'Normal', 70.5, 1.75, 'Unimed', 70, 15, 0.42, 0.18, 'Normal', 'Normal', 'Ausentes', 'Nenhuma', 'Observações sobre o Holter', 1),
-(8, 'Taquicardia', 65.2, 1.68, 'Bradesco Saúde', 90, 20, 0.40, 0.20, 'Normal', 'Infradesnivelamento', 'Frequentemente presentes', 'Taquicardia sinusal', 'Observações sobre o Holter', 2);
+INSERT INTO HOLTER (codExame, diagClinico, peso, altura, convenio, ritmoCardiaco, variabilidadeCardiaca, intervaloQT, intervaloPR, condIntraventricular, segmentoST, extrassistotoles, arritmias, observacoes, codPaciente, codMedico, codEnfermeiro) VALUES
+(10, 'Diagnóstico 10', 70.5, 1.75, 'Convenio J', 75, 0.80, 0.40, 0.20, 'Cond. normal', 'ST normal', 'Sem extrassístoles', 'Sem arritmias', 'Observação 4', 1, 7, 4),
+(11, 'Diagnóstico 11', 60.0, 1.65, 'Convenio K', 85, 0.82, 0.42, 0.22, 'Cond. alterada', 'ST alterado', 'Com extrassístoles', 'Com arritmias', 'Observação 5', 2, 8, 5),
+(12, 'Diagnóstico 12', 80.0, 1.80, 'Convenio L', 65, 0.84, 0.44, 0.24, 'Cond. levemente alterada', 'ST levemente alterado', 'Poucas extrassístoles', 'Poucas arritmias', 'Observação 6', 3, 9, 6);
 
+-- Inserts para a tabela ENTREGA
 INSERT INTO ENTREGA (dataRetirada, horarioRetirada, retiradoPor, codRecepcionista, codExame) VALUES
-('2024-05-10', '10:00:00', 'Fulano', 1, 5),
-('2024-05-11', '11:00:00', 'Ciclano', 2, 2);
+('2024-06-04', '08:00:00', 'Fulano de Tal', 1, 1),
+('2024-06-05', '09:00:00', 'Beltrano de Souza', 2, 2),
+('2024-06-06', '10:00:00', 'Ciclano da Silva', 3, 3);
 
 -- Inserts para a tabela AGENDAMENTO
-INSERT INTO AGENDAMENTO (dataAgendamento, horarioAgendamento, statusAgendamento, codMedico, codEnfermeiro, codPaciente) VALUES
-('2024-05-12', '08:00:00', 'Agendado', 5, null, 1),
-('2024-05-13', '10:00:00', 'Agendado', null, 4, 2);
+INSERT INTO AGENDAMENTO (dataAgendamento, horarioAgendamento, statusAgendamento, exame, codMedico, codEnfermeiro, codPaciente) VALUES
+('2024-06-07', '08:00:00', 'Pendente', 'Eletrocardiograma', 7, 4, 1),
+('2024-06-08', '09:00:00', 'Confirmado', 'Ecocardiograma', 8, 5, 2),
+('2024-06-09', '10:00:00', 'Realizado', 'Ergometrico', 9, 6, 3);
 
 use clinica;
 

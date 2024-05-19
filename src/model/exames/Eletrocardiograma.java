@@ -1,17 +1,22 @@
 package model.exames;
 
 import model.Exame;
+import model.enums.TipoDiagnosticoPadrao;
 
 public class Eletrocardiograma extends Exame {
     private String ritmoCardiaco;
     private Integer funcaoCardiaca;
     private String conclusoes;
 
-    public Eletrocardiograma(Integer codExame, String codDiagnostico, Double peso, Double altura, String nomeSolicitante, String convenio, String ritmoCardiaco, Integer funcaoCardiaca, String conclusoes) {
-        super(codExame, codDiagnostico, peso, altura, nomeSolicitante, convenio);
+    public Eletrocardiograma(Integer codExame, TipoDiagnosticoPadrao diagnostico, Double peso, Double altura, String convenio, Integer codFuncionario, Integer codPaciente, String ritmoCardiaco, Integer funcaoCardiaca, String conclusoes) {
+        super(codExame, diagnostico, peso, altura, convenio, codFuncionario, codPaciente);
         this.ritmoCardiaco = ritmoCardiaco;
         this.funcaoCardiaca = funcaoCardiaca;
-        this.conclusoes=conclusoes;
+        this.conclusoes = conclusoes;
+    }
+
+    public Eletrocardiograma(Integer codExame) {
+        super(codExame);
     }
 
     public Eletrocardiograma(){}
@@ -50,9 +55,9 @@ public class Eletrocardiograma extends Exame {
                 ", diagnostico='" + diagnostico + '\'' +
                 ", peso=" + peso +
                 ", altura=" + altura +
-                ", nomeSolicitante='" + nomeSolicitante + '\'' +
                 ", convenio='" + convenio + '\'' +
-                ", codResponsavel=" + codResponsavel +
+                ", codFuncionario=" + codFuncionario +
+                ", codPaciente=" + codPaciente +
                 '}';
     }
 }

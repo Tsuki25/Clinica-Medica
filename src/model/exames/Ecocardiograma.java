@@ -1,6 +1,7 @@
 package model.exames;
 
 import model.Exame;
+import model.enums.TipoDiagnosticoPadrao;
 
 public class Ecocardiograma extends Exame {
     private Integer raizAorta;
@@ -13,10 +14,8 @@ public class Ecocardiograma extends Exame {
     private Double fraccaoEncurtamento;
     private Double fraccaoEjecao;
 
-    public Ecocardiograma(Integer codExame, String codDiagnostico, Double peso, Double altura, String nomeSolicitante, String convenio, Integer raizAorta,
-                          Integer atrioEsquerdo, Integer ventriculoDir, Integer ventriculoEsqSis, Integer ventriculoEsqDias, Integer ventriculoEsqParede,
-                          Integer septoIntra, Double fraccaoEncurtamento, Double fraccaoEjecao) {
-        super(codExame, codDiagnostico, peso, altura, nomeSolicitante, convenio);
+    public Ecocardiograma(Integer codExame, TipoDiagnosticoPadrao diagnostico, Double peso, Double altura, String convenio, Integer codFuncionario, Integer codPaciente, Integer raizAorta, Integer atrioEsquerdo, Integer ventriculoDir, Integer ventriculoEsqSis, Integer ventriculoEsqDias, Integer ventriculoEsqParede, Integer septoIntra, Double fraccaoEncurtamento, Double fraccaoEjecao) {
+        super(codExame, diagnostico, peso, altura, convenio, codFuncionario, codPaciente);
         this.raizAorta = raizAorta;
         this.atrioEsquerdo = atrioEsquerdo;
         this.ventriculoDir = ventriculoDir;
@@ -26,6 +25,10 @@ public class Ecocardiograma extends Exame {
         this.septoIntra = septoIntra;
         this.fraccaoEncurtamento = fraccaoEncurtamento;
         this.fraccaoEjecao = fraccaoEjecao;
+    }
+
+    public Ecocardiograma(Integer codExame) {
+        super(codExame);
     }
 
     public Ecocardiograma(){}
@@ -118,9 +121,9 @@ public class Ecocardiograma extends Exame {
                 ", diagnostico='" + diagnostico + '\'' +
                 ", peso=" + peso +
                 ", altura=" + altura +
-                ", nomeSolicitante='" + nomeSolicitante + '\'' +
                 ", convenio='" + convenio + '\'' +
-                ", codResponsavel=" + codResponsavel +
+                ", codFuncionario=" + codFuncionario +
+                ", codPaciente=" + codPaciente +
                 '}';
     }
 }

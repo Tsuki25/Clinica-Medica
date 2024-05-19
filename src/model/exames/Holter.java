@@ -1,21 +1,21 @@
 package model.exames;
 
 import model.Exame;
+import model.enums.TipoDiagnosticoPadrao;
 
 public class Holter extends Exame {
     private Integer ritmoCardiaco; // BPM
     private Double variabilidadeCardiaca;
-    private Double intervaloQT; // s ou ms
-    private Double intervaloPR; // s ou ms
+    private Double intervaloQT; // s ou ms -> converter em  time
+    private Double intervaloPR; // s ou ms -> converter em time
     private String condIntraventricular;
     private String segmentoST;
     private String extrassistoles;
     private String arritmias;
     private String observacoes;
 
-    public Holter(Integer codExame, String codDiagnostico, Double peso, Double altura, String nomeSolicitante, String convenio, Integer ritmoCardiaco, Double variabilidadeCardiaca,
-                  Double intervaloQT, Double intervaloPR, String condIntraventricular, String segmentoST, String extrassistoles, String arritmias, String observacoes) {
-        super(codExame, codDiagnostico, peso, altura, nomeSolicitante, convenio);
+    public Holter(Integer codExame, TipoDiagnosticoPadrao diagnostico, Double peso, Double altura, String convenio, Integer codFuncionario, Integer codPaciente, Integer ritmoCardiaco, Double variabilidadeCardiaca, Double intervaloQT, Double intervaloPR, String condIntraventricular, String segmentoST, String extrassistoles, String arritmias, String observacoes) {
+        super(codExame, diagnostico, peso, altura, convenio, codFuncionario, codPaciente);
         this.ritmoCardiaco = ritmoCardiaco;
         this.variabilidadeCardiaca = variabilidadeCardiaca;
         this.intervaloQT = intervaloQT;
@@ -25,6 +25,10 @@ public class Holter extends Exame {
         this.extrassistoles = extrassistoles;
         this.arritmias = arritmias;
         this.observacoes = observacoes;
+    }
+
+    public Holter(Integer codExame) {
+        super(codExame);
     }
 
     public Holter(){}
@@ -117,9 +121,9 @@ public class Holter extends Exame {
                 ", diagnostico='" + diagnostico + '\'' +
                 ", peso=" + peso +
                 ", altura=" + altura +
-                ", nomeSolicitante='" + nomeSolicitante + '\'' +
                 ", convenio='" + convenio + '\'' +
-                ", codResponsavel=" + codResponsavel +
+                ", codFuncionario=" + codFuncionario +
+                ", codPaciente=" + codPaciente +
                 '}';
     }
 }
