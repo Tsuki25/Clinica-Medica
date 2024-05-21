@@ -233,9 +233,9 @@ INSERT INTO AGENDA (dataReserva, horarioInicio, horarioFim, motivo, codMedico, c
 
 -- Inserts para a tabela ELETROCARDIOGRAMA
 INSERT INTO ELETROCARDIOGRAMA (codExame, diagClinico, peso, altura, convenio, ritmo, fc, conclusoes, codPaciente, codMedico, codEnfermeiro) VALUES
-(1, 'Diagnóstico 1', 70.5, 1.75, 'Convenio A', 'Sinusal', 75, 'Conclusão 1', 1, 7, 4),
-(2, 'Diagnóstico 2', 60.0, 1.65, 'Convenio B', 'Arritmia', 85, 'Conclusão 2', 2, 8, 5),
-(3, 'Diagnóstico 3', 80.0, 1.80, 'Convenio C', 'Bradicardia', 65, 'Conclusão 3', 3, 9, 6);
+(1, "NORMAL_ADULTO", 70.5, 1.75, 'Convenio A', 'Sinusal', 75, 'Conclusão 1', 1, 7, 4),
+(2, "NORMAL_ADULTO", 60.0, 1.65, 'Convenio B', 'Arritmia', 85, 'Conclusão 2', 2, 8, 5),
+(3, "NORMAL_ADULTO", 80.0, 1.80, 'Convenio C', 'Bradicardia', 65, 'Conclusão 3', 3, 9, 6);
 
 -- Inserts para a tabela ECOCARDIOGRAMA
 INSERT INTO ECOCARDIOGRAMA (codExame, diagClinico, peso, altura, convenio, raizAorta, atrioEsquerdo, ventriculoDir, ventriculoEsqSis, ventriculoEsqDias, ventriculoEsqParede, septoIntra, fraccaoEncurtamento, fraccaoEjecao, codPaciente, codMedico, codEnfermeiro) VALUES
@@ -273,6 +273,7 @@ select * from paciente;
 select * from recepcionista;
 SELECT * FROM agendamento;
 SELECT * FROM agenda;
+SELECT * FROM eletrocardiograma;
 
 SELECT MAX(codFuncionario) AS codigo_maximo FROM (
              SELECT codFuncionario FROM RECEPCIONISTA

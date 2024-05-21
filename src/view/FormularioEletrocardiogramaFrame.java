@@ -2,6 +2,7 @@ package view;
 
 import control.EletrocardiogramaController;
 import model.enums.TipoDiagnosticoPadrao;
+import model.exames.Eletrocardiograma;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,8 +11,9 @@ import java.awt.event.ActionListener;
 
 import static control.PacienteController.getNomePacienteForId;
 import static dao.FuncionarioDao.getNomeFuncionarioForId;
+import static java.util.Objects.isNull;
 
-public class EletrocardiogramaFrame extends JFrame {
+public class FormularioEletrocardiogramaFrame extends JFrame {
     private JTextField tfCodFuncionario, tfNomeFuncionario;
     private JTextField tfAltura;
     private JTextField tfFuncaoCardiaca;
@@ -21,6 +23,8 @@ public class EletrocardiogramaFrame extends JFrame {
     private JTextField tfPeso;
     private JTextField tfConvenio;
     private JTextField tfCodPaciente, tfNomePaciente;
+    private JTextField tfCodExame;
+    private JLabel lbCodExame;
     private JButton btnSalvar;
     private JButton btnLimpar;
     private JButton btnBusca;
@@ -30,7 +34,7 @@ public class EletrocardiogramaFrame extends JFrame {
     private JButton btnCancelarEdicao;
     private JButton btnVoltar;
 
-    public EletrocardiogramaFrame() {
+    public FormularioEletrocardiogramaFrame() {
         setBackground(SystemColor.activeCaptionBorder);
         setLayout(null);
 
@@ -222,7 +226,7 @@ public class EletrocardiogramaFrame extends JFrame {
         btnSalvar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 EletrocardiogramaController ec = new EletrocardiogramaController();
-                ec.controlSalvar(EletrocardiogramaFrame.this);
+                ec.controlSalvar(FormularioEletrocardiogramaFrame.this);
 
                 limparCampos();
             }
@@ -237,7 +241,7 @@ public class EletrocardiogramaFrame extends JFrame {
         btnLimpar.setBackground(SystemColor.windowBorder);
         btnLimpar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-               // limparCampos();
+               limparCampos();
             }
         });
         btnLimpar.setBounds(384, 775, 38, 38);
@@ -250,10 +254,10 @@ public class EletrocardiogramaFrame extends JFrame {
         btnBusca.setBackground(SystemColor.windowBorder);
         btnBusca.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ListaAgendamentosFrame listaAgendamentosFrame = new ListaAgendamentosFrame();
-                listaAgendamentosFrame.setSize(1600, 900);
-                listaAgendamentosFrame.setVisible(true);
-               // pacienteFrame.setVisible(false);
+                ListaExamesFrame listaExamesFrame = new ListaExamesFrame();
+                listaExamesFrame.setSize(1600, 900);
+                listaExamesFrame.setVisible(true);
+                FormularioEletrocardiogramaFrame.this.setVisible(false);
             }
         });
         btnBusca.setBounds(336, 775, 38, 38);
@@ -265,16 +269,29 @@ public class EletrocardiogramaFrame extends JFrame {
     }
 
 
-   /* public FormularioAgendamentoPanel(JFrame pacienteFrame, Integer codAgendamento){
-        this(pacienteFrame);//chama o construtor padrão
-        Agendamento agendamento = getDadosAgendamento(codAgendamento);
+   public FormularioEletrocardiogramaFrame(Integer codExame){
+        this();//chama o construtor padrão
+        Eletrocardiograma eletrocardiograma = getDadosAgendamento(codExame);
 
         btnLimpar.setVisible(false);//Deixa os botões do outro formulario ocultos
         btnSalvar.setVisible(false);
-        lbStatus.setVisible(true);
-        cbStatus.setVisible(true);
 
-        preencherCampos(agendamento);// preenche o formulario com os dados
+       lbCodExame = new JLabel("Código Exame:");
+       lbCodExame.setFont(new Font("Bahnschrift", Font.BOLD, 16));
+       lbCodExame.setBounds(20, 780, 140, 20);
+       add(lbCodExame);
+
+       tfCodExame = new JTextField();
+       lbCodExame.setLabelFor(tfCodExame);
+       tfCodExame.setFont(new Font("Bahnschrift", Font.PLAIN, 16));
+       tfCodExame.setColumns(10);
+       tfCodExame.setBounds(143, 775, 111, 30);
+       tfCodExame.setBorder(BorderFactory.createLineBorder(new Color(96, 8, 166)));
+       tfCodExame.setBackground(new Color(226, 207, 241));
+       tfCodExame.setEditable(false);
+       add(tfCodExame);
+
+        preencherCampos(eletrocardiograma);// preenche o formulario com os dados
         setStatusEdicaoCampos(false); //Deixa todos os campos editaveis(true) ou não editaveis(false)
 
         btnEditar = new JButton();
@@ -282,7 +299,7 @@ public class EletrocardiogramaFrame extends JFrame {
         btnEditar.setBackground(SystemColor.windowBorder);
         btnEditar.setForeground(SystemColor.desktop);
         btnEditar.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
-        btnEditar .setBounds(432, 775, 38, 38);
+        btnEditar.setBounds(432, 775, 38, 38);
         btnEditar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 setStatusEdicaoCampos(true);
@@ -304,9 +321,9 @@ public class EletrocardiogramaFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 int confirmacao = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir o registro?", "Confirmação", JOptionPane.YES_NO_OPTION);
                 if (confirmacao == JOptionPane.YES_OPTION) {
-                    AgendamentoController ac = new AgendamentoController();
-                    ac.controlExcluirAgendamento(agendamento);
-                    JOptionPane.showMessageDialog(null, "Agendamento excluido com sucesso");
+                    EletrocardiogramaController ec = new EletrocardiogramaController();
+                    ec.controlExcluirEletrocardiograma(eletrocardiograma);
+                    JOptionPane.showMessageDialog(null, "Exame excluido com sucesso");
                     limparCampos();
                 }
             }
@@ -319,13 +336,19 @@ public class EletrocardiogramaFrame extends JFrame {
         btnSalvarEdicao.setBackground(SystemColor.windowBorder);
         btnSalvarEdicao.setForeground(SystemColor.desktop);
         btnSalvarEdicao.setFont(new Font("Bahnschrift", Font.PLAIN, 14));
-        btnSalvarEdicao.setBounds(432, 742, 38, 38);
+        btnSalvarEdicao.setBounds(432, 775, 38, 38);
+        btnSalvarEdicao.setVisible(false);
         btnSalvarEdicao.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                AgendamentoController ac = new AgendamentoController();
-                Agendamento agendamentoAtualizado =  ac.controlAtualizarAgendamento(FormularioAgendamentoPanel.this, agendamento);
-                preencherCampos(agendamentoAtualizado);
-                JOptionPane.showMessageDialog(null, "Paciente atualizado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                EletrocardiogramaController ec = new EletrocardiogramaController();
+                Eletrocardiograma eletrocardiogramaAtualizado =  ec.controlAtualizarEletrocardiograma(FormularioEletrocardiogramaFrame.this, eletrocardiograma);
+
+                if(!isNull(eletrocardiogramaAtualizado)){
+                    preencherCampos(eletrocardiogramaAtualizado);
+                    JOptionPane.showMessageDialog(null, "Exame atualizado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                }else{
+                    JOptionPane.showMessageDialog(null, "Dados inválidos ou vazios", "ERRO!", JOptionPane.INFORMATION_MESSAGE);
+                }
 
                 setStatusEdicaoCampos(false);
                 btnEditar.setVisible(true);
@@ -346,7 +369,7 @@ public class EletrocardiogramaFrame extends JFrame {
                 setStatusEdicaoCampos(false);
                 btnEditar.setVisible(true);
                 btnExcluir.setVisible(true);
-                preencherCampos(agendamento);
+                preencherCampos(eletrocardiograma);
                 btnCancelarEdicao.setVisible(false);
                 btnSalvarEdicao.setVisible(false);
             }
@@ -365,24 +388,28 @@ public class EletrocardiogramaFrame extends JFrame {
                 PacienteFrame novoFrame = new PacienteFrame();
                 novoFrame.setSize(530, 870);
                 novoFrame.setVisible(true);
-                pacienteFrame.setVisible(false);
+                FormularioEletrocardiogramaFrame.this.setVisible(false);
             }
         });
         add(btnVoltar);
 
     }
 
-    private void preencherCampos(Agendamento agendamento){
+    private void preencherCampos(Eletrocardiograma eletro){
         // SETA OS VALORES DOS CAMPOS DE ACORDO COM O RECUPERADO DO BANCO DE DADOS
-
-        cbExames.setSelectedItem(agendamento.getExame());
-        cbStatus.setSelectedItem(agendamento.getStatus());
-        tfCodPaciente.setText(agendamento.getCodPaciente().toString());
+        tfCodExame.setText(eletro.getCodExame().toString());
+        tfCodPaciente.setText(eletro.getCodPaciente().toString());
         tfNomePaciente.setText(getNomePacienteForId(Integer.parseInt(tfCodPaciente.getText())));
-        tfCodFuncionario.setText(agendamento.getCodFuncionario().toString());
+        tfPeso.setText(eletro.getPeso().toString());
+        tfAltura.setText(eletro.getAltura().toString());
+        tfConvenio.setText(eletro.getConvenio().toString());
+        tfRitmoCardiaco.setText(eletro.getRitmoCardiaco());
+        tfFuncaoCardiaca.setText(eletro.getFuncaoCardiaca().toString());
+        tfConclusoes.setText(eletro.getConclusoes());
+        tfCodFuncionario.setText(eletro.getCodFuncionario().toString());
         tfNomeFuncionario.setText(getNomeFuncionarioForId(Integer.parseInt(tfCodFuncionario.getText())));
-        ftfDataAgendamento.setText(getStringFromDate2(agendamento.getDataAgendamento()));
-        ftfHorarioAgendamento.setText(agendamento.getHorarioAgendamento().toString());
+
+        cbDiagnostico.setSelectedItem(eletro.getDiagnostico());
     }
 
     private void setStatusEdicaoCampos(Boolean status){
@@ -394,31 +421,29 @@ public class EletrocardiogramaFrame extends JFrame {
         if(status) alterCoresCampos(borderEditavel, bgEditavel);
         else alterCoresCampos(borderIneditavel, bgIneditavel);
 
-
-        cbExames.setEnabled(status);
-        cbStatus.setEnabled(status);
         tfCodPaciente.setEditable(status);
+        tfPeso.setEditable(status);
+        tfAltura.setEditable(status);
+        tfConvenio.setEditable(status);
+        tfRitmoCardiaco.setEditable(status);
+        tfFuncaoCardiaca.setEditable(status);
+        tfConclusoes.setEditable(status);
         tfCodFuncionario.setEditable(status);
-        ftfDataAgendamento.setEditable(status);
-        ftfHorarioAgendamento.setEditable(status);
+
+        cbDiagnostico.setEnabled(status);
     }
 
-    private Agendamento getDadosAgendamento(Integer codAgendamento) {
-        AgendamentoController ac = new AgendamentoController();
-        return ac.controlBuscarAgendamentoForId(codAgendamento);
+    private Eletrocardiograma getDadosAgendamento(Integer codExame) {
+        EletrocardiogramaController ec = new EletrocardiogramaController();
+        return ec.controlBuscarEletrocardiogramaForId(codExame);
     }
 
     private void alterCoresCampos(Color corBorda, Color corFundo){
 
-        cbExames.setBackground(corFundo);
-        ((JLabel) cbExames.getRenderer()).setOpaque(true); // Torna o fundo do item selecionado visível
-        cbExames.setBorder(BorderFactory.createLineBorder(corBorda));
-        cbExames.setForeground(Color.BLACK);
-
-        cbStatus.setBackground(corFundo);
-        ((JLabel) cbStatus.getRenderer()).setOpaque(true); // Torna o fundo do item selecionado visível
-        cbStatus.setBorder(BorderFactory.createLineBorder(corBorda));
-        cbStatus.setForeground(Color.BLACK);
+        cbDiagnostico.setBackground(corFundo);
+        ((JLabel) cbDiagnostico.getRenderer()).setOpaque(true); // Torna o fundo do item selecionado visível
+        cbDiagnostico.setBorder(BorderFactory.createLineBorder(corBorda));
+        cbDiagnostico.setForeground(Color.BLACK);
 
         tfCodPaciente.setBorder(BorderFactory.createLineBorder(corBorda));
         tfCodPaciente.setBackground(corFundo);
@@ -426,12 +451,24 @@ public class EletrocardiogramaFrame extends JFrame {
         tfCodFuncionario.setBorder(BorderFactory.createLineBorder(corBorda));
         tfCodFuncionario.setBackground(corFundo);
 
-        ftfDataAgendamento.setBorder(BorderFactory.createLineBorder(corBorda));
-        ftfDataAgendamento.setBackground(corFundo);
+        tfPeso.setBorder(BorderFactory.createLineBorder(corBorda));
+        tfPeso.setBackground(corFundo);
 
-        ftfHorarioAgendamento.setBorder(BorderFactory.createLineBorder(corBorda));
-        ftfHorarioAgendamento.setBackground(corFundo);
-    }*/
+        tfAltura.setBorder(BorderFactory.createLineBorder(corBorda));
+        tfAltura.setBackground(corFundo);
+
+        tfConvenio.setBorder(BorderFactory.createLineBorder(corBorda));
+        tfConvenio.setBackground(corFundo);
+
+        tfRitmoCardiaco.setBorder(BorderFactory.createLineBorder(corBorda));
+        tfRitmoCardiaco.setBackground(corFundo);
+
+        tfFuncaoCardiaca.setBorder(BorderFactory.createLineBorder(corBorda));
+        tfFuncaoCardiaca.setBackground(corFundo);
+
+        tfConclusoes.setBorder(BorderFactory.createLineBorder(corBorda));
+        tfConclusoes.setBackground(corFundo);
+    }
 
     private void limparCampos() {
         tfCodPaciente.setText("");

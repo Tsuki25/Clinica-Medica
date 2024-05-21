@@ -388,7 +388,7 @@ public class FormularioPacientePanel extends JPanel {
         tfCodPaciente.setFont(new Font("Bahnschrift", Font.PLAIN, 12));
         tfCodPaciente.setBounds(310, 22, 50, 20);
         add(tfCodPaciente);
-        tfCodPaciente.setEditable(false);//NÃO É POSSIVEL EDITAR O CPF
+        tfCodPaciente.setEditable(false);
         tfCodPaciente.setColumns(10);
 
         btnLimpar.setVisible(false);//Deixa os botões do outro formilario ocultos

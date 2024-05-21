@@ -1,7 +1,6 @@
 package view;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,7 +29,7 @@ public class ExamesPanel extends JPanel {
         btnEletro.setBackground(SystemColor.windowBorder);
         btnEletro.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                EletrocardiogramaFrame eletroFrame = new EletrocardiogramaFrame();
+                FormularioEletrocardiogramaFrame eletroFrame = new FormularioEletrocardiogramaFrame();
                 eletroFrame.setResizable(true);
                 eletroFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 eletroFrame.setBounds(100, 100, 450, 300);

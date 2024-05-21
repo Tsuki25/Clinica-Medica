@@ -2,18 +2,15 @@ package control;
 
 import dao.EletrocardiogramaDao;
 import model.exames.Eletrocardiograma;
-import view.EletrocardiogramaFrame;
+import view.FormularioEletrocardiogramaFrame;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.MissingFormatArgumentException;
 
-import static dao.ExameDao.getNextCodExame;
-import static model.utils.DateUtils.getDateFromString1;
-import static model.utils.DateUtils.getTimeFromString;
-
 public class EletrocardiogramaController {
-    public void controlSalvar(EletrocardiogramaFrame cadastroPanel) {
+    public void controlSalvar(FormularioEletrocardiogramaFrame cadastroPanel) {
         try{
             Eletrocardiograma eletro = new Eletrocardiograma();
             eletro.setCodFuncionario(Integer.parseInt(cadastroPanel.getTfCodFuncionario().getText()));
@@ -41,5 +38,61 @@ public class EletrocardiogramaController {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public Eletrocardiograma controlAtualizarEletrocardiograma(FormularioEletrocardiogramaFrame updatePanel, Eletrocardiograma eletrocardiogramaEditado){
+        try{
+            Eletrocardiograma eletro = new Eletrocardiograma();
+            eletro.setCodExame(eletrocardiogramaEditado.getCodExame());
+            eletro.setCodFuncionario(Integer.parseInt(updatePanel.getTfCodFuncionario().getText()));
+            eletro.setCodPaciente(Integer.parseInt(updatePanel.getTfCodPaciente().getText()));
+            eletro.setPeso(Double.parseDouble(updatePanel.getTfPeso().getText()));
+            eletro.setAltura(Double.parseDouble(updatePanel.getTfAltura().getText()));
+            eletro.setConvenio(updatePanel.getTfConvenio().getText());
+            eletro.setRitmoCardiaco(updatePanel.getTfRitmoCardiaco().getText());
+            eletro.setFuncaoCardiaca(Integer.parseInt(updatePanel.getTfFuncaoCardiaca().getText()));
+            eletro.setDiagnostico(updatePanel.getCbDiagnostico());
+            eletro.setConclusoes(updatePanel.getTfConclusoes().getText());
+
+            EletrocardiogramaDao eletrocardiogramaDao = new EletrocardiogramaDao();
+            eletrocardiogramaDao.atualizarEletrocardiograma(eletro);
+            return eletro;
+
+
+        }catch(InputMismatchException ime){
+            ime.printStackTrace();
+            return null;
+
+        }catch(MissingFormatArgumentException mfae){
+            mfae.printStackTrace();
+            return null;
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public ArrayList<Eletrocardiograma> controlListarEletrocardiogramas(){
+        EletrocardiogramaDao eletrocardiogramaDao = new EletrocardiogramaDao();
+
+        return eletrocardiogramaDao.listarEletrocardiogramas();
+    }
+
+    public ArrayList<Eletrocardiograma> controlListarEletrocardiogramasBusca(String textoBusca){
+        EletrocardiogramaDao eletrocardiogramaDao = new EletrocardiogramaDao();
+
+        return eletrocardiogramaDao.listarEletrocardiogramasBusca(textoBusca);
+    }
+
+    public Eletrocardiograma controlBuscarEletrocardiogramaForId(Integer codExame){
+        EletrocardiogramaDao pd = new EletrocardiogramaDao();
+
+        return pd.getEletrocardiogramaForId(codExame);
+    }
+
+    public void controlExcluirEletrocardiograma(Eletrocardiograma eletrocardiograma){
+        EletrocardiogramaDao eletrocardiogramaDao = new EletrocardiogramaDao();
+        eletrocardiogramaDao.excluirEletrocardiograma(eletrocardiograma.getCodExame());
     }
 }
