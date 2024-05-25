@@ -226,5 +226,25 @@ public class EletrocardiogramaDao {
             e.printStackTrace();
         }
     }
+
+    public static Integer getPacienteForExame(Integer codExame) {
+        Conexao conexao = new Conexao();
+        String sql = "SELECT codPaciente FROM eletrocardiograma WHERE codExame = ?";
+        try {
+            PreparedStatement stmt = conexao.getConn().prepareStatement(sql);
+            stmt.setString(1, codExame.toString());
+            ResultSet rs = stmt.executeQuery();
+
+            rs.next();
+            Integer codPaciente = Integer.parseInt(rs.getString("codPaciente"));
+
+            stmt.execute();
+            stmt.close();
+            return codPaciente;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     
 }

@@ -1,21 +1,47 @@
 package model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class EntregaExame {
+    private Integer codEntrega;
     private Integer codExame;
     private Integer codResponsavel;
     private String retiradoPor;
-    private LocalDateTime dataRetirada;
+    private LocalDate dataRetirada;
+    private LocalTime horarioRetirada;
 
-    public EntregaExame(Integer codExame, Integer codResponsavel, String retiradoPor) {
+    public EntregaExame(Integer codEntrega, Integer codExame, Integer codResponsavel, String retiradoPor, LocalDate dataRetirada, LocalTime horarioRetirada) {
+        this.codEntrega = codEntrega;
         this.codExame = codExame;
         this.codResponsavel = codResponsavel;
         this.retiradoPor = retiradoPor;
-        this.dataRetirada = LocalDateTime.now();
+        this.dataRetirada = dataRetirada;
+        this.horarioRetirada = horarioRetirada;
     }
 
-    public EntregaExame(){}
+    public EntregaExame(Integer codEntrega) {
+        this.codEntrega = codEntrega;
+    }
+
+    public EntregaExame() {}
+
+    public Integer getCodEntrega() {
+        return codEntrega;
+    }
+
+    public void setCodEntrega(Integer codEntrega) {
+        this.codEntrega = codEntrega;
+    }
+
+    public LocalTime getHorarioRetirada() {
+        return horarioRetirada;
+    }
+
+    public void setHorarioRetirada(LocalTime horarioRetirada) {
+        this.horarioRetirada = horarioRetirada;
+    }
 
     public Integer getCodExame() {
         return codExame;
@@ -41,21 +67,23 @@ public class EntregaExame {
         this.retiradoPor = retiradoPor;
     }
 
-    public LocalDateTime getDataRetirada() {
+    public LocalDate getDataRetirada() {
         return dataRetirada;
     }
 
-    public void setDataRetirada(LocalDateTime dataRetirada) {
+    public void setDataRetirada(LocalDate dataRetirada) {
         this.dataRetirada = dataRetirada;
     }
 
     @Override
     public String toString() {
         return "EntregaExame{" +
-                "codExame=" + codExame +
+                "codEntrega=" + codEntrega +
+                ", codExame=" + codExame +
                 ", codResponsavel=" + codResponsavel +
                 ", retiradoPor='" + retiradoPor + '\'' +
                 ", dataRetirada=" + dataRetirada +
+                ", horarioRetirada=" + horarioRetirada +
                 '}';
     }
 }
