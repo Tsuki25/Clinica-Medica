@@ -37,4 +37,41 @@ public class ExameDao {
             return null;
         }
     }
+
+    public static Integer getPacienteFromExame(Integer codExame) {
+        Conexao conexao = new Conexao();
+        PreparedStatement stmt;
+
+        try {
+            Integer codPaciente = null;
+            stmt = conexao.getConn().prepareStatement("SELECT codPaciente FROM " +
+                    "(" +
+                    "  SELECT codPaciente FROM ELETROCARDIOGRAMA WHERE codExame = ? " +
+                    "  UNION ALL " +
+                    "  SELECT codPaciente FROM ECOCARDIOGRAMA WHERE codExame = ? " +
+                    "  UNION ALL " +
+                    "  SELECT codPaciente FROM ERGONOMETRICO WHERE codExame = ? " +
+                    "  UNION ALL " +
+                    "  SELECT codPaciente FROM HOLTER WHERE codExame = ? " +
+                    ") AS todas_tabelas");
+
+            stmt.setString(1, codExame.toString());
+            stmt.setString(2, codExame.toString());
+            stmt.setString(3, codExame.toString());
+            stmt.setString(4, codExame.toString());
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                codPaciente = rs.getInt("codPaciente");
+            }
+
+            rs.close();
+            stmt.close();
+            return codPaciente;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

@@ -1,6 +1,9 @@
 package view;
 
+import control.AgendamentoController;
 import control.EletrocardiogramaController;
+import control.EntregaController;
+import model.EntregaExame;
 import model.enums.TipoDiagnosticoPadrao;
 import model.exames.Eletrocardiograma;
 
@@ -323,6 +326,9 @@ public class FormularioEletrocardiogramaFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 int confirmacao = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir o registro?", "Confirmação", JOptionPane.YES_NO_OPTION);
                 if (confirmacao == JOptionPane.YES_OPTION) {
+                    EntregaController ecc = new EntregaController();
+                    ecc.controlExcluirEntregaForExame(eletrocardiograma.getCodExame());
+
                     EletrocardiogramaController ec = new EletrocardiogramaController();
                     ec.controlExcluirEletrocardiograma(eletrocardiograma);
                     JOptionPane.showMessageDialog(null, "Exame excluido com sucesso");

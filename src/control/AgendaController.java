@@ -90,6 +90,11 @@ public class AgendaController {
         agendaDao.excluirAgenda(agenda.getCodAgenda());
     }
 
+    public void controlExcluirAgendaForFuncionario(Integer codFuncionario){
+        AgendaDao agendaDao = new AgendaDao();
+        agendaDao.excluirAgendaForFuncionario(codFuncionario);
+    }
+
     public ArrayList<Agenda> controlListarAgendas(){
         AgendaDao agendaDao = new AgendaDao();
         return agendaDao.listarAgendas();

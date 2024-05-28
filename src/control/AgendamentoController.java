@@ -107,6 +107,16 @@ public class AgendamentoController {
         agendamentoDao.excluirAgendamento(agendamento.getCodAgendamento());
     }
 
+    public void controlExcluirAgendamentoForPaciente(Integer codPaciente){
+        AgendamentoDao agendamentoDao = new AgendamentoDao();
+        agendamentoDao.excluirAgendamentoForPaciente(codPaciente);
+    }
+
+    public void controlExcluirAgendamentoForFuncionario(Integer codFuncionario){
+        AgendamentoDao agendamentoDao = new AgendamentoDao();
+        agendamentoDao.excluirAgendamentoForFuncionario(codFuncionario);
+    }
+
     public Boolean verificarDisponibilidadeAgendamento(Agendamento agendamento) {
         AgendamentoDao agendamentoDao = new AgendamentoDao();
 

@@ -524,11 +524,23 @@ public class FormularioFuncionarioPanel extends JPanel {
 
                     if(funcionario instanceof Medico){
                         Medico funcionarioAux = (Medico) funcionario;
+
+                        AgendamentoController ac = new AgendamentoController();
+                        AgendaController agc = new AgendaController();
+                        ac.controlExcluirAgendamentoForFuncionario(funcionarioAux.getCodFuncionario());
+                        agc.controlExcluirAgendaForFuncionario(funcionarioAux.getCodFuncionario());
+
                         MedicoController mc = new MedicoController();
                         mc.controlExcluirMedico(funcionarioAux);
 
                     }else if(funcionario instanceof Enfermeiro){
                         Enfermeiro funcionarioAux = (Enfermeiro) funcionario;
+
+                        AgendamentoController ac = new AgendamentoController();
+                        AgendaController agc = new AgendaController();
+                        ac.controlExcluirAgendamentoForFuncionario(funcionarioAux.getCodFuncionario());
+                        agc.controlExcluirAgendaForFuncionario(funcionarioAux.getCodFuncionario());
+
                         EnfermeiroController ec = new EnfermeiroController();
                         ec.controlExcluirEnfermeiro(funcionarioAux);
 

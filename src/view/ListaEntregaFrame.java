@@ -109,7 +109,7 @@ public class ListaEntregaFrame extends JFrame{
             ArrayList<EntregaExame> entregas = ec.controlListarEntregas();
 
 
-            for (EntregaExame entrega:entregas) {
+            for (EntregaExame entrega : entregas) {
                 Integer codPaciente = getPacienteForExame(entrega.getCodExame());
                 tableModel.addRow(new String[]{
                         entrega.getCodEntrega().toString(),
@@ -132,7 +132,6 @@ public class ListaEntregaFrame extends JFrame{
         String textoBusca = searchField.getText().trim();
 
         if (!textoBusca.isEmpty()) {
-            // A BUSCA PODE SER REALIZADO POR CODIGO, CPF, NOME, SOBRENOME
             try {
                 DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
                 tableModel.setRowCount(0); // Limpa a tabela antes de preenchê-la novamente

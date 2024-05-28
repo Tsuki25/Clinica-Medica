@@ -1,7 +1,6 @@
 package dao;
 
 import model.EntregaExame;
-import model.enums.TipoDiagnosticoPadrao;
 
 import javax.swing.*;
 import java.sql.PreparedStatement;
@@ -10,9 +9,6 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 
-import static control.EnfermeiroController.controlVerificarEnfermeiro;
-import static control.MedicoController.controlVerificarMedico;
-import static dao.ExameDao.getNextCodExame;
 import static model.utils.DateUtils.*;
 
 public class EntregaDao {
@@ -44,6 +40,35 @@ public class EntregaDao {
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
+        }
+    }
+
+    public void atualizarEntrega(EntregaExame entrega){
+        Conexao conexao = new Conexao();
+        String sql = "UPDATE entrega " +
+                "SET dataRetirada = ?, " + "horarioRetirada= ?, " + "retiradoPor = ?, " + "codRecepcionista = ?" +
+                "WHERE codEntrega = ?";
+        try {
+            PreparedStatement stmt = conexao.getConn().prepareStatement(sql);
+            stmt.setString(1, getStringFromDate1(entrega.getDataRetirada()));
+            stmt.setString(2, getStringFromTime(entrega.getHorarioRetirada()));
+            stmt.setString(3, entrega.getRetiradoPor());
+            stmt.setString(4, entrega.getCodResponsavel().toString());
+
+            stmt.setString(5, entrega.getCodEntrega().toString());
+
+            stmt.execute();
+            stmt.close();
+
+        } catch (SQLIntegrityConstraintViolationException sqlcve) {
+            JOptionPane.showMessageDialog(null, "O codigo de funcionario deve se referenciar a um Recepcionista");
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Dados inválidos");
+            e.printStackTrace();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -110,6 +135,62 @@ public class EntregaDao {
             rs.close();
             stmt.close();
             return entregas;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void excluirEntrega(Integer codEntrega) {
+        Conexao conexao = new Conexao();
+        String sql = "DELETE FROM entrega WHERE codEntrega = ?";
+        try {
+            PreparedStatement stmt = conexao.getConn().prepareStatement(sql);
+            stmt.setString(1, codEntrega.toString());
+
+            stmt.execute();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void excluirEntregaForExame(Integer codExame) {
+        Conexao conexao = new Conexao();
+        String sql = "DELETE FROM entrega WHERE codExame = ?";
+        try {
+            PreparedStatement stmt = conexao.getConn().prepareStatement(sql);
+            stmt.setString(1, codExame.toString());
+
+            stmt.execute();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public EntregaExame getEntregaForId(Integer codEntrega) {
+        Conexao conexao = new Conexao();
+        PreparedStatement stmt;
+
+        try {
+            stmt = conexao.getConn().prepareStatement("select * from entrega where codEntrega = ?");
+            stmt.setString(1, codEntrega.toString());
+            ResultSet rs = stmt.executeQuery();
+
+            rs.next();
+            EntregaExame entrega = new EntregaExame();
+            entrega.setCodEntrega(rs.getInt("codEntrega"));
+            entrega.setCodExame(rs.getInt("codExame"));
+            entrega.setCodResponsavel(Integer.parseInt(rs.getString("codRecepcionista")));
+            entrega.setDataRetirada(getDateFromString2(rs.getString("dataRetirada")));
+            entrega.setHorarioRetirada(getTimeFromString2(rs.getString("horarioRetirada")));
+            entrega.setRetiradoPor(rs.getString("retiradoPor"));
+
+            rs.close();
+            stmt.close();
+            return entrega;
 
         } catch (SQLException e) {
             e.printStackTrace();

@@ -90,10 +90,12 @@ public class PacienteController {
             EnderecoDao enderecoDao = new EnderecoDao();
 
             Paciente paciente = new Paciente();
+            paciente.setCodPaciente(Integer.parseInt(updatePanel.getTfCodPaciente().getText()));
             paciente.setCpf(updatePanel.getTfCpf().getText());
             paciente.setNome(updatePanel.getTfNome().getText());
             paciente.setSobrenome(updatePanel.getTfSobrenome().getText());
             paciente.setDataNascimento(getDateFromString1(updatePanel.getFtfDtNasc().getText()));
+
             if(paciente.getDataNascimento().isAfter(LocalDate.now()) || paciente.getDataNascimento().equals(LocalDate.now())) {
                 JOptionPane.showMessageDialog(null, "Data de nascimento inválida", "Data inválido", JOptionPane.INFORMATION_MESSAGE);
                 return pacienteAux;

@@ -215,6 +215,35 @@ public class AgendamentoDao {
         }
     }
 
+    public void excluirAgendamentoForPaciente(Integer codPaciente) {
+        Conexao conexao = new Conexao();
+        String sql = "DELETE FROM agendamento WHERE codPaciente = ?";
+        try {
+            PreparedStatement stmt = conexao.getConn().prepareStatement(sql);
+            stmt.setString(1, codPaciente.toString());
+
+            stmt.execute();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void excluirAgendamentoForFuncionario(Integer codFuncionario) {
+        Conexao conexao = new Conexao();
+        String sql = "DELETE FROM agendamento WHERE codMedico = ? or codEnfermeiro = ?";
+        try {
+            PreparedStatement stmt = conexao.getConn().prepareStatement(sql);
+            stmt.setString(1, codFuncionario.toString());
+            stmt.setString(2, codFuncionario.toString());
+
+            stmt.execute();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public ArrayList<Agendamento> listarAgendamentoFuncDia(Agendamento agendamentoAux){
         Conexao conexao = new Conexao();
         PreparedStatement stmt;

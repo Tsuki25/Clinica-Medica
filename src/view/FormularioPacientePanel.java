@@ -1,5 +1,7 @@
 package view;
 
+import control.AgendaController;
+import control.AgendamentoController;
 import control.EnderecoController;
 import control.PacienteController;
 import model.Endereco;
@@ -426,6 +428,9 @@ public class FormularioPacientePanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 int confirmacao = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir o registro?", "Confirmação", JOptionPane.YES_NO_OPTION);
                 if (confirmacao == JOptionPane.YES_OPTION) {
+                    AgendamentoController ac = new AgendamentoController();
+                    ac.controlExcluirAgendamentoForPaciente(paciente.getCodPaciente());
+
                     PacienteController pc = new PacienteController();
                     pc.controlExcluirPaciente(paciente);
                     JOptionPane.showMessageDialog(null, "Paciente excluido com sucesso");
@@ -787,5 +792,13 @@ public class FormularioPacientePanel extends JPanel {
 
     public void setFtfDtNasc(JFormattedTextField ftfDtNasc) {
         this.ftfDtNasc = ftfDtNasc;
+    }
+
+    public JTextField getTfCodPaciente() {
+        return tfCodPaciente;
+    }
+
+    public void setTfCodPaciente(JTextField tfCodPaciente) {
+        this.tfCodPaciente = tfCodPaciente;
     }
 }

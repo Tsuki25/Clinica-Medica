@@ -234,13 +234,18 @@ public class EletrocardiogramaDao {
             PreparedStatement stmt = conexao.getConn().prepareStatement(sql);
             stmt.setString(1, codExame.toString());
             ResultSet rs = stmt.executeQuery();
+            Integer result;
 
-            rs.next();
-            Integer codPaciente = Integer.parseInt(rs.getString("codPaciente"));
+            if (rs.next()) {
+                result = rs.getInt("codPaciente");
+                rs.close();
+                stmt.close();
+                return result;
 
-            stmt.execute();
-            stmt.close();
-            return codPaciente;
+            } else {
+                JOptionPane.showMessageDialog(null,"Erro!");
+                return null;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
