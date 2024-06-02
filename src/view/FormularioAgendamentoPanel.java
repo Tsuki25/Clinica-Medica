@@ -14,6 +14,7 @@ import java.text.ParseException;
 
 import static control.PacienteController.getNomePacienteForId;
 import static dao.FuncionarioDao.getNomeFuncionarioForId;
+import static java.util.Objects.isNull;
 import static model.utils.DateUtils.getStringFromDate2;
 
 public class FormularioAgendamentoPanel extends JPanel {
@@ -290,8 +291,14 @@ public class FormularioAgendamentoPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 AgendamentoController ac = new AgendamentoController();
                 Agendamento agendamentoAtualizado =  ac.controlAtualizarAgendamento(FormularioAgendamentoPanel.this, agendamento);
-                preencherCampos(agendamentoAtualizado);
-                JOptionPane.showMessageDialog(null, "Paciente atualizado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+
+                if(!isNull(agendamentoAtualizado)){
+                    preencherCampos(agendamentoAtualizado);
+                    JOptionPane.showMessageDialog(null, "Agendamento atualizado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                }else{
+                    preencherCampos(agendamento);
+                }
+
 
                 setStatusEdicaoCampos(false);
                 btnEditar.setVisible(true);

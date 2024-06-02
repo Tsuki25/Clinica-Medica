@@ -19,6 +19,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.MissingFormatArgumentException;
+import java.util.Objects;
 
 import static model.utils.DateUtils.getDateFromString1;
 import static model.utils.DateUtils.getTimeFromString;
@@ -71,7 +72,7 @@ public class AgendamentoController {
                 return agendamento;
             }
 
-            return agendamentoEditado; //Assegura um retorno de dados corretos(AGENDAMENTO SENDO EDITADO), independente de possiveis erros de inserção de data e hora
+            return null;
 
         }catch(InputMismatchException ime){
             ime.printStackTrace();
