@@ -1,5 +1,4 @@
-import view.ListaPacientesFrame;
-import view.PacienteFrame;
+import view.MainFrame;
 
 import java.awt.*;
 
@@ -12,9 +11,9 @@ public class Main {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    PacienteFrame pacienteFrame = new PacienteFrame();
-                    pacienteFrame.setSize(530,870);
-                    pacienteFrame.setVisible(true);
+                    MainFrame mainFrame = new MainFrame();
+                    mainFrame.setSize(530,870);
+                    mainFrame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -1,6 +1,5 @@
 package view;
 
-import control.AgendaController;
 import control.AgendamentoController;
 import control.EnderecoController;
 import control.PacienteController;
@@ -393,7 +392,7 @@ public class FormularioPacientePanel extends JPanel {
         tfCodPaciente.setEditable(false);
         tfCodPaciente.setColumns(10);
 
-        btnLimpar.setVisible(false);//Deixa os botões do outro formilario ocultos
+        btnLimpar.setVisible(false);//Deixa os botões do outro formulario ocultos
         btnSalvar.setVisible(false);
 
         preencherCampos(paciente);// preenche o formulario com os dados do paciente
@@ -489,7 +488,7 @@ public class FormularioPacientePanel extends JPanel {
         btnVoltar.setBounds(288, 742, 38, 38);
         btnVoltar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                PacienteFrame novoFrame = new PacienteFrame();
+                MainFrame novoFrame = new MainFrame();
                 novoFrame.setSize(530, 870);
                 novoFrame.setVisible(true);
                 pacienteFrame.setVisible(false);

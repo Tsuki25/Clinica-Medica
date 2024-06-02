@@ -1,6 +1,5 @@
 package view;
 
-import control.EletrocardiogramaController;
 import control.EntregaController;
 import model.EntregaExame;
 import model.enums.TipoExame;
@@ -258,7 +257,7 @@ public class FormularioEntregasFrame extends JFrame {
         btnVoltar.setBounds(288, 775, 38, 38);
         btnVoltar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                PacienteFrame novoFrame = new PacienteFrame();
+                MainFrame novoFrame = new MainFrame();
                 novoFrame.setSize(530, 870);
                 novoFrame.setVisible(true);
                 FormularioEntregasFrame.this.setVisible(false);
@@ -487,7 +486,7 @@ public class FormularioEntregasFrame extends JFrame {
         btnVoltar.setBounds(288, 775, 38, 38);
         btnVoltar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                PacienteFrame novoFrame = new PacienteFrame();
+                MainFrame novoFrame = new MainFrame();
                 novoFrame.setSize(530, 870);
                 novoFrame.setVisible(true);
                 FormularioEntregasFrame.this.setVisible(false);

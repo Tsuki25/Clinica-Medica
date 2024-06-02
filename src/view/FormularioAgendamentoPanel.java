@@ -328,7 +328,7 @@ public class FormularioAgendamentoPanel extends JPanel {
         btnVoltar.setBounds(288, 433, 38, 38);
         btnVoltar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                PacienteFrame novoFrame = new PacienteFrame();
+                MainFrame novoFrame = new MainFrame();
                 novoFrame.setSize(530, 870);
                 novoFrame.setVisible(true);
                 pacienteFrame.setVisible(false);

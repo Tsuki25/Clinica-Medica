@@ -2,7 +2,6 @@ package view;
 
 import control.EnfermeiroController;
 import control.MedicoController;
-import control.PacienteController;
 import control.RecepcionistaController;
 import model.*;
 
@@ -72,9 +71,9 @@ public class ListaFuncionariosFrame extends JFrame{
                         String crm = table.getValueAt(linha, 4).toString();// se crm vazio e cri cheio -> enfermerio
                         String cri = table.getValueAt(linha, 5).toString();  // se crm cheio e cri vazio -> medico
                         // se crm e cri vazios recepcionista
-                        PacienteFrame pacienteFrame = new PacienteFrame(codFuncionario, crm, cri); //ABRE O FRAME DE EDICAO DE DADOS DO USUARIOS
-                        pacienteFrame.setSize(530,870);
-                        pacienteFrame.setVisible(true);
+                        MainFrame mainFrame = new MainFrame(codFuncionario, crm, cri); //ABRE O FRAME DE EDICAO DE DADOS DO USUARIOS
+                        mainFrame.setSize(530,870);
+                        mainFrame.setVisible(true);
                         ListaFuncionariosFrame.this.setVisible(false);
                     }
                 }

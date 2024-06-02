@@ -68,7 +68,7 @@ public class ListaAgendaFrame extends JFrame{
                     if (linha != -1) {
                         Integer codAgenda = Integer.parseInt(table.getValueAt(linha, 0).toString());
                         String dataReserva = table.getValueAt(linha, 1).toString();
-                        PacienteFrame agendaEditionFrame = new PacienteFrame(codAgenda, dataReserva); //ABRE O FRAME DE EDICAO DA AGENDA
+                        MainFrame agendaEditionFrame = new MainFrame(codAgenda, dataReserva); //ABRE O FRAME DE EDICAO DA AGENDA
                         agendaEditionFrame.setSize(530,870);
                         agendaEditionFrame.setVisible(true);
                         ListaAgendaFrame.this.setVisible(false);

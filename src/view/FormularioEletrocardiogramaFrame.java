@@ -1,9 +1,7 @@
 package view;
 
-import control.AgendamentoController;
 import control.EletrocardiogramaController;
 import control.EntregaController;
-import model.EntregaExame;
 import model.enums.TipoDiagnosticoPadrao;
 import model.exames.Eletrocardiograma;
 
@@ -409,7 +407,7 @@ public class FormularioEletrocardiogramaFrame extends JFrame {
         btnVoltar.setBounds(240, 775, 38, 38);
         btnVoltar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                PacienteFrame novoFrame = new PacienteFrame();
+                MainFrame novoFrame = new MainFrame();
                 novoFrame.setSize(530, 870);
                 novoFrame.setVisible(true);
                 FormularioEletrocardiogramaFrame.this.setVisible(false);

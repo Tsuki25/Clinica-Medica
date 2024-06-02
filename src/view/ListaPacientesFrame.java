@@ -54,9 +54,9 @@ public class ListaPacientesFrame extends JFrame {
                     int linha = table.getSelectedRow();
                     if (linha != -1) {
                         Integer codPaciente = Integer.parseInt(table.getValueAt(linha, 0).toString());
-                        PacienteFrame pacienteFrame = new PacienteFrame(codPaciente); //ABRE O FRAME DE EDICAO DE DADOS DO USUARIOS
-                        pacienteFrame.setSize(530,870);
-                        pacienteFrame.setVisible(true);
+                        MainFrame mainFrame = new MainFrame(codPaciente); //ABRE O FRAME DE EDICAO DE DADOS DO USUARIOS
+                        mainFrame.setSize(530,870);
+                        mainFrame.setVisible(true);
                         ListaPacientesFrame.this.setVisible(false);
                     }
                 }

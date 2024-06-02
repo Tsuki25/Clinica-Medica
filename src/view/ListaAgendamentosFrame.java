@@ -1,7 +1,6 @@
 package view;
 
 import control.*;
-import dao.FuncionarioDao;
 import model.*;
 
 import javax.swing.*;
@@ -70,7 +69,7 @@ public class ListaAgendamentosFrame extends JFrame{
                     if (linha != -1) {
                         Integer codAgendamento = Integer.parseInt(table.getValueAt(linha, 0).toString());
                         Integer codFuncionario = Integer.parseInt(table.getValueAt(linha, 6).toString());
-                        PacienteFrame agendamentoEditionFrame = new PacienteFrame(codAgendamento, codFuncionario); //ABRE O FRAME DE EDICAO DE DADOS DO USUARIOS
+                        MainFrame agendamentoEditionFrame = new MainFrame(codAgendamento, codFuncionario); //ABRE O FRAME DE EDICAO DE DADOS DO USUARIOS
                         agendamentoEditionFrame.setSize(530,870);
                         agendamentoEditionFrame.setVisible(true);
                         ListaAgendamentosFrame.this.setVisible(false);

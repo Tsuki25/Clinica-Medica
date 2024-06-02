@@ -5,7 +5,6 @@ import model.*;
 import model.enums.Sexo;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -15,8 +14,6 @@ import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 import static model.utils.DateUtils.getStringFromDate2;
 
@@ -628,7 +625,7 @@ public class FormularioFuncionarioPanel extends JPanel {
         btnVoltar.setBounds(288, 742, 38, 38);
         btnVoltar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                PacienteFrame novoFrame = new PacienteFrame();
+                MainFrame novoFrame = new MainFrame();
                 novoFrame.setSize(530, 870);
                 novoFrame.setVisible(true);
                 pacienteFrame.setVisible(false);
