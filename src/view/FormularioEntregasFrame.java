@@ -563,7 +563,7 @@ public class FormularioEntregasFrame extends JFrame {
                 if (confirmacao == JOptionPane.YES_OPTION) {
                     EntregaController ec = new EntregaController();
                     ec.controlExcluirEntrega(entrega);
-                    JOptionPane.showMessageDialog(null, "Exame excluido com sucesso");
+                    JOptionPane.showMessageDialog(null, "Entrega excluida com sucesso");
                     limparCampos();
                 }
             }

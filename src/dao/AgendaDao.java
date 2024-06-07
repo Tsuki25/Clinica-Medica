@@ -162,14 +162,14 @@ public class AgendaDao {
 
         try {
             stmt = conexao.getConn().prepareStatement("SELECT * FROM agenda WHERE " +
-                    "codAgenda = ? OR dataReserva = ? OR  horaInicio = ? OR horaFim = ? OR codMedico = ? OR codEnfermeiro = ? OR motivo LIKE ?");
+                    "codAgenda = ? OR dataReserva LIKE ? OR  horarioInicio LIKE ? OR horarioFim LIKE ? OR codMedico = ? OR codEnfermeiro = ? OR motivo LIKE ?");
             stmt.setString(1, textoBusca);
-            stmt.setString(2, textoBusca);
-            stmt.setString(3, textoBusca);
-            stmt.setString(4, textoBusca);
+            stmt.setString(2, "%" + textoBusca + "%");
+            stmt.setString(3, "%" + textoBusca + "%");
+            stmt.setString(4, "%" + textoBusca + "%");
             stmt.setString(5, textoBusca);
             stmt.setString(6, textoBusca);
-            stmt.setString(7, "%" + textoBusca.toUpperCase() + "%");
+            stmt.setString(7, "%" + textoBusca + "%");
 
             ResultSet rs = stmt.executeQuery();
             agendas = new ArrayList<Agenda>();

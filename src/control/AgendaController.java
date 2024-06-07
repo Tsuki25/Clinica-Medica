@@ -1,19 +1,12 @@
 package control;
 
 import dao.AgendaDao;
-import dao.AgendaDao;
-import dao.AgendaDao;
-import dao.AgendamentoDao;
-import model.*;
-import model.Agenda;
 import model.Agenda;
 import view.FormularioAgendaPanel;
-import view.FormularioAgendamentoPanel;
 
 import javax.swing.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.MissingFormatArgumentException;

@@ -1,15 +1,11 @@
 package dao;
 
 import model.Endereco;
-import model.Paciente;
-import model.enums.Sexo;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-
-import static model.utils.DateUtils.getDateFromString2;
 
 public class EnderecoDao {
     public Endereco salvar(Endereco endereco) {

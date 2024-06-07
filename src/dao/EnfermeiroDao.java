@@ -3,7 +3,6 @@ package dao;
 import control.EnderecoController;
 import model.Endereco;
 import model.Enfermeiro;
-import model.Enfermeiro;
 import model.enums.Sexo;
 
 import java.sql.PreparedStatement;

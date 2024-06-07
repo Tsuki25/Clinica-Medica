@@ -54,6 +54,7 @@ public class MedicoController {
             EnderecoDao enderecoDao = new EnderecoDao();
 
             Medico medico = new Medico();
+            medico.setCodFuncionario(Integer.parseInt(updatePanel.getTfCodFuncionario().getText()));
             medico.setCpf(updatePanel.getTfCpf().getText());
             medico.setNome(updatePanel.getTfNome().getText());
             medico.setSobrenome(updatePanel.getTfSobrenome().getText());

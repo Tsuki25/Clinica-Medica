@@ -988,4 +988,11 @@ public class FormularioFuncionarioPanel extends JPanel {
         this.tfSenha = tfSenha;
     }
 
+    public JTextField getTfCodFuncionario() {
+        return tfCodFuncionario;
+    }
+
+    public void setTfCodFuncionario(JTextField tfCodFuncionario) {
+        this.tfCodFuncionario = tfCodFuncionario;
+    }
 }

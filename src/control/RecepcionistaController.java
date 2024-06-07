@@ -2,11 +2,7 @@ package control;
 
 import dao.EnderecoDao;
 import dao.RecepcionistaDao;
-import dao.PacienteDao;
-import dao.RecepcionistaDao;
 import model.Endereco;
-import model.Recepcionista;
-import model.Paciente;
 import model.Recepcionista;
 import view.FormularioFuncionarioPanel;
 
@@ -58,6 +54,7 @@ public class RecepcionistaController {
             EnderecoDao enderecoDao = new EnderecoDao();
 
             Recepcionista recepcionista = new Recepcionista();
+            recepcionista.setCodFuncionario(Integer.parseInt(updatePanel.getTfCodFuncionario().getText()));
             recepcionista.setCpf(updatePanel.getTfCpf().getText());
             recepcionista.setNome(updatePanel.getTfNome().getText());
             recepcionista.setSobrenome(updatePanel.getTfSobrenome().getText());
@@ -128,9 +125,9 @@ public class RecepcionistaController {
     }
 
     public Recepcionista controlBuscarRecepcionistaForId(Integer codFuncionario){
-        RecepcionistaDao pd = new RecepcionistaDao();
+        RecepcionistaDao rd = new RecepcionistaDao();
         EnderecoDao ed = new EnderecoDao();
-        Recepcionista recepcionista = pd.getRecepcionistaForId(codFuncionario);
+        Recepcionista recepcionista = rd.getRecepcionistaForId(codFuncionario);
         Endereco endereco = ed.getEnderecoForId(recepcionista.getEndereco().getCodEnd());
         recepcionista.setEndereco(endereco);
 

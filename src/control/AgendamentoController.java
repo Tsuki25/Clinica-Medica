@@ -1,16 +1,9 @@
 package control;
 
 import dao.AgendamentoDao;
-import dao.EnderecoDao;
-import dao.AgendamentoDao;
-import dao.PacienteDao;
 import model.Agendamento;
-import model.Endereco;
-import model.Agendamento;
-import model.Paciente;
 import model.enums.StatusAgendamento;
 import view.FormularioAgendamentoPanel;
-import view.FormularioPacientePanel;
 
 import javax.swing.*;
 import java.time.LocalDate;
@@ -19,7 +12,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.MissingFormatArgumentException;
-import java.util.Objects;
 
 import static model.utils.DateUtils.getDateFromString1;
 import static model.utils.DateUtils.getTimeFromString;

@@ -2,8 +2,6 @@ package dao;
 
 import control.EnderecoController;
 import model.Endereco;
-import model.Enfermeiro;
-import model.Recepcionista;
 import model.Recepcionista;
 import model.enums.Sexo;
 

@@ -2,9 +2,7 @@ package control;
 
 import dao.*;
 import dao.EnfermeiroDao;
-import dao.EnfermeiroDao;
 import model.*;
-import model.Enfermeiro;
 import model.Enfermeiro;
 import view.FormularioFuncionarioPanel;
 
@@ -55,6 +53,7 @@ public class EnfermeiroController {
             EnderecoDao enderecoDao = new EnderecoDao();
 
             Enfermeiro enfermeiro = new Enfermeiro();
+            enfermeiro.setCodFuncionario(Integer.parseInt(updatePanel.getTfCodFuncionario().getText()));
             enfermeiro.setCpf(updatePanel.getTfCpf().getText());
             enfermeiro.setNome(updatePanel.getTfNome().getText());
             enfermeiro.setSobrenome(updatePanel.getTfSobrenome().getText());
