@@ -274,7 +274,7 @@ public class FormularioEletrocardiogramaFrame extends JFrame {
 
    public FormularioEletrocardiogramaFrame(Integer codExame){
         this();//chama o construtor padrão
-        Eletrocardiograma eletrocardiograma = getDadosAgendamento(codExame);
+        Eletrocardiograma eletrocardiograma = getDadosExame(codExame);
 
         btnLimpar.setVisible(false);//Deixa os botões do outro formulario ocultos
         btnSalvar.setVisible(false);
@@ -455,7 +455,7 @@ public class FormularioEletrocardiogramaFrame extends JFrame {
         cbDiagnostico.setEnabled(status);
     }
 
-    private Eletrocardiograma getDadosAgendamento(Integer codExame) {
+    private Eletrocardiograma getDadosExame(Integer codExame) {
         EletrocardiogramaController ec = new EletrocardiogramaController();
         return ec.controlBuscarEletrocardiogramaForId(codExame);
     }
